@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    
+    <!-- SIGN IN -->
+     <div class="container-none" id="signInPage">
+        <div class="popup">
+            <button class="close-btn" onclick="showHomePage()">&#10005;</button>
+
+            <div class="left">
+                <h1 class="learn">Smash sets <br> in your sweats.</h1>
+                <div class="image-container">
+                    <img src="src/books.png" >
+                </div>
+                <h1 class="icon">Quizlet</h1>
+            </div>
+
+            <div class="right">
+                <div class="form-container">
+                    <div class="show">
+                        <button class="up2" onclick="showSignUpPage()">Sign up</button>
+                        <button class="in2" onclick="showSignInPage()">Log in</button>
+                    </div>
+
+                    <div class="social2">
+                        <button class="btnF">
+                            <img src="src/facebook.png" alt="">
+                            <div>Log in with Facebook</div>
+                        
+                        </button>
+                        <button class="btnG">
+                            <img src="src/google.png" alt="">
+                            <div>Log in with Google</div>
+                        </button>
+                    </div>
+                    <p class="divider2">or email</p>
+
+                    <form id="signInForm">
+                        <div class="input-group2">
+                            <label>Username</label>
+                            <input type="username" placeholder="username" name="username">
+                        </div>
+                        <div class="input-group2">
+                            <div class="label">
+                                <label>Password</label>
+                                <p onclick="openForgot()">Forgot password</p>
+                            </div>
+                            <input type="password" name="password" id="password" placeholder="********">
+                        </div>
+                        <p class="terms">By clicking on Log in, you accept Quizlet's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+
+                        <button type="submit" class="submit-btn" id="submit">Log in</button>
+                        <button class="signin-btn" onclick="showSignUpPage()">New to Quizlet? Create an account</button>
+                    </form> 
+                </div> 
+            </div>
+        </div>
+     </div>
+
+    <div class="container-none" id="signUpPage">
+        <div class="popup">
+            <button class="close-btn" onclick="showHomePage()">&#10005;</button>
+            <div class="left">
+                <h1 class="learn">The best way to study.<br> Sign up for free.</h1>
+                <div class="image-container">
+                    <img src="src/books.png" >
+                </div>
+                <h1 class="icon">Quizlet</h1>
+            </div>
+            <div class="right">
+                <div class="form-container">
+                    <div class="show">
+                        <button class="up" onclick="showSignUpPage()">Sign up</button>
+                        <button class="in" onclick="showSignInPage()">Log in</button>
+                    </div>
+                    
+                    <div class="social">
+                            <button class="btnFace">
+                                <img src="src/facebook.png" alt="">
+                                <div>Continue with Facebook</div>
+                            
+                            </button>
+                            <button class="btnGoogle"> <a href="https://accounts.google.com"><img src="src/google.png" alt=""></a>  </button>
+                    </div>
+    
+                    <p class="divider">or email</p>
+                    <form id="registerForm">
+                        <div class="input-group">
+                            <label>Full name</label>
+                            <input type="text" id="fullname" name="fullname" placeholder="Nguyen Ha Trung">
+                        </div>
+                        <div class="input-group">
+                            <label>Profession</label>
+                            <div class="pro" >
+                                <select  id="profession" name="profession">
+                                    <option >Teacher</option>
+                                    <option >Student</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label >Birthday</label>
+                           
+                            <div class="birthday"  >
+                                <select id="month" class="month" name="month">
+                                    <option>Month</option>
+                                    <option >1</option>
+                                    <option >2</option>
+                                    <option >3</option>
+                                    <option >4</option>
+                                    <option >5</option>
+                                    <option >6</option>
+                                    <option >7</option>
+                                    <option >8</option>
+                                    <option >9</option>
+                                    <option >10</option>
+                                    <option >11</option>
+                                    <option >12</option>
+                                </select>
+                                <select id="day" class="day" name="day">
+                                    <option>Day</option>
+                                    <script>
+                                        for (let i = 1; i <= 31; i++) {
+                                            document.write(`<option value="${i}">${i}</option>`);
+                                        }
+                                    </script>
+                                </select>
+                                <select class="year" id="year" name="year">
+                                    <option>Year</option>
+                                    <script>
+                                        let currentYear = new Date().getFullYear();
+                                        for (let i = currentYear ; i >= currentYear - 100; i--) {
+                                            document.write(`<option value="${i}">${i}</option>`);
+                                        }
+                                    </script>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="input-group">
+                            <label>Email</label>
+                            <input type="email" id="email2" name="email" placeholder="user@email.com">
+                        </div>
+                        
+
+                        <div class="input-group">
+                            <label>Username</label>
+                            <input type="text" id="username2" name="username" placeholder="andrew123">
+                        </div>
+                        <div class="input-group">
+                            <label>Password</label>
+                            <input type="password" id="password2" name="password" placeholder="********">
+                        </div>
+                        <div class="check">
+                            <input type="checkbox" name="" id="" class="checkbox">
+                            <p class="terms">I accept Quizlet's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
+                        </div>
+                        
+                        <button type="submit" class="submit-btn" id="submit2">Sign up</button>
+                        <button class="signin-btn" onclick="showSignInPage()">Already have an account? Log in</button>
+                    </form>
+    
+                   
+                </div>
+            </div>
+        </div>
+        
+    </div>
+
+
+    <!-- HOME -->
+
+    <div id="main" class="main">
+        <div>
+            <header class="header" id="header">
+
+                <div id="createFolder" class="Folder">
+                    <div class="crF" id="crF">
+                        <button class="close-btn" onclick="hidePopup()">&#10005;</button>
+                        <h2>Create a new Folder</h2>
+                        <input type="text" placeholder="Title"><br><br>
+                        <button class="create">Create Folder</button>
+                    </div>
+                </div>
+               
+
+                <div class="logo" onclick="goHome()">Quizlet</div>
+                <nav class="nav">
+                    <div class="dropdown">
+                        <span class="nav-item" onclick="toggleMenu('studyMenu')">Study tools ▼</span>
+                        <ul id="studyMenu" class="dropdown-menu">
+                            <li onclick="myClass()"><img src="src/test.png" alt="">My Class</li>
+                            <li><img src="src/learn.png" alt="">My Folder</li>
+                            <li><img src="src/point.png" alt="">MyPoint</a></li>
+                            <li><img src="src/check.png" alt="">Checkpoint</li>
+                        </ul>
+                    </div>
+        
+                    <div class="dropdown">
+                        <span class="nav-item" onclick="toggleMenu('subjectsMenu')">Subjects ▼</span>
+                        <ul id="subjectsMenu" class="dropdown-menu">
+                            <li><img src="src/math.png" > Math </li>
+                            <li><img src="src/language.png" > Language </li>
+                            <li><img src="src/sience.png" >Sience </li>
+                            <li><img src="src/social.png" > Social Sience</li>
+                            <li><img src="src/art.png" > Art</li>
+                            <li><img src="src/liter.png" > Literature </a></li>
+                            <li><img src="src/other.png" >Other </li>
+                        </ul>
+                    </div>
+                </nav>
+        
+                <div class="search-box">
+                    <input type="text" placeholder="🔍 Search for flashcards">
+                </div>
+                
+                <div class="auth-buttons">
+                    <div class="dropdown">
+                        <button class="btn" onclick="toggleMenu('create')">+ Create</button>
+                        <ul class="dropdown-menu2" id="create">
+                            <li><button onclick="showPopup()">Folder</button></li>
+                            <li><button>Test</button></li>
+                            <li><button>Class</button></li>
+                        </ul>
+                    </div>
+                    
+                    <button class="btn login" onclick="showSignInPage()">Log in</button>
+                </div>
+            </header>
+        
+        
+            <section class="body_word">
+                <h1 class="h1">How do you want to study?</h1>
+                <p class="about">Master whatever you’re learning with Quizlet’s interactive flashcards, practice tests, and study activities.</p>
+                <div class="btn2">
+                    <button class="sign_btn" onclick="showSignUpPage()"> Sign up for free</button>
+                   
+                </div>
+            </section>
+        
+            <section id="slide">
+                <div class="slider-container">
+                    <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
+                    <div class="slider">
+                        <div class="slide"><a href=""><img src="src/img1.png" alt="Image 1"></a></div>
+                        <div class="slide"><a href=""><img src="src/img2.png" alt="Image 2"></a></div>
+                        <div class="slide"><a href=""><img src="src/img3.png" alt="Image 3"></a></div>
+                        <div class="slide"><a href=""><img src="src/img4.png" alt="Image 4"></a></div>
+                        <div class="slide"><a href=""><img src="src/img5.png" alt="Image 5"></a></div>
+                        <div class="slide"><a href=""><img src="src/img6.png" alt="Image 6"></a></div>
+                    </div>
+                    <button class="next" onclick="moveSlide(1)">&#10095;</button>
+                </div>
+            </section>
+        
+            <section class="more">
+                <div class="cover">
+                    <div class="one">
+                        <h1>Every class, every test, one ultimate study web</h1>
+                        <p>Create your own flashcards or find sets made by teachers, students, and experts. Study them anytime, anywhere with our website.</p>
+                    </div>   
+                    <div class="two">
+                        <img src="src/more_1.png" alt="">
+                    </div>
+                </div>
+            </section>
+        
+            <section class="more">
+                <fiv class="cover">
+                    <div class="two">
+                        <img src="src/more_2.png" alt="">
+                    </div>
+                    <div class="onek">
+                        <h1>Make class material instantly studiable</h1>
+                        <p>Turn your slides, videos, and notes into flashcard sets, practice tests, and study guides.</p>
+                    </div>
+                </fiv>  
+            </section>
+        
+            <section class="more">
+                <div class="cover">
+                    <div class="one">
+                        <h1>Test prep for any subject</h1>
+                        <p>Memorize anything with personalized practice tests and study sessions in Learn. 98% of students say Quizlet has improved their understanding.</p>
+                    </div>
+                    <div class="two">
+                        <img src="src/more_3.png" alt="">
+                    </div>
+                </div>
+            </section>
+        
+            <section class="more_2">
+                <div class="cover">
+                    <div class="one">
+                        <h3>Teacher </h3>
+                        <h1> Empower your students</h1>
+                        <p>Help every student confidently learn anything. With free flashcard sets, study modes, and in-class games like Quizlet Live, you can instantly create a more engaged classroom.</p>    
+                    </div>
+                    <div class="two_2">
+                        <img src="src/more_4.png" alt="">
+                    </div> 
+                </div>
+            </section>
+        
+            <section class="end" id="footer">
+                <div class="e1">
+                    <h3>About us</h3>
+                    <ul class="info">
+                        <li> <a href="">About Quizz</a></li>
+                        <li> <a href="">How Quizz works</a></li>
+                    </ul>
+                </div>
+                <div class="e2">
+                    <h3>For students</h3>
+                    <ul class="info">
+                        <li><a href="">Test</a></li>
+                        <li><a href="">Learn</a></li>
+                    </ul>
+                </div>
+                <div class="e3">
+                    <h3>Country</h3>
+                    <ul class="country">
+                        <li><a href="index.html">United States</a></li>
+                        <li><a href="index.html">Canada</a></li>
+                        <li><a href="index.html">United Kingdom</a></li>
+                        <li><a href="index.html">Australia</a></li>
+                        <li><a href="index.html">New Zealand</a></li>
+                        <li><a href="index.html">Germany</a></li>
+                        <li><a href="index.html">France</a></li>
+                        <li><a href="index.html">Spain</a></li>
+                        <li><a href="index.html">Italy</a></li>
+                        <li><a href="index.html">Japan</a></li>
+                        <li><a href="index.html">South Korea</a></li>
+                        <li><a href="index.html">India</a></li>
+                        <li><a href="index.html">China</a></li>
+                        <li><a href="index.html">Mexico</a></li>
+                        <li><a href="index.html">Swenden</a></li>
+                        <li><a href="index.html">Netherlands</a></li>
+                        <li><a href="index.html">Brazil</a></li>
+                        <li><a href="index.html">VietNam</a></li>
+                        <li><a href="index.html">Turkey</a></li>
+                        <li><a href="index.html">Russia</a></li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+        </div>
+    <script src="/js/script.js"></script>
+    <script src="/js/script_server.js"></script>
+</body>
+</html>

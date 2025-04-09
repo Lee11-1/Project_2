@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <header class="header" id="header">
+        <div id="createFolder" class="Folder">
+            <div class="crF" id="crF">
+                <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
+                <h2>Create a new Folder</h2>
+                <form id="crFolder">
+                    <input type="text" placeholder="Title"><br><br>
+                    <button class="create" type="submit">Create Folder</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="createClass" class="Folder">
+            <div class="crC" id="crC">
+                <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
+                <h2>Create a new Class</h2>
+                <form id="crClass">
+                    <input type="text" maxlength="20" placeholder="   Name" name="className">
+                    <select id="subject" class="subject" name="subject">
+                        <option>Subject</option>
+                        <option>Other</option>
+                        <option >Math</option>
+                        <option >Language</option>
+                        <option >Sience </option>
+                        <option >Social Sience</option>
+                        <option >Art</option>
+                        <option >Literature</option>
+                    </select>
+                    <button class="create" type="button" onclick="addClass()" >Create</button>
+                </form>
+            </div>
+        </div>
+       
+
+        <div class="logo" onclick="goHome()">Quizlet</div>
+        <nav class="nav">
+            <div class="dropdown">
+                <span class="nav-item" onclick="toggleMenu('studyMenu')">Study tools ▼</span>
+                <ul id="studyMenu" class="dropdown-menu">
+                    <li onclick="myClass()"><img src="/src/test.png" alt="">My Class</li>
+                    <li onclick="showFolderPage()"><img src="/src/learn.png" alt="">My Folder</li>
+                    <li><img src="/src/point.png" alt="">MyPoint</li>
+                    <li><img src="/src/check.png" alt="">Checkpoint</li>
+                </ul>
+            </div>
+
+            <div class="dropdown">
+                <span class="nav-item" onclick="toggleMenu('subjectsMenu')">Subjects ▼</span>
+                <ul id="subjectsMenu" class="dropdown-menu">
+                    <li><img src="/src/math.png" > Math </li>
+                    <li><img src="/src/language.png" > Language </li>
+                    <li><img src="/src/sience.png" >Sience </li>
+                    <li><img src="/src/social.png" > Social Sience</li>
+                    <li><img src="/src/art.png" > Art</li>
+                    <li><img src="/src/liter.png" > Literature </a></li>
+                    <li><img src="/src/other.png" >Other </li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="search-box">
+            <input type="text" placeholder="🔍 Search">
+        </div>
+        
+        <div class="auth-buttons">
+            <div class="dropdown">
+                <button class="btn" onclick="toggleMenu('create')">+ Create</button>
+                <ul class="dropdown-menu2" id="create">
+                    <li><button onclick="showPopup('createFolder')">Folder</button></li>
+                    <li><button><a href="">Test</a></button></li>
+                    <li><button onclick="showPopup('createClass')">Class</button></li>
+                </ul>
+            </div>
+            <div class="dropdown">
+                <img src="/src/avt.png" class="avt" onclick="toggleMenu('tool')">
+                <ul id="tool" class="dropdown-menu2">
+                   <li><button><a href="">Account</a></button></li>
+                   <li><button onclick="signOut()">Sign out</button></li>
+                </ul>
+            </div>
+            
+        </div>
+    </header>
+
+    <div class="container-none" id="folderPage">
+        <div class="popupF">
+            <button class="close-btn2" onclick="closeFolderPage()">&#10005;</button>
+            <h1>Your Folders</h1>
+            
+            <section id="folder_container" class="folder_container">
+                <!-- <div class="folders">
+                    <img src="src/folder.png" alt="">
+                    <div class="dropdown">
+                        <button class="nameF" onclick="toggleMenu('folder')">My Folder</button>
+                        <ul class="dropdown-menu2" id="folder">
+                            <li><button>Delete</button></li>
+                            <li><button>Open</button></li>
+                        </ul>
+                    </div>
+                    
+                </div> -->
+            </section>
+            <button class="add">New +</button>
+        </div>
+        
+    </div>
+    
+    <div class="main" id="main">
+        <div>
+            <h1 class="h_class">Your class</h1>
+            <section id="class_container" class="class_container">
+            </section>
+        </div>
+    </div>
+
+
+    <div id="footer"></div>
+    <script>
+        $('#footer').load('home.html #footer');
+    </script>
+
+    <script src="/js/display.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/script_server.js"></script>
+    <script>
+        loadStudentData();
+    </script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div id="header"></div>
+   
+   
+    
+    <div class="fogot">
+        <h1>Reset your password</h1>
+        <p>Enter the email and username you signed up with. We'll reset your password</p>
+        <form id="forgot" class="forgot_form">
+            <div class="input-group2">
+                <label>Username</label>
+                <input type="username" placeholder="username" name="username">
+            </div>
+            <div class="input-group2">
+                <label>Email</label>
+                <input type="email" placeholder="user@email.com" name="email">
+            </div>
+            <button class="send" type="button" onclick="changePass()">Send</button>
+        </form>    
+    </div>
+
+    <div id="footer"></div>
+
+    <script>
+        $('#header').load('/home.html #header');
+    </script>
+    <script>
+        $('#footer').load('/home.html #footer');
+    </script>
+
+    <script src="/js/script.js"></script>
+    <script src="/js/script_server.js"></script>
+
+</body>
+</html>
