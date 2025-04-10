@@ -24,6 +24,7 @@ function displayClassInfo(classInfo,infoOwner){
     <h2>Class name: ${classInfo.name}</h2>
     <p>Start: ${new Date(classInfo.created_at).toLocaleString()}</p>
     <p>Owner: ${infoOwner.fullname} </p>
+    <p>Email: ${infoOwner.email} </p>
 `;
 }
 

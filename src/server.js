@@ -28,14 +28,14 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'src')));
+app.use(express.static(path.join(__dirname,'..', 'public')));
+app.use(express.static(path.join(__dirname,'..', 'src')));
 //app.use(express.static('public', { extensions: ['html', 'css', 'js'] }));
 
 
 app.get('/', (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
     }
     const user = req.session.user;
     return res.redirect(`/home/${user.username}`);
@@ -112,7 +112,7 @@ app.post("/signIn", async (req, res) => {
 
 app.post("/create-folder",async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
     }
     const { folderName } = req.body;
     const folderPath = path.join(__dirname, "uploads", folderName);
@@ -200,21 +200,16 @@ app.get("/logout", async (req, res) => {
 
 
 app.get("/forgot", async (req, res) => {
-    res.sendFile(path.join(__dirname, "public", "fogot.html"));
+    res.sendFile(path.join(__dirname, '..', "public", "fogot.html"));
 });
 
-// app.get("/teacher-home", async (req, res) => {
-//     if (!req.session.user) {
-//         return res.sendFile(path.join(__dirname, 'public', 'home.html'));
-//     }
-//     res.sendFile(path.join(__dirname, "public", "teacher.html"));
-// });
+
 
 app.get("/home/:username", (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
     }
-    res.sendFile(path.join(__dirname, "public", "student.html"));
+    res.sendFile(path.join(__dirname,'..', "public", "student.html"));
 });
 
 app.get("/all-classes", async (req, res) => {
@@ -263,6 +258,18 @@ app.post("/toClass", (req, res) => {
     res.json({ message: "Lớp học đã mở!", redirect: `/class/${class_id}` });
 });
 
+app.post("/deleteClass", async(req, res) => {
+    const user = req.session.user; 
+    if (req.session.owner != user.id) { return res.status(400).json({ message: "Ban khong co quyen" });}
+
+    const idClass = req.session.class_id;
+    await pool.query(`DELETE FROM class_members WHERE class_id = $1`, [idClass]);
+    await pool.query(`DELETE FROM re_member WHERE class_id = $1`, [idClass]);
+    await pool.query(`DELETE FROM classes WHERE id = $1`, [idClass]);
+
+    res.json({ message: "Deleted!!!", redirect: `/home/${user.username}` });
+});
+
 app.post("/deleReMem", async(req, res) => {
     const user = req.session.user; 
     if (req.session.owner != user.id) { return res.status(400).json({ message: "Ban khong co quyen" });}
@@ -272,9 +279,9 @@ app.post("/deleReMem", async(req, res) => {
         return res.status(400).json({ message: "Thiếu id!" });
     } 
  
-    await pool.query(`DELETE FROM re_member WHERE class_id = $1 AND user_id = $2`, [idClass,parseInt(idUser)]);
+    await pool.query(`DELETE FROM re_member WHERE class_id = $1 AND user_id = $2`, [idClass, parseInt(idUser)]);
 
-    res.json({ message: "Deleted!!!", redirect: `/class` });
+    res.json({ message: "Deleted!!!", redirect: `/class/${idClass}` });
 });
 
 app.post("/deleMem", async(req, res) => {
@@ -288,7 +295,7 @@ app.post("/deleMem", async(req, res) => {
  
     await pool.query(`DELETE FROM class_members WHERE class_id = $1 AND user_id = $2`, [idClass,parseInt(idUser)]);
 
-    res.json({ message: "Deleted!!!", redirect: `/class` });
+    res.json({ message: "Deleted!!!", redirect: `/class/${idClass}` });
 });
 
 
@@ -305,7 +312,7 @@ app.post("/addMem", async (req, res) =>  {
     await pool.query(`INSERT INTO class_members (class_id, user_id) VALUES ($1, $2)`, [parseInt(idClass),parseInt(user_id)]);
     await pool.query(`DELETE FROM re_member WHERE class_id = $1 AND user_id = $2`, [idClass,parseInt(user_id)]);
 
-    res.json({ message: "Sucessfull!!!", redirect: `/class` });
+    res.json({ message: "Sucessfull!!!", redirect: `/class/${idClass}` });
 });
 
 app.post("/findMem", async (req, res) => {
@@ -361,7 +368,7 @@ app.get("/class/:class_id", async (req, res) => {
         if (classQuery.rows.length === 0) {
             return res.status(404).send("Lớp học không tồn tại!");
         }
-        res.sendFile(path.join(__dirname, "public", "class.html"));
+        res.sendFile(path.join(__dirname,'..', "public", "class.html"));
 
     } catch (error) {
         console.error("Lỗi:", error);

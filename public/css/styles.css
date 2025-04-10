@@ -943,14 +943,13 @@ button{
     width: 100%;
 }
 .classname{
-    width: 90%;
+    width: 600px;
     min-height: 30px ;
     margin: auto;
     width: 100%;
     height: auto;
     min-height: 100px;
-    background-color: #5acdea;
-    color: white;
+    color: rgb(105, 20, 20);
 }
 .classname h2{
     padding: 20px 0 0 20px;
@@ -1016,4 +1015,19 @@ button{
 }
 .reMem li p{
     flex: 8;
+}
+.deleteClass{
+    width: 180px;
+    height: 50px;
+    font-size: 20px;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    background-color: #4f85a4;
+    margin-top: 2%;
+    margin-right: 2%;
+    cursor: pointer;
+}
+.deleteClass:hover{
+    background-color: #05334a;
 }

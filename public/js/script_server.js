@@ -157,7 +157,7 @@ async function addClass() {
         const result = await response.json();
         console.log(result); 
         if (response.ok) {
-            loadStudentData();
+            window.location.href = result.redirect; 
         }
         else{
             alert(result.message);
@@ -203,7 +203,6 @@ async function deleteReMem(idUser) {
 
         const result = await response.json();
         if (response.ok) {
-            alert("Xoá thành công!");
             loadClassData(); 
         } else {
             alert(result.message); 
@@ -223,7 +222,6 @@ async function deleteMem(idUser) {
 
         const result = await response.json();
         if (response.ok) {
-            alert("Xoá thành công!");
             loadClassData(); 
         } else {
             alert(result.message); 
@@ -244,7 +242,6 @@ async function addMem(user_id) {
 
         const result = await response.json();
         if (response.ok) {
-            alert("Add thành công!");
             loadClassData(); 
         } else {
             alert(result.message); 
@@ -255,6 +252,24 @@ async function addMem(user_id) {
     }    
 }
 
+async function deleteClass() {
+    try{
+        const response = await fetch("/deleteClass" ,{
+            method: "POST",
+            headers: { "Content-Type": "application/json"}
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            window.location.href = result.redirect; 
+        } else {
+            alert(result.message); 
+        }
+    }catch (error) {
+        console.error("Lỗi:", error);
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
+}
 
 
 
