@@ -38,19 +38,19 @@
          </div> 
       </div>
 
-      <div class="class_right" id="classTest"> 
-      
-      </div>
+     
 
       <div class="class_right" id="classMem" >  
          
          <div class="membersDiv">
-            <h3 class="headMem">Members</h3>
+            <h3 class="headRight">Members</h3>
             <ul id="class-members" class="class-members">   </ul>
          </div>
+
          <div class="button">
-            <button class="addMembers" onclick="showPopup('findMembers')">Add members</button>
+            <button class="btn-right" onclick="showPopup('findMembers')">Add members</button>
          </div>
+
          <div id="findMembers" class="Folder">
             <div class="crF" id="crF">
                 <button class="close-btn" onclick="hidePopup('findMembers')">&#10005;</button>
@@ -68,6 +68,30 @@
 
       </div>
 
+      <div class="class_right" id="classTest"> 
+
+         <div class="testDiv">
+            <h3 class="headRight">All Test</h3>
+            <ul class="class-test" id="class-test"> </ul>
+         </div>
+
+         <div class="button">
+            <button class="btn-right" onclick="showPopup('createTest')">New test</button>
+         </div>
+
+         <div id="createTest" class="Folder">
+            <div class="crF" id="crF">
+                <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
+                <h2>New test</h2>
+                <form id="newTest" class="title">
+                   
+                    <button class="nextInfo" type="button" onclick="">Next</button>
+                </form>
+            </div>
+         </div>
+
+         
+      </div>
       <div class="class_right" id="classInfo"> 
          <div class="div">
             <div id="class-name" class="classname">  </div>

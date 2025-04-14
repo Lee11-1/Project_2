@@ -31,10 +31,14 @@
                         <option>Other</option>
                         <option >Math</option>
                         <option >Language</option>
-                        <option >Sience </option>
-                        <option >Social Sience</option>
+                        <option >Science </option>
+                        <option >Social Science</option>
                         <option >Art</option>
                         <option >Literature</option>
+                    </select>
+                    <select name="type" id="type" class="type">
+                        <option> Private </option>
+                        <option> Public</option>
                     </select>
                     <button class="create" type="button" onclick="addClass()" >Create</button>
                 </form>
@@ -57,13 +61,13 @@
             <div class="dropdown">
                 <span class="nav-item" onclick="toggleMenu('subjectsMenu')">Subjects ▼</span>
                 <ul id="subjectsMenu" class="dropdown-menu">
-                    <li><img src="/src/math.png" > Math </li>
-                    <li><img src="/src/language.png" > Language </li>
-                    <li><img src="/src/sience.png" >Sience </li>
-                    <li><img src="/src/social.png" > Social Sience</li>
-                    <li><img src="/src/art.png" > Art</li>
-                    <li><img src="/src/liter.png" > Literature </a></li>
-                    <li><img src="/src/other.png" >Other </li>
+                    <li onclick="findClass(`Math`)"><img src="/src/math.png" > Math </li>
+                    <li onclick="findClass(`Language`)"><img src="/src/language.png" > Language </li>
+                    <li onclick="findClass(`Science`)"><img src="/src/sience.png" >Science </li>
+                    <li onclick="findClass(`Social Science`)"><img src="/src/social.png" > Social Science</li>
+                    <li onclick="findClass(`Art`)"><img src="/src/art.png" > Art</li>
+                    <li onclick="findClass(`Literature`)"><img src="/src/liter.png" > Literature </a></li>
+                    <li onclick="findClass(`Other`)"><img src="/src/other.png" >Other </li>
                 </ul>
             </div>
         </nav>
@@ -126,7 +130,7 @@
 
     <div id="footer"></div>
     <script>
-        $('#footer').load('home.html #footer');
+        $('#footer').load('/home.html #footer');
     </script>
 
     <script src="/js/display.js"></script>

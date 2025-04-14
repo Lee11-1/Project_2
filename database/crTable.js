@@ -30,6 +30,7 @@ const createTable = async () => {
         name VARCHAR(100) NOT NULL,
         owner_id INT REFERENCES users(id) ON DELETE CASCADE,
         subject VARCHAR(50) NOT NULL,
+        type VARCHAR(50) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 

@@ -121,4 +121,16 @@ function seeTest(){
     document.getElementById("classInfo").style.display = "none";
 }
 
+let index_test = 0;
+const test = document.querySelectorAll('.slide_question');
+const totalQuiz = test.length;
+const quizToShow = 1; // Số ảnh hiển thị cùng lúc
 
+function movequiz(step) {
+    index_test += step;
+    if (index_test < 0) index_test =  totalQuiz - quizToShow;
+    if (index_test > totalQuiz - quizToShow) index_test =  0;
+    document.querySelector('.slider_test').style.transform = `translateX(${-index_test * 100}%)`;
+}
+
+ 

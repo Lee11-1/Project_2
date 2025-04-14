@@ -40,18 +40,7 @@ async function loadStudentData() {
 
 async function openClass(class_id) {
     try {
-        const response = await fetch("/toClass", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ class_id}) 
-        });
-
-        const result = await response.json();
-        if (response.ok) {
-            window.location.href = `/class/${class_id}`; 
-        } else {
-            alert(result.message); 
-        }
+         window.location.href = `/class/${class_id}`; 
     } catch (error) {
         console.error("Lỗi:", error);
         alert("Có lỗi xảy ra, vui lòng thử lại.");
@@ -76,7 +65,67 @@ async function loadClassData() {
         alert("Không thể tải dữ liệu lớp học.");
     }
 }
+async function loadResult() {
+    try{
+        const response = await fetch('/resultFind');
+        const data = await response.json();
+        if(!response.ok){
+            alert("Lỗi khi tải dữ liệu");
+            return;
+        }
+        console.log("DATA NHẬN ĐƯỢC:", data);
 
+        displayResultFind(data.availableClasses, "1");
+        displayResultFind(data.pendingRequests, "2");
+        displayResultFind(data.myClasses, "3");
+    }catch (error){
+        console.error("Lỗi:", error);
+        alert("Không thể tải dữ liệu lớp học.");
+    }
+    
+}
+async function requestToClass(idClass) {
+    try{
+        const response = await fetch("/sendRequest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({idClass})
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          loadResult();
+        } else {
+            alert(result.message);
+        }
+
+    }  
+    catch (error){
+        console.error("Lỗi:", error);
+        alert("Không thể tải dữ liệu.");
+    }  
+}
+async function unRequest(idClass) {
+    try {
+        const response = await fetch("/unRequest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({idClass})
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+          loadResult();
+        } else {
+            alert(result.message);
+        }
+        
+    } catch (error) {
+        console.error("Loi :", error );
+        alert("Khong the tai du lieu.");
+    }
+    
+}
 document.getElementById("registerForm").addEventListener("submit", async function(event) {
     event.preventDefault(); 
 
@@ -142,6 +191,17 @@ async function changePass() {
         }
 }
 
+async function findClass(subject) {
+    try{
+            window.location.href = `/search/${subject}`; 
+}
+
+    catch{
+        console.error("Lỗi:", error);
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
+    
+}
 
 async function addClass() {
     const form = document.getElementById("crClass"); // Lấy form

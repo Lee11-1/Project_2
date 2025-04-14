@@ -195,7 +195,7 @@ body{
     border-radius: 10px;
     text-align: center;
     width: 700px;
-    height: 300px;
+    height: 350px;
     position: relative;
 }
 .crF h2,.crC h2{
@@ -203,7 +203,7 @@ body{
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.crF input,.crC input,.subject{
+.crF input,.crC input,.subject,.type{
     height: 50px;
     width: 100%;
     font-size: 20px;
@@ -720,7 +720,8 @@ button{
     margin-right: auto;
 }
 
-.class_container{
+
+.class_container,.bodySearch{
     width: 100%;
     height: auto;
     min-height: 800px;
@@ -747,6 +748,11 @@ button{
     margin-bottom: 3%;
     cursor: pointer;
 }
+
+.btnSent{
+    background-color: #529fb0;
+    color: #e2eaee;
+}
 .classes img{
     height: auto;
     width: 30%;
@@ -762,7 +768,29 @@ button{
     font-size: 20px;
     width: 100%;
 }
-.classes button{
+/* .classes p button{
+    background-color: #2c1089;
+    border-radius: 0.5rem;
+    font-size: 15px;
+    color: white;
+    border: none;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    margin-bottom: 2%;
+} */
+.Sent button{
+    background-color: #286e5c;
+    border-radius: 0.5rem;
+    font-size: 15px;
+    color: white;
+    border: none;
+    width: 100px;
+    height: 40px;
+    cursor: pointer;
+    margin-bottom: 2%;
+}
+.addClass button{
     background-color: #2c1089;
     border-radius: 0.5rem;
     font-size: 15px;
@@ -882,7 +910,7 @@ button{
     margin-top: 1%;
     margin-right: 2%;
 }
-.addMembers{
+.btn-right{
     width: 150px;
     height: 50px;
     background-color: #4f85a4;
@@ -891,7 +919,7 @@ button{
     border-radius: 0.5rem;
     cursor: pointer;
 }
-.addMembers:hover{
+.btn-right:hover{
     background-color: #05334a;
 }
 
@@ -899,7 +927,7 @@ button{
     margin-bottom: 2%;
     font-size: 20px;
 }
-.findMem{
+.findMem, .nextInfo{
     background-color:#4f85a4;
     color: white;
     border-radius: 0.5rem;
@@ -962,14 +990,14 @@ button{
     margin-bottom: 1%;
 }
 
-.headMem{
+.headRight{
     margin-left: 2%;
     margin-top: 2%;
     width: 10%;
     height: auto;
     font-size: 25px;
 }
-.membersDiv{
+.membersDiv,.testDiv{
     width: 100%;
     height: auto;
 }
@@ -1030,4 +1058,115 @@ button{
 }
 .deleteClass:hover{
     background-color: #05334a;
+}
+
+.quiz_container,.slide_question{
+    min-height: 300px;
+    height: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.test_button{
+    display: flex;
+    justify-content: center;
+}
+.previous_quiz,.next_quiz{
+    background-color: #14888e;
+    color: white;
+    border: none;
+    width: 120px;
+    height: 40px;
+    font-size: 25px;
+    margin-right: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+.next_quiz{
+    margin-right: 0px;
+    margin-left: 10px;
+}
+.previous_quiz:hover{
+    background-color: #05334a;
+}
+.next_quiz:hover{
+    background-color: #05334a;
+}
+
+.quiz_container ul,.quiz_container p{
+    margin-left: 6%;
+    margin-top: 1%;
+    font-size: 18px;
+}
+.quiz_container ul li{
+    margin-top: 1%;
+}
+.answer{
+    margin-right: 1%;
+    border-radius: 50%;
+}
+.headTest{
+    display: flex;
+    position: relative;
+    font-size: 18px;
+    font-weight: 600;
+    margin-top: 2%;
+    margin-left: 2%;
+  
+}
+.headTest p{
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 0.5%;
+}
+
+.headTest img{
+    width: 35px;
+    height: 30px;
+    margin-right: 1%;
+
+}
+.time{
+    display: flex;
+    position: relative;
+    margin-top: 2%;
+    margin-left: 75%;
+    margin-right: 5%;
+    border: 1px solid rgb(82, 120, 148);
+}
+.time p{
+    font-size: 20px;
+    font-weight: 600;
+    margin: auto;
+}
+.submit_one{
+    width: 120px;
+    height: 40px;
+    color: white;
+    background-color: #14888e;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.5rem;
+}
+.submit_one:hover{
+    background-color: #05334a;
+}
+.quiz{
+    min-height: 300px;
+    height: auto;
+}
+.quiz h3{
+    margin-left: 3%;
+}
+.left_test{
+    width: 80%;
+    border: 2px solid black ;
+}
+.right_test{
+    width: 20%;
+    min-height: 500px;
+    border: 2px solid rgb(51, 220, 212) ;
+}
+.test_body{
+    display: flex;
+    position: relative;
 }

@@ -11,7 +11,7 @@ function displayAllClass(allClass){
             <h3>Name: ${classes.class_name}</h3>
             <p>ID:${classes.class_id}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Subject: ${classes.subject} </p>
             <p>Date: ${new Date(classes.created_at).toLocaleDateString()}</p>
-            <button class = "addClass">View class</button>
+            <p class = "addClass"> <button >View class</button> </p>
         </div>   `;
         container.appendChild(projectDiv);
     });
@@ -71,6 +71,59 @@ function displayMembers(members) {
     });
 }
 
+ function displayResultFind(allClass , type){
+    const container = document.getElementById('bodySearch');
+    console.log(allClass, type);
+   if(type == "1") container.innerHTML = '';
+    // if (!Array.isArray(allClass) || allClass.length === 0) {
+    //     container.innerHTML = `<p style="color: red;">Không tìm thấy kết quả nào.</p>`;
+    //     return;
+    // }
+    allClass.forEach(classes => {
+        if(type == "1"){
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('classes');
+            projectDiv.addEventListener("click", function() { requestToClass(classes.class_id)  });
+            projectDiv.innerHTML = `
+                <img src="/src/class.png" alt="">
+                <div class = "cl_2"> 
+                    <h3>Name: ${classes.class_name}</h3>
+                    <p>ID:${classes.class_id}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Subject: ${classes.subject} </p>
+                    <p>Date: ${new Date(classes.created_at).toLocaleDateString()}</p>
+                    <p class = "addClass" id = "addClass" > <button> Request </button> </p>
+                </div>   `;
+            container.appendChild(projectDiv);
+        }
+        else if (type == "2"){
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('classes');
+            projectDiv.addEventListener("click", function() { unRequest(classes.class_id)  });
+            projectDiv.innerHTML = `
+                <img src="/src/class.png" alt="">
+                <div class = "cl_2"> 
+                    <h3>Name: ${classes.class_name}</h3>
+                    <p>ID:${classes.class_id}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Subject: ${classes.subject} </p>
+                    <p>Date: ${new Date(classes.created_at).toLocaleDateString()}</p>
+                    <p class = "Sent" id = "Sent" > <button> Sent </button> </p>
+                </div>   `;
+            container.appendChild(projectDiv);
+        }
+        else if (type == "3"){
+            const projectDiv = document.createElement('div');
+            projectDiv.classList.add('classes');
+            projectDiv.addEventListener("click", function() { openClass(classes.class_id)  });
+            projectDiv.innerHTML = `
+                <img src="/src/class.png" alt="">
+                <div class = "cl_2"> 
+                    <h3>Name: ${classes.class_name}</h3>
+                    <p>ID:${classes.class_id}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Subject: ${classes.subject} </p>
+                    <p>Date: ${new Date(classes.created_at).toLocaleDateString()}</p>
+                    <p class = "addClass"> <button >View class</button> </p>
+                </div>   `;
+            container.appendChild(projectDiv);
+        }  
+    });
+}
 
 
 
