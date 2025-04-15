@@ -75,10 +75,6 @@ function displayMembers(members) {
     const container = document.getElementById('bodySearch');
     console.log(allClass, type);
    if(type == "1") container.innerHTML = '';
-    // if (!Array.isArray(allClass) || allClass.length === 0) {
-    //     container.innerHTML = `<p style="color: red;">Không tìm thấy kết quả nào.</p>`;
-    //     return;
-    // }
     allClass.forEach(classes => {
         if(type == "1"){
             const projectDiv = document.createElement('div');

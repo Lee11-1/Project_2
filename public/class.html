@@ -10,21 +10,15 @@
 <body>
    
    <div id="header"></div>
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-   <script>
-      $('#header').load('/student.html #header');
-   </script>
-    
-  
    
    <section class="class_body">
       <div class="class_left">
          <ul class="class_task">
-            <li onclick="seeHomeClass()">Home</li>
-            <li onclick="seeMembers()">Members</li>
-            <li onclick="seeDocuments()">Documents</li>
-            <li onclick="seeTest()">Test</li>
-            <li onclick="seeClassInfo()">Info</li>
+            <li onclick='seeClassTask("homeClass")'>Home</li>
+            <li onclick='seeClassTask("classMem")'>Members</li>
+            <li onclick='seeClassTask("classDocu")'>Documents</li>
+            <li onclick='seeClassTask("classTest")'>Test</li>
+            <li onclick='seeClassTask("classInfo")'>Info</li>
          </ul>
       </div>
 
@@ -104,17 +98,21 @@
   
 
    <div id="footer"></div>
+
+   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script>
-       $('#footer').load('/home.html #footer');
+      $('#header').load('/student.html #header');
+      $('#footer').load('/home.html #footer');
    </script>
-   
    <script src="/js/display.js"></script>
+
    <script src="/js/script.js"></script>
-   <script src="/js/script_server.js"></script>
-   <script>
-   document.addEventListener("DOMContentLoaded", function() {
-      loadClassData();
-   });
-   </script>
+   <script src="/js/script_class.js"></script>
+
+   <script src="/js/fetchClass.js"></script>
+   <script src="/js/fetch.js"></script>
+
+  
+
 </body>
 </html>

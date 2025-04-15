@@ -41,12 +41,14 @@ app.get('/', (req, res) => {
     return res.redirect(`/home/${user.username}`);
 
 }); 
+
 app.get("/home/:username", (req, res) => {
     if (!req.session.user) {
         return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
     }
     res.sendFile(path.join(__dirname,'..', "public", "student.html"));
 });
+
 app.listen(PORT, () => {
     console.log(`🚀 Server chạy tại http://localhost:${PORT}`);
 });

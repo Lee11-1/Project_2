@@ -12,12 +12,12 @@
     <!-- SIGN IN -->
      <div class="container-none" id="signInPage">
         <div class="popup">
-            <button class="close-btn" onclick="showHomePage()">&#10005;</button>
+            <button class="close-btn" onclick='showHomeMenu("main")'>&#10005;</button>
 
             <div class="left">
                 <h1 class="learn">Smash sets <br> in your sweats.</h1>
                 <div class="image-container">
-                    <img src="src/books.png" >
+                    <img src="/src/books.png" >
                 </div>
                 <h1 class="icon">Quizlet</h1>
             </div>
@@ -25,18 +25,18 @@
             <div class="right">
                 <div class="form-container">
                     <div class="show">
-                        <button class="up2" onclick="showSignUpPage()">Sign up</button>
-                        <button class="in2" onclick="showSignInPage()">Log in</button>
+                        <button class="up2" onclick='showHomeMenu("signUpPage")'>Sign up</button>
+                        <button class="in2" onclick='showHomeMenu("signInPage")'>Log in</button>
                     </div>
 
                     <div class="social2">
                         <button class="btnF">
-                            <img src="src/facebook.png" alt="">
+                            <img src="/src/facebook.png" alt="">
                             <div>Log in with Facebook</div>
                         
                         </button>
                         <button class="btnG">
-                            <img src="src/google.png" alt="">
+                            <img src="/src/google.png" alt="">
                             <div>Log in with Google</div>
                         </button>
                     </div>
@@ -56,8 +56,8 @@
                         </div>
                         <p class="terms">By clicking on Log in, you accept Quizlet's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
 
-                        <button type="submit" class="submit-btn" id="submit">Log in</button>
-                        <button class="signin-btn" onclick="showSignUpPage()">New to Quizlet? Create an account</button>
+                        <button type="button" class="submit-btn" id="signIn">Log in</button>
+                        <button class="signin-btn" type="button" onclick='showHomeMenu("signUpPage")'>New to Quizlet? Create an account</button>
                     </form> 
                 </div> 
             </div>
@@ -66,28 +66,28 @@
 
     <div class="container-none" id="signUpPage">
         <div class="popup">
-            <button class="close-btn" onclick="showHomePage()">&#10005;</button>
+            <button class="close-btn" onclick='showHomeMenu("main")'>&#10005;</button>
             <div class="left">
                 <h1 class="learn">The best way to study.<br> Sign up for free.</h1>
                 <div class="image-container">
-                    <img src="src/books.png" >
+                    <img src="/src/books.png" >
                 </div>
                 <h1 class="icon">Quizlet</h1>
             </div>
             <div class="right">
                 <div class="form-container">
                     <div class="show">
-                        <button class="up" onclick="showSignUpPage()">Sign up</button>
-                        <button class="in" onclick="showSignInPage()">Log in</button>
+                        <button class="up" onclick='showHomeMenu("signUpPage")'>Sign up</button>
+                        <button class="in" onclick='showHomeMenu("signInPage")'>Log in</button>
                     </div>
                     
                     <div class="social">
                             <button class="btnFace">
-                                <img src="src/facebook.png" alt="">
+                                <img src="/src/facebook.png" alt="">
                                 <div>Continue with Facebook</div>
                             
                             </button>
-                            <button class="btnGoogle"> <a href="https://accounts.google.com"><img src="src/google.png" alt=""></a>  </button>
+                            <button class="btnGoogle"> <a href="https://accounts.google.com"><img src="/src/google.png" alt=""></a>  </button>
                     </div>
     
                     <p class="divider">or email</p>
@@ -162,8 +162,8 @@
                             <p class="terms">I accept Quizlet's <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></p>
                         </div>
                         
-                        <button type="submit" class="submit-btn" id="submit2">Sign up</button>
-                        <button class="signin-btn" onclick="showSignInPage()">Already have an account? Log in</button>
+                        <button type="button" class="submit-btn" id="signUp">Sign up</button>
+                        <button class="signin-btn" type="button" onclick='showHomeMenu("signInPage")'>Already have an account? Log in</button>
                     </form>
     
                    
@@ -195,23 +195,23 @@
                     <div class="dropdown">
                         <span class="nav-item" onclick="toggleMenu('studyMenu')">Study tools ▼</span>
                         <ul id="studyMenu" class="dropdown-menu">
-                            <li onclick="myClass()"><img src="src/test.png" alt="">My Class</li>
-                            <li><img src="src/learn.png" alt="">My Folder</li>
-                            <li><img src="src/point.png" alt="">MyPoint</a></li>
-                            <li><img src="src/check.png" alt="">Checkpoint</li>
+                            <li onclick="myClass()"><img src="/src/test.png" alt="">My Class</li>
+                            <li><img src="/src/learn.png" alt="">My Folder</li>
+                            <li><img src="/src/point.png" alt="">MyPoint</a></li>
+                            <li><img src="/src/check.png" alt="">Checkpoint</li>
                         </ul>
                     </div>
         
                     <div class="dropdown">
                         <span class="nav-item" onclick="toggleMenu('subjectsMenu')">Subjects ▼</span>
                         <ul id="subjectsMenu" class="dropdown-menu">
-                            <li><img src="src/math.png" > Math </li>
-                            <li><img src="src/language.png" > Language </li>
-                            <li><img src="src/sience.png" >Science </li>
-                            <li><img src="src/social.png" > Social Science</li>
-                            <li><img src="src/art.png" > Art</li>
-                            <li><img src="src/liter.png" > Literature </a></li>
-                            <li><img src="src/other.png" >Other </li>
+                            <li><img src="/src/math.png" > Math </li>
+                            <li><img src="/src/language.png" > Language </li>
+                            <li><img src="/src/sience.png" >Science </li>
+                            <li><img src="/src/social.png" > Social Science</li>
+                            <li><img src="/src/art.png" > Art</li>
+                            <li><img src="/src/liter.png" > Literature </a></li>
+                            <li><img src="/src/other.png" >Other </li>
                         </ul>
                     </div>
                 </nav>
@@ -230,7 +230,7 @@
                         </ul>
                     </div>
                     
-                    <button class="btn login" onclick="showSignInPage()">Log in</button>
+                    <button class="btn login" onclick='showHomeMenu("signInPage")'>Log in</button>
                 </div>
             </header>
         
@@ -239,7 +239,7 @@
                 <h1 class="h1">How do you want to study?</h1>
                 <p class="about">Master whatever you’re learning with Quizlet’s interactive flashcards, practice tests, and study activities.</p>
                 <div class="btn2">
-                    <button class="sign_btn" onclick="showSignUpPage()"> Sign up for free</button>
+                    <button class="sign_btn" onclick='showHomeMenu("signUpPage")'> Sign up for free</button>
                    
                 </div>
             </section>
@@ -248,12 +248,12 @@
                 <div class="slider-container">
                     <button class="prev" onclick="moveSlide(-1)">&#10094;</button>
                     <div class="slider">
-                        <div class="slide"><a href=""><img src="src/img1.png" alt="Image 1"></a></div>
-                        <div class="slide"><a href=""><img src="src/img2.png" alt="Image 2"></a></div>
-                        <div class="slide"><a href=""><img src="src/img3.png" alt="Image 3"></a></div>
-                        <div class="slide"><a href=""><img src="src/img4.png" alt="Image 4"></a></div>
-                        <div class="slide"><a href=""><img src="src/img5.png" alt="Image 5"></a></div>
-                        <div class="slide"><a href=""><img src="src/img6.png" alt="Image 6"></a></div>
+                        <div class="slide"><a href=""><img src="/src/img1.png" alt="Image 1"></a></div>
+                        <div class="slide"><a href=""><img src="/src/img2.png" alt="Image 2"></a></div>
+                        <div class="slide"><a href=""><img src="/src/img3.png" alt="Image 3"></a></div>
+                        <div class="slide"><a href=""><img src="/src/img4.png" alt="Image 4"></a></div>
+                        <div class="slide"><a href=""><img src="/src/img5.png" alt="Image 5"></a></div>
+                        <div class="slide"><a href=""><img src="/src/img6.png" alt="Image 6"></a></div>
                     </div>
                     <button class="next" onclick="moveSlide(1)">&#10095;</button>
                 </div>
@@ -266,7 +266,7 @@
                         <p>Create your own flashcards or find sets made by teachers, students, and experts. Study them anytime, anywhere with our website.</p>
                     </div>   
                     <div class="two">
-                        <img src="src/more_1.png" alt="">
+                        <img src="/src/more_1.png" alt="">
                     </div>
                 </div>
             </section>
@@ -274,7 +274,7 @@
             <section class="more">
                 <fiv class="cover">
                     <div class="two">
-                        <img src="src/more_2.png" alt="">
+                        <img src="/src/more_2.png" alt="">
                     </div>
                     <div class="onek">
                         <h1>Make class material instantly studiable</h1>
@@ -290,7 +290,7 @@
                         <p>Memorize anything with personalized practice tests and study sessions in Learn. 98% of students say Quizlet has improved their understanding.</p>
                     </div>
                     <div class="two">
-                        <img src="src/more_3.png" alt="">
+                        <img src="/src/more_3.png" alt="">
                     </div>
                 </div>
             </section>
@@ -303,7 +303,7 @@
                         <p>Help every student confidently learn anything. With free flashcard sets, study modes, and in-class games like Quizlet Live, you can instantly create a more engaged classroom.</p>    
                     </div>
                     <div class="two_2">
-                        <img src="src/more_4.png" alt="">
+                        <img src="/src/more_4.png" alt="">
                     </div> 
                 </div>
             </section>
@@ -350,8 +350,12 @@
                 </div>
             </section>
         </div>
-        </div>
+    </div>
+
     <script src="/js/script.js"></script>
-    <script src="/js/script_server.js"></script>
+    <script src="/js/script_home.js"></script>
+
+    <script src="/js/fetchHome.js"></script>
+    <script src="/js/fetch.js"></script>
 </body>
 </html>

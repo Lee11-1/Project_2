@@ -1,7 +1,8 @@
 
 const pool = require('../data');
 const bcrypt = require("bcryptjs");
-
+const path = require('path');
+const generator = require('generate-password');
 
 exports.register = async (req, res) => {
     try {
