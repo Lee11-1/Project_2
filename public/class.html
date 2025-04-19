@@ -10,108 +10,145 @@
 <body>
    
    <div id="header"></div>
+   <div id="createTest" class="Folder">
+      <div class="crT" id="crT">
+          <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
+          <h2>Create a new Test</h2>
+          <form id="crTest" class="crTest">
+              <input type="text" placeholder="Title" name="title">
+              <input type="text" placeholder="Time limit (Example: 30)" name="timelimit">
+              <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
+              <button class="create" type="submit">Create</button>
+          </form>
+      </div>
+   </div>
+
+  <div id="createFolder" class="Folder">
+      <div class="crF" id="crF">
+         <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
+         <h2>Create a new Question set</h2>
+         <form id="crFolder" class="crFolder">
+            <input type="text" placeholder="Title" name="name"><br><br>
+            <button class="create" type="submit">Create</button>
+         </form>
+      </div>
+   </div>
+
+   <div class="container-none" id="folderPage">
+      <div class="popupF">
+          <button class="close-btn2" onclick="closeFolderPage()">&#10005;</button>
+          <h1>Your Sets</h1>
+          
+          <section id="folder_container" class="folder_container">
+          </section>
+          <button class="add">New +</button>
+      </div>
+      
+  </div>
+   <div class="main" id="main">
+      <section class="class_body">
+         <div class="class_left">
+            <ul class="class_task">
+               <li onclick='seeClassTask("homeClass")'>Home</li>
+               <li onclick='seeClassTask("classMem")'>Members</li>
+               <li onclick='seeClassTask("classDocu")'>Documents</li>
+               <li onclick='seeClassTask("classTest")'>Test</li>
+               <li onclick='seeClassTask("classInfo")'>Info</li>
+            </ul>
+         </div>
    
-   <section class="class_body">
-      <div class="class_left">
-         <ul class="class_task">
-            <li onclick='seeClassTask("homeClass")'>Home</li>
-            <li onclick='seeClassTask("classMem")'>Members</li>
-            <li onclick='seeClassTask("classDocu")'>Documents</li>
-            <li onclick='seeClassTask("classTest")'>Test</li>
-            <li onclick='seeClassTask("classInfo")'>Info</li>
-         </ul>
-      </div>
-
-      <div class="class_right" id="homeClass"> 
-         <div class="div">
-            <div class="request" >
-               <h3>Request</h3>
-               <ul class="reMem" id="reMem">
-               </ul>
+         <div class="class_right" id="homeClass"> 
+            <div class="div">
+               <div class="request" >
+                  <h3>Request</h3>
+                  <ul class="reMem" id="reMem">
+                  </ul>
+               </div>
+            </div> 
+         </div>
+   
+        
+   
+         <div class="class_right" id="classMem" >  
+            
+            <div class="membersDiv">
+               <h3 class="headRight">Members</h3>
+               <ul id="class-members" class="class-members">   </ul>
             </div>
-         </div> 
-      </div>
-
-     
-
-      <div class="class_right" id="classMem" >  
-         
-         <div class="membersDiv">
-            <h3 class="headRight">Members</h3>
-            <ul id="class-members" class="class-members">   </ul>
-         </div>
-
-         <div class="button">
-            <button class="btn-right" onclick="showPopup('findMembers')">Add members</button>
-         </div>
-
-         <div id="findMembers" class="Folder">
-            <div class="crF" id="crF">
-                <button class="close-btn" onclick="hidePopup('findMembers')">&#10005;</button>
-                <h2>Find members</h2>
-                <form id="findMember" class="findMember">
-                    <input type="email" placeholder="   Email" name="email">
-                    <input type="text" placeholder="   Username" name="username">
-                    <button class="findMem" type="button" onclick="findAndAdd()">Add</button>
-                </form>
+   
+            <div class="button">
+               <button class="btn-right" onclick="showPopup('findMembers')">Add members</button>
+            </div>
+   
+            <div id="findMembers" class="Folder">
+               <div class="crF" id="crF">
+                   <button class="close-btn" onclick="hidePopup('findMembers')">&#10005;</button>
+                   <h2>Find members</h2>
+                   <form id="findMember" class="findMember">
+                       <input type="email" placeholder="   Email" name="email">
+                       <input type="text" placeholder="   Username" name="username">
+                       <button class="findMem" type="button" onclick="findAndAdd()">Add</button>
+                   </form>
+               </div>
             </div>
          </div>
-      </div>
-
-      <div class="class_right" id="classDocu">  
-
-      </div>
-
-      <div class="class_right" id="classTest"> 
-
-         <div class="testDiv">
-            <h3 class="headRight">All Test</h3>
-            <ul class="class-test" id="class-test"> </ul>
+   
+         <div class="class_right" id="classDocu">  
+   
          </div>
-
-         <div class="button">
-            <button class="btn-right" onclick="showPopup('createTest')">New test</button>
-         </div>
-
-         <div id="createTest" class="Folder">
-            <div class="crF" id="crF">
-                <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
-                <h2>New test</h2>
-                <form id="newTest" class="title">
-                   
-                    <button class="nextInfo" type="button" onclick="">Next</button>
-                </form>
+   
+         <div class="class_right" id="classTest"> 
+   
+            <div class="testDiv">
+               <h3 class="headRight">All Test</h3>
+               <ul class="class-test" id="class-test"> </ul>
             </div>
+   
+            <div class="button">
+               <button class="btn-right" onclick="showPopup('createTest')">New test</button>
+            </div>
+   
+            <div id="createTest" class="Folder">
+               <div class="crF" id="crF">
+                   <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
+                   <h2>New test</h2>
+                   <form id="newTest" class="title">
+                      
+                       <button class="nextInfo" type="button" onclick="">Next</button>
+                   </form>
+               </div>
+            </div>
+   
+            
          </div>
-
-         
-      </div>
-      <div class="class_right" id="classInfo"> 
-         <div class="div">
-            <div id="class-name" class="classname">  </div>
+         <div class="class_right" id="classInfo"> 
+            <div class="div">
+               <div id="class-name" class="classname">  </div>
+            </div>
+            <button onclick="deleteClass()" type="button" class="deleteClass">Delete Class</button>
          </div>
-         <button onclick="deleteClass()" type="button" class="deleteClass">Delete Class</button>
-      </div>
-
-   </section>
+   
+      </section>
+   </div>
+  
 
   
 
    <div id="footer"></div>
 
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   
+   <script src="/js/display.js"></script>
+   <script src="/js/script.js"></script>
+   <script src="/js/script_class.js"></script>
+
+   <script src="/js/fetch.js"></script>
+   <script src="/js/fetchClass.js"></script>
+   
    <script>
       $('#header').load('/student.html #header');
       $('#footer').load('/home.html #footer');
    </script>
-   <script src="/js/display.js"></script>
-
-   <script src="/js/script.js"></script>
-   <script src="/js/script_class.js"></script>
-
-   <script src="/js/fetchClass.js"></script>
-   <script src="/js/fetch.js"></script>
-
   
 
 </body>

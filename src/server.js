@@ -12,6 +12,7 @@ const authRoutes = require('./routes/authRoutes');
 const classRoutes = require('./routes/classRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const searchRoutes = require('./routes/searchRoutes');
+const examRoutes = require('./routes/examRoutes');
 
 app.use(compression());
 
@@ -32,6 +33,7 @@ app.use(authRoutes);
 app.use(classRoutes);
 app.use(requestRoutes);
 app.use( searchRoutes);
+app.use(examRoutes);
 
 app.get('/', (req, res) => {
     if (!req.session.user) {

@@ -2,8 +2,8 @@ const pool = require('./data');
 
 const add = async () => {
   await pool.query(`
-    ALTER TABLE classes
-    ADD type VARCHAR(50);
+    ALTER TABLE questions
+    ADD task VARCHAR(500);
     `);
   console.log(`✅ Đã add`);
   

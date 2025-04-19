@@ -174,22 +174,22 @@ body{
     margin-top: 50px;
 }
 .Folder {
-    position: fixed; /* Giữ popup cố định trên màn hình */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(0, 0, 0, 0.5); /* Làm mờ nền */
+    background: rgba(0, 0, 0, 0.5); 
     display: flex;
     justify-content: center;
     align-items: center;
-    visibility: hidden; /* Ẩn mặc định */
+    visibility: hidden; 
     opacity: 0;
     transition: opacity 0.3s ease-in-out;
     z-index: 1000;
 }
 
-.crF,.crC {
+.crF, .crC, .crT {
     background: white;
     padding: 20px;
     border-radius: 10px;
@@ -198,17 +198,24 @@ body{
     height: 350px;
     position: relative;
 }
-.crF h2,.crC h2{
+.crF h2, .crC h2, .crT h2{
     text-align: left;
     margin-top: 20px;
     margin-bottom: 20px;
 }
-.crF input,.crC input,.subject,.type{
+.crFolder input,.crClass input,.crTest input, .subject,.type{
     height: 50px;
     width: 100%;
     font-size: 20px;
     border-radius: 0.5rem;
     border: 1px solid black;
+}
+.crTest input{
+    margin-bottom: 1%;
+    padding-left: 10px;
+}
+.crFolder input,.crClass input{
+    padding-left: 10px;
 }
 .create{
     width: 150px;

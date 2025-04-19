@@ -33,9 +33,23 @@ exports.getAllClasses = async (req, res) => {
             ORDER BY created_at DESC;`,
             [user.id]
         );
+        const exams = await pool.query(
+            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at
+            FROM exams 
+            JOIN users ON users.id = exams.user_id
+            WHERE users.id = $1
+            UNION
+            SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title,  exams.created_at
+            FROM exams
+            JOIN exams_mem ON exams.id = exams_mem.exam_id
+            WHERE exams_mem.user_id = $1
+            ORDER BY created_at DESC;`,
+            [user.id]
+        );
 
         res.json({
             allClass: classes.rows,
+            allExams: exams.rows
         });
     } catch (err) {
         console.error('Lỗi truy vấn:', err.stack);
@@ -47,7 +61,7 @@ exports.addClass = async (req, res) => {
     try {
         const { className, subject, type } = req.body;
 
-        if (!className || !subject || !type) {
+        if (!className || !subject || !type || subject =="Subject") {
             return res.status(400).json({ message: 'Thiếu thông tin bắt buộc!' });
         }
 
@@ -81,6 +95,8 @@ exports.addClass = async (req, res) => {
     }
 };
 
+
+
 exports.deleteClass = async (req, res) => {
     const user = req.session.user;
     if (req.session.owner != user.id) {
@@ -88,8 +104,6 @@ exports.deleteClass = async (req, res) => {
     }
 
     const idClass = req.session.class_id;
-    await pool.query('DELETE FROM class_members WHERE class_id = $1', [idClass]);
-    await pool.query('DELETE FROM re_member WHERE class_id = $1', [idClass]);
     await pool.query('DELETE FROM classes WHERE id = $1', [idClass]);
 
     res.json({ message: 'Deleted!!!', redirect: `/home/${user.username}` });

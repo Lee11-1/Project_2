@@ -8,42 +8,56 @@
 </head>
 <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <header class="header" id="header">
-        <div id="createFolder" class="Folder">
-            <div class="crF" id="crF">
-                <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
-                <h2>Create a new Folder</h2>
-                <form id="crFolder">
-                    <input type="text" placeholder="Title"><br><br>
-                    <button class="create" type="submit">Create Folder</button>
-                </form>
-            </div>
-        </div>
 
-        <div id="createClass" class="Folder">
-            <div class="crC" id="crC">
-                <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
-                <h2>Create a new Class</h2>
-                <form id="crClass">
-                    <input type="text" maxlength="20" placeholder="   Name" name="className">
-                    <select id="subject" class="subject" name="subject">
-                        <option>Subject</option>
-                        <option>Other</option>
-                        <option >Math</option>
-                        <option >Language</option>
-                        <option >Science </option>
-                        <option >Social Science</option>
-                        <option >Art</option>
-                        <option >Literature</option>
-                    </select>
-                    <select name="type" id="type" class="type">
-                        <option> Private </option>
-                        <option> Public</option>
-                    </select>
-                    <button class="create" type="button" onclick="addClass()" >Create</button>
-                </form>
-            </div>
+    <div id="createTest" class="Folder">
+        <div class="crT" id="crT">
+            <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
+            <h2>Create a new Exam</h2>
+            <form id="crTest" class="crTest">
+                <input type="text" placeholder="Title" name="title">
+                <input type="text" placeholder="Time limit (Example: 30) (minute)" name="timelimit">
+                <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
+                <button class="create" type="button" id="createExamButton">Create</button>
+            </form>
         </div>
+    </div>
+
+    <div id="createFolder" class="Folder">
+        <div class="crF" id="crF">
+            <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
+            <h2>Create a new Question set</h2>
+            <form id="crFolder" class="crFolder">
+                <input type="text" placeholder="Title" name="name"><br><br>
+                <button class="create" type="button">Create</button>
+            </form>
+        </div>
+    </div>
+
+    <header class="header" id="header">
+    <div id="createClass" class="Folder">
+        <div class="crC" id="crC">
+            <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
+            <h2>Create a new Class</h2>
+            <form id="crClass" class="crClass">
+                <input type="text" maxlength="20" placeholder="Name" name="className">
+                <select id="subject" class="subject" name="subject">
+                    <option>Subject</option>
+                    <option>Other</option>
+                    <option >Math</option>
+                    <option >Language</option>
+                    <option >Science </option>
+                    <option >Social Science</option>
+                    <option >Art</option>
+                    <option >Literature</option>
+                </select>
+                <select name="type" id="type" class="type">
+                    <option> Private </option>
+                    <option> Public</option>
+                </select>
+                <button class="create" type="button" id="addClassButton">Create</button>
+            </form>
+        </div>
+    </div>
        
 
         <div class="logo" onclick="goHome()">Quizlet</div>
@@ -52,7 +66,7 @@
                 <span class="nav-item" onclick="toggleMenu('studyMenu')">Study tools ▼</span>
                 <ul id="studyMenu" class="dropdown-menu">
                     <li onclick="myClass()"><img src="/src/test.png" alt="">My Class</li>
-                    <li onclick="showFolderPage()"><img src="/src/learn.png" alt="">My Folder</li>
+                    <li onclick="showFolderPage()"><img src="/src/learn.png" alt="">My Question Set</li>
                     <li><img src="/src/point.png" alt="">MyPoint</li>
                     <li><img src="/src/check.png" alt="">Checkpoint</li>
                 </ul>
@@ -80,8 +94,8 @@
             <div class="dropdown">
                 <button class="btn" onclick="toggleMenu('create')">+ Create</button>
                 <ul class="dropdown-menu2" id="create">
-                    <li><button onclick="showPopup('createFolder')">Folder</button></li>
-                    <li><button><a href="">Test</a></button></li>
+                    <li><button onclick="showPopup('createFolder')">Question set</button></li>
+                    <li><button onclick="showPopup('createTest')">Exam</button></li>
                     <li><button onclick="showPopup('createClass')">Class</button></li>
                 </ul>
             </div>
@@ -91,15 +105,14 @@
                    <li><button><a href="">Account</a></button></li>
                    <li><button onclick="signOut()">Sign out</button></li>
                 </ul>
-            </div>
-            
+            </div>  
         </div>
     </header>
 
     <div class="container-none" id="folderPage">
         <div class="popupF">
             <button class="close-btn2" onclick="closeFolderPage()">&#10005;</button>
-            <h1>Your Folders</h1>
+            <h1>Your Sets</h1>
             
             <section id="folder_container" class="folder_container">
             </section>
@@ -128,10 +141,6 @@
     <script src="/js/script_class.js"></script>
 
     <script src="/js/fetch.js"></script>
-    <script src="/js/fetchClass.js"></script>
-
-    <script>
-        loadStudentData();
-    </script>
+    <script src="/js/fetchStudent.js"></script>
 </body>
 </html>

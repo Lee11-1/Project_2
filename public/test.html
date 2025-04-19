@@ -27,7 +27,7 @@
     </div>
    
     -- <script>
-        let duration = 30 * 60; // 30 phút
+        let duration = 30 * 60; 
         const timerDisplay = document.getElementById('timer');
     
         const countdown = setInterval(() => {
@@ -39,7 +39,7 @@
             if (duration < 0) {
                 clearInterval(countdown);
                 alert("Hết thời gian! Bài sẽ được nộp tự động.");
-                document.getElementById("quiz-form").submit(); // Tự động submit form
+                document.getElementById("quiz-form").submit(); 
             }
         }, 1000);
     </script> 
@@ -47,9 +47,7 @@
     <div class="test_body">
         <form class="left_test" id="quiz-form">
             <section class="slide_question" id="slide_question">
-    
                 <div class="quiz_container">
-    
                     <div class="quiz">
                         <h3>Câu số 1:</h3>
                         <p>Đâu là thủ đô của Pháp</p>
@@ -61,33 +59,6 @@
                         </ul>
                     </div>
                 </div>
-    
-                <div class="quiz_container">
-    
-                    <div class="quiz">
-                        <h3>Câu số 2:</h3>
-                        <p>Đâu là thủ đô của Pháp</p>
-                        <ul>
-                            <li> <input class="answer" name="answer2" type="radio" >A. Paris</li>
-                            <li> <input class="answer" name="answer2" type="radio" >B. Tokyo</li>
-                            <li> <input class="answer" name="answer2" type="radio" >C. Bắc Kinh</li>
-                            <li> <input class="answer" name="answer2" type="radio" >D. Hà Nội</li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="quiz_container">
-    
-                    <div class="quiz">
-                        <h3>Câu số 3: </h3>
-                        <p>Đâu là thủ đô của Pháp</p>
-                        <ul>
-                            <li> <input class="answer" name="answer3" type="radio" >A. Paris</li>
-                            <li> <input class="answer" name="answer3" type="radio" >B. Tokyo</li>
-                            <li> <input class="answer" name="answer3" type="radio" >C. Bắc Kinh</li>
-                            <li> <input class="answer" name="answer3" type="radio" >D. Hà Nội</li>
-                        </ul>
-                    </div>
-                 </div>
             </section>
         </form>
        
@@ -106,8 +77,9 @@
     
  
      <script src="js/display.js"></script>
+
      <script src="js/script.js"></script>
-     <script src="js/script_server.js"></script>
+     <script src="js/script_test.js"></script>
     
 </body>
 </html>

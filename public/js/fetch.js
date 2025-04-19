@@ -22,7 +22,7 @@ async function loadClassData() {
             alert("Lỗi khi tải dữ liệu");
             return;
         }
-        displayClassInfo(data.infoClass,data.infoOwner);
+        displayClassInfo(data.infoClass, data.infoOwner);
         displayClassHome(data.re_members);
         displayMembers(data.members)
 

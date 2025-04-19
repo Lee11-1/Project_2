@@ -5,7 +5,7 @@ const createTable = async () => {
     const checkTable = await pool.query(`
       SELECT EXISTS (
         SELECT FROM information_schema.tables 
-        WHERE table_name = 're_member'
+        WHERE table_name = 'exams_mem'
       )
     `);
 
@@ -40,32 +40,36 @@ const createTable = async () => {
         user_id INT REFERENCES users(id) ON DELETE CASCADE
       );
 
-      CREATE TABLE IF NOT EXISTS folders (
+      CREATE TABLE IF NOT EXISTS questionSets (
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         owner_id INT REFERENCES users(id) ON DELETE CASCADE,
-        class_id INT REFERENCES classes(id) ON DELETE CASCADE,
-        parent_folder_id INT REFERENCES folders(id) ON DELETE CASCADE
-      );
-
-      CREATE TABLE IF NOT EXISTS files (
-        id SERIAL PRIMARY KEY,
-        name VARCHAR(500) NOT NULL,
-        file_path VARCHAR(500) NOT NULL,
-        uploaded_by INT REFERENCES users(id) ON DELETE CASCADE,
-        folder_id INT REFERENCES folders(id) ON DELETE CASCADE,
         class_id INT REFERENCES classes(id) ON DELETE CASCADE
       );
 
+       CREATE TABLE IF NOT EXISTS questions (
+        id SERIAL PRIMARY KEY,
+        task VARCHAR(500) NOT NULL,
+        question_text TEXT NOT NULL,
+        id_Set INT REFERENCES questionSets(id) ON DELETE CASCADE,
+        answer_A TEXT NOT NULL,
+        answer_B TEXT NOT NULL,
+        answer_C TEXT NOT NULL,
+        answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C'))
+      );
+
+     
       CREATE TABLE IF NOT EXISTS tests (
         id SERIAL PRIMARY KEY,
         title VARCHAR(500) NOT NULL,
+        timelimit INT NOT NULL,
+        numberQuestion INT NOT NULL,
         created_by INT REFERENCES users(id) ON DELETE CASCADE,
         class_id INT REFERENCES classes(id) ON DELETE CASCADE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE IF NOT EXISTS questions (
+      CREATE TABLE IF NOT EXISTS questions_tests (
         id SERIAL PRIMARY KEY,
         test_id INT REFERENCES tests(id) ON DELETE CASCADE,
         question_text TEXT NOT NULL,
@@ -75,22 +79,56 @@ const createTable = async () => {
         answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C'))
       );
 
-      CREATE TABLE IF NOT EXISTS quiz_attempts (
+      CREATE TABLE IF NOT EXISTS test_attempts (
         id SERIAL PRIMARY KEY,
         test_id INT REFERENCES tests(id) ON DELETE CASCADE,
         user_id INT REFERENCES users(id) ON DELETE CASCADE,
         score FLOAT NOT NULL,
         submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+      
       CREATE TABLE IF NOT EXISTS re_member (
         id SERIAL PRIMARY KEY,
         class_id INT REFERENCES classes(id) on DELETE CASCADE,
         user_id INT REFERENCES users(id) on DELETE CASCADE,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE IF NOT EXISTS exams(
+        id SERIAL PRIMARY KEY,
+        user_id INT REFERENCES users(id) on DELETE CASCADE,
+        timelimit INT NOT NULL,
+        numberQuestion INT NOT NULL,
+        title VARCHAR(500) NOT NULL,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        );
+
+      CREATE TABLE IF NOT EXISTS exam_attempts (
+        id SERIAL PRIMARY KEY,
+        exam_id INT REFERENCES exams(id) ON DELETE CASCADE,
+        user_id INT REFERENCES users(id) ON DELETE CASCADE,
+        score FLOAT NOT NULL,
+        submitted_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+       CREATE TABLE IF NOT EXISTS questions_exams (
+        id SERIAL PRIMARY KEY,
+        exam_id INT REFERENCES exams(id) ON DELETE CASCADE,
+        question_text TEXT NOT NULL,
+        answer_A TEXT NOT NULL,
+        answer_B TEXT NOT NULL,
+        answer_C TEXT NOT NULL,
+        answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C'))
+      );
 `;
 
-    await pool.query(query);
+const query1 = ` CREATE TABLE IF NOT EXISTS exams_mem(
+                    id SERIAL PRIMARY KEY,
+                    exam_id INT REFERENCES exams(id) ON DELETE CASCADE,
+                    user_id INT REFERENCES users(id) ON DELETE CASCADE )` ;
+     
+
+    await pool.query(query1);
     console.log("✅ Tạo bảng thành công!");
   } catch (err) {
     console.error("❌ Lỗi tạo bảng:", err);

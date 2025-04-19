@@ -41,8 +41,12 @@
     <script>
         $('#header').load('/home.html #header');
         $('#footer').load('/home.html #footer');
-        $('#signInDiv').load('/home.html #signInPage');
-        $('#signUpDiv').load('/home.html #signUpPage');
+        $('#signInDiv').load('/home.html #signInPage', function () {
+            loadLogin(); 
+        });
+        $('#signUpDiv').load('/home.html #signUpPage', function() {
+            loadSignUp();
+        });
     </script>
    
     <script src="/js/script.js"></script>

@@ -2,7 +2,7 @@
 let index = 0;
 const slides = document.querySelectorAll('.slide');
 const totalSlides = slides.length;
-const slidesToShow = 4; // Số ảnh hiển thị cùng lúc
+const slidesToShow = 4;
 
 function moveSlide(step) {
     index += step;

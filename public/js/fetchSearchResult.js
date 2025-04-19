@@ -17,6 +17,7 @@ async function loadResult() {
         alert("Không thể tải dữ liệu lớp học.");
     }  
 }
+loadResult();
 
 async function requestToClass(idClass) {
     try{
