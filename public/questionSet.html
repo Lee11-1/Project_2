@@ -9,59 +9,57 @@
 <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-    <div class="form" id="form">
-        <div id="createExam" class="Folder">
-            <div class="crT" id="crT">
-                <button class="close-btn" onclick="hidePopup('createExam')">&#10005;</button>
-                <h2>Create a new Exam</h2>
-                <form id="crTest" class="crTest">
-                    <input type="text" placeholder="Title" name="title">
-                    <input type="text" placeholder="Time limit (Example: 30) (minute)" name="timelimit">
-                    <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
-                    <button class="create" type="button" id="createExamButton">Create</button>
-                </form>
-            </div>
-        </div>
-    
-        <div id="createFolder" class="Folder">
-            <div class="crF" id="crF">
-                <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
-                <h2>Create a new Question set</h2>
-                <form id="crFolder" class="crFolder">
-                    <input type="text" placeholder="Title" name="name"><br><br>
-                    <button class="create" type="button">Create</button>
-                </form>
-            </div>
-        </div>
-
-        <div id="createClass" class="Folder">
-            <div class="crC" id="crC">
-                <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
-                <h2>Create a new Class</h2>
-                <form id="crClass" class="crClass">
-                    <input type="text" maxlength="20" placeholder="Name" name="className">
-                    <select id="subject" class="subject" name="subject">
-                        <option>Subject</option>
-                        <option>Other</option>
-                        <option >Math</option>
-                        <option >Language</option>
-                        <option >Science </option>
-                        <option >Social Science</option>
-                        <option >Art</option>
-                        <option >Literature</option>
-                    </select>
-                    <select name="type" id="type" class="type">
-                        <option> Private </option>
-                        <option> Public</option>
-                    </select>
-                    <button class="create" type="button" id="addClassButton">Create</button>
-                </form>
-            </div>
+    <div id="createExam" class="Folder">
+        <div class="crT" id="crT">
+            <button class="close-btn" onclick="hidePopup('createExam')">&#10005;</button>
+            <h2>Create a new Exam</h2>
+            <form id="crTest" class="crTest">
+                <input type="text" placeholder="Title" name="title">
+                <input type="text" placeholder="Time limit (Example: 30) (minute)" name="timelimit">
+                <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
+                <button class="create" type="button" id="createExamButton">Create</button>
+            </form>
         </div>
     </div>
-   
+
+    <div id="createFolder" class="Folder">
+        <div class="crF" id="crF">
+            <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
+            <h2>Create a new Question set</h2>
+            <form id="crFolder" class="crFolder">
+                <input type="text" placeholder="Title" name="name"><br><br>
+                <button class="create" type="button">Create</button>
+            </form>
+        </div>
+    </div>
 
     <header class="header" id="header">
+    <div id="createClass" class="Folder">
+        <div class="crC" id="crC">
+            <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
+            <h2>Create a new Class</h2>
+            <form id="crClass" class="crClass">
+                <input type="text" maxlength="20" placeholder="Name" name="className">
+                <select id="subject" class="subject" name="subject">
+                    <option>Subject</option>
+                    <option>Other</option>
+                    <option >Math</option>
+                    <option >Language</option>
+                    <option >Science </option>
+                    <option >Social Science</option>
+                    <option >Art</option>
+                    <option >Literature</option>
+                </select>
+                <select name="type" id="type" class="type">
+                    <option> Private </option>
+                    <option> Public</option>
+                </select>
+                <button class="create" type="button" id="addClassButton">Create</button>
+            </form>
+        </div>
+    </div>
+       
+
         <div class="logo" onclick="goHome()">Quizlet</div>
         <nav class="nav">
             <div class="dropdown">
@@ -122,15 +120,15 @@
 
 
     <div id="footer"></div>
-    
+    <script>
+        $('#footer').load('/home.html #footer');
+    </script>
 
     <script src="/js/display.js"></script>
+
     <script src="/js/script.js"></script>
 
     <script src="/js/fetch.js"></script>
     <script src="/js/fetchStudent.js"></script>
-    <script>
-        $('#footer').load('/home.html #footer');
-    </script>
 </body>
 </html>

@@ -76,7 +76,7 @@ function displayExam(allExams){
         addClass.appendChild(viewClassButton);
     
         projectDiv.addEventListener("click", function() {
-            openExam(exam.id);
+            openExam(exam.id, exam.title);
         });
     
         infoDiv.appendChild(name);

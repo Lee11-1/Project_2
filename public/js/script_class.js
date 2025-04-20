@@ -8,7 +8,3 @@ function seeClassTask(task){
 }
 
 
-// document.addEventListener("DOMContentLoaded", function() {
-//     loadClassData();
-//  });
- 

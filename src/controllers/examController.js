@@ -1,5 +1,6 @@
 
 const pool = require('../data');
+const path = require('path')
 
 exports.createExam = async (req, res) => {
     try {
@@ -35,5 +36,30 @@ exports.createExam = async (req, res) => {
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: '❌ Có lỗi xảy ra, vui lòng thử lại sau.' });
+    }
+};
+
+
+exports.getExamById = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
+    try {
+        const exam_id = req.params.exam_id;
+        if (isNaN(exam_id)) {
+            return res.status(400).send('class_id phải là số hợp lệ!');
+        }
+
+        const examQuery = await pool.query('SELECT * FROM exams WHERE id = $1', [parseInt(exam_id)]);
+
+        if (examQuery.rows.length === 0) {
+            return res.status(404).send('Lớp học không tồn tại!');
+        }
+
+        req.session.exam_id = exam_id;
+        res.sendFile(path.join(__dirname, '..', '..', 'public', 'beforeTest.html'));
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).send('Lỗi server!');
     }
 };

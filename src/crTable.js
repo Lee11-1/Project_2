@@ -98,6 +98,7 @@ const createTable = async () => {
         id SERIAL PRIMARY KEY,
         user_id INT REFERENCES users(id) on DELETE CASCADE,
         timelimit INT NOT NULL,
+        Ended TIMESTAMP Not NULL,
         numberQuestion INT NOT NULL,
         title VARCHAR(500) NOT NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
