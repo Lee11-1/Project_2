@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -8,127 +8,41 @@
 </head>
 <body>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <div id="form"></div>
+    <div id="header"></div>
 
-    <div id="createExam" class="Folder">
-        <div class="crT" id="crT">
-            <button class="close-btn" onclick="hidePopup('createExam')">&#10005;</button>
-            <h2>Create a new Exam</h2>
-            <form id="crTest" class="crTest">
-                <input type="text" placeholder="Title" name="title">
-                <input type="text" placeholder="Time limit (Example: 30) (minute)" name="timelimit">
-                <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
-                <button class="create" type="button" id="createExamButton">Create</button>
-            </form>
-        </div>
+
+    <div class="left_set">
+
     </div>
-
-    <div id="createFolder" class="Folder">
-        <div class="crF" id="crF">
-            <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
-            <h2>Create a new Question set</h2>
-            <form id="crFolder" class="crFolder">
-                <input type="text" placeholder="Title" name="name"><br><br>
-                <button class="create" type="button">Create</button>
-            </form>
-        </div>
-    </div>
-
-    <header class="header" id="header">
-    <div id="createClass" class="Folder">
-        <div class="crC" id="crC">
-            <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
-            <h2>Create a new Class</h2>
-            <form id="crClass" class="crClass">
-                <input type="text" maxlength="20" placeholder="Name" name="className">
-                <select id="subject" class="subject" name="subject">
-                    <option>Subject</option>
-                    <option>Other</option>
-                    <option >Math</option>
-                    <option >Language</option>
-                    <option >Science </option>
-                    <option >Social Science</option>
-                    <option >Art</option>
-                    <option >Literature</option>
-                </select>
-                <select name="type" id="type" class="type">
-                    <option> Private </option>
-                    <option> Public</option>
-                </select>
-                <button class="create" type="button" id="addClassButton">Create</button>
-            </form>
-        </div>
-    </div>
-       
-
-        <div class="logo" onclick="goHome()">Quizlet</div>
-        <nav class="nav">
-            <div class="dropdown">
-                <span class="nav-item" onclick="toggleMenu('studyMenu')">Study tools ▼</span>
-                <ul id="studyMenu" class="dropdown-menu">
-                    <li onclick="myClass()"><img src="/src/test.png" alt="">My Class</li>
-                    <li ><img src="/src/learn.png" alt="">My Question Set</li>
-                    <li><img src="/src/point.png" alt="">MyPoint</li>
-                    <li><img src="/src/check.png" alt="">Checkpoint</li>
-                </ul>
-            </div>
-
-            <div class="dropdown">
-                <span class="nav-item" onclick="toggleMenu('subjectsMenu')">Subjects ▼</span>
-                <ul id="subjectsMenu" class="dropdown-menu">
-                    <li onclick="findClass(`Math`)"><img src="/src/math.png" > Math </li>
-                    <li onclick="findClass(`Language`)"><img src="/src/language.png" > Language </li>
-                    <li onclick="findClass(`Science`)"><img src="/src/sience.png" >Science </li>
-                    <li onclick="findClass(`Social Science`)"><img src="/src/social.png" > Social Science</li>
-                    <li onclick="findClass(`Art`)"><img src="/src/art.png" > Art</li>
-                    <li onclick="findClass(`Literature`)"><img src="/src/liter.png" > Literature </a></li>
-                    <li onclick="findClass(`Other`)"><img src="/src/other.png" >Other </li>
-                </ul>
-            </div>
-        </nav>
-
-        <div class="search-box">
-            <input type="text" placeholder="🔍 Search">
-        </div>
-        
-        <div class="auth-buttons">
-            <div class="dropdown">
-                <button class="btn" onclick="toggleMenu('create')">+ Create</button>
-                <ul class="dropdown-menu2" id="create">
-                    <li><button onclick="showPopup('createFolder')">Question set</button></li>
-                    <li><button onclick="showPopup('createExam')">Exam</button></li>
-                    <li><button onclick="showPopup('createClass')">Class</button></li>
-                </ul>
-            </div>
-            <div class="dropdown">
-                <img src="/src/avt.png" class="avt" onclick="toggleMenu('tool')">
-                <ul id="tool" class="dropdown-menu2">
-                   <li><button><a href="">Account</a></button></li>
-                   <li><button onclick="signOut()">Sign out</button></li>
-                </ul>
-            </div>  
-        </div>
-    </header>
-
     
-    <div class="main" id="main">
+    <div class="right_set" id="main">
         <div>
-            <h1 class="h_class">Your class</h1>
-            <section id="class_container" class="class_container">
+            <h1 class="h_set">Your question set</h1>
+            <section id="set_container" class="set_container">
+                <li>
+                    <p>Name</p>
+                    <p>Date</p>
+                </li>
             </section>
         </div>
     </div>
 
 
-    <div id="footer"></div>
-    <script>
-        $('#footer').load('/home.html #footer');
-    </script>
+    <div class="footer" id="footer"></div>
 
     <script src="/js/display.js"></script>
-
     <script src="/js/script.js"></script>
-
     <script src="/js/fetch.js"></script>
-    <script src="/js/fetchStudent.js"></script>
+    <script src="/js/fetchQuestionSet.js"></script>
+    <script>
+        $('#header').load('/student.html #header');
+        $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
+        });
+     </script>
 </body>
 </html>

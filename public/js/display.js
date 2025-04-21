@@ -14,7 +14,7 @@ function displayAllClass(allClass){
         infoDiv.classList.add('cl_2');
   
         const name = document.createElement('h3');
-        name.textContent = `Class: ${classes.class_name}`;
+        name.textContent = ` ${classes.class_name}`;
    
         const idSubject = document.createElement('p');
         idSubject.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; // \u00A0 là khoảng trắng không ngắt dòng
@@ -60,7 +60,7 @@ function displayExam(allExams){
         infoDiv.classList.add('cl_2');
   
         const name = document.createElement('h3');
-        name.textContent = `Exam: ${exam.title}`;
+        name.textContent = ` ${exam.title}`;
    
         const idSubject = document.createElement('p');
         idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; // \u00A0 là khoảng trắng không ngắt dòng
@@ -159,7 +159,7 @@ function displayMembers(members) {
             projectDiv.innerHTML = `
                 <img src="/src/class.png" alt="">
                 <div class = "cl_2"> 
-                    <h3>Class: ${classes.class_name}</h3>
+                    <h3> ${classes.class_name}</h3>
                     <p>ID:${classes.class_id}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Subject: ${classes.subject} </p>
                     <p>Date: ${new Date(classes.created_at).toLocaleDateString()}</p>
                     <p class = "addClass" id = "addClass" > <button> Request </button> </p>
@@ -173,7 +173,7 @@ function displayMembers(members) {
             projectDiv.innerHTML = `
                 <img src="/src/class.png" alt="">
                 <div class = "cl_2"> 
-                    <h3>Class: ${classes.class_name}</h3>
+                    <h3> ${classes.class_name}</h3>
                     <p>ID:${classes.class_id}   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;    Subject: ${classes.subject} </p>
                     <p>Date: ${new Date(classes.created_at).toLocaleDateString()}</p>
                     <p class = "Sent" id = "Sent" > <button> Sent </button> </p>
@@ -192,7 +192,7 @@ function displayMembers(members) {
         infoDiv.classList.add('cl_2');
   
         const nameHeading = document.createElement('h3');
-        nameHeading.textContent = `Class: ${classes.class_name}`;
+        nameHeading.textContent = ` ${classes.class_name}`;
    
         const idSubjectParagraph = document.createElement('p');
         idSubjectParagraph.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; // \u00A0 là khoảng trắng không ngắt dòng
@@ -225,6 +225,74 @@ function displayMembers(members) {
 
 
 
+function displayAllSet(sets) {
+    const setList = document.getElementById("set_container");
+    setList.innerHTML = "";
+    sets.forEach(set => {
+        const li = document.createElement("li");
+        li.innerHTML = ` <p>  ${set.name}  </p> <p> ${new Date(set.created_at).toLocaleDateString("vi-VN")}</p>`;
 
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = "View"; 
+        button.classList.add("viewSet"); 
+        button.addEventListener("click",async function(event) {  
+            event.preventDefault();  
+            viewQuestionInSet(set.id);
+        });
+        const button2 = document.createElement("button");
+        button2.type = "button";
+        button2.textContent = "Delete"; 
+        button2.classList.add("deleteSet"); 
+        button2.addEventListener("click",async function(event) {  
+            event.preventDefault();  
+           deleteSet(set.id);
+        });
+        li.appendChild(button);
+        li.appendChild(button2);
+        setList.appendChild(li);
+    });
+}
 
+function displayAllQuestion(questions) {
+    const questionsList = document.getElementById("bodyQuestion");
+    questionsList.innerHTML = ""; 
+  
+    questions.forEach((question, index) => { 
+    
+      const quizDiv = document.createElement("div");
+      quizDiv.className = "quiz";
+  
+      const questionTitle = document.createElement("h3");
+      questionTitle.textContent = `Câu số ${index + 1} (${question.task}):`;
+  
+      const questionText = document.createElement("p");
+      questionText.textContent = question.question_text;
+  
+      const answerList = document.createElement("ul");
+  
+      const answers = [
+        { text: question.answer_a, letter: 'A' },
+        { text: question.answer_b, letter: 'B' },
+        { text: question.answer_c, letter: 'C' },
+        { text: question.answer_d, letter: 'D' }
+      ];
+  
+      answers.forEach(answer => {
+        const answerItem = document.createElement("li");
+        answerItem.textContent = `${answer.letter}. ${answer.text}`;
+        answerList.appendChild(answerItem);
+      });
+  
+      const correctAnswer = document.createElement("li");
+      correctAnswer.className = "correct";
+      correctAnswer.textContent = `Correct Answer: ${question.answer_correct}`;
 
+      quizDiv.appendChild(questionTitle);
+      quizDiv.appendChild(questionText);
+      quizDiv.appendChild(answerList);
+      quizDiv.appendChild(correctAnswer);
+  
+      questionsList.appendChild(quizDiv);
+    });
+  }

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quizlet</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <div id="header"></div>
+
+    <div id="addQuestionForm" class="Folder">
+        <div class="crF2" id="crF">
+            <button class="close-btn" onclick="hidePopup('addQuestionForm')">&#10005;</button>
+            <h2 class="h_crQuestion">Create a new Question set</h2>
+            <form id="crNewQuestion" class="crNewQuestion">
+                <div class="div_input"><label >Task: </label> <input type="text" name="task"></div>
+                <div class="div_input"><label >Title: </label> <input type="text" name="title"></div>
+                <div class="div_input"><label >Answer A: </label> <input type="text" name="answer_A">  </div>
+                <div class="div_input"><label >Answer B: </label> <input type="text" name="answer_B"> </div>
+                <div class="div_input"><label >Answer C: </label> <input type="text" name="answer_C">  </div>
+                <div class="div_input"><label >Answer D: </label> <input type="text" name="answer_D">  </div>
+                
+                <div class="div_input">
+                    <label >Correct answer:</label>
+                    <select name="answer_correct" id="">
+                        <option >A</option>
+                        <option >B</option>
+                        <option >C</option>
+                        <option >D</option>
+                    </select>
+                </div>
+                
+                <button class="addQuestionButton" id="addQuestionButton" type="button">Create</button>
+            </form>
+        </div>
+    </div>
+
+    <button class="addQuestion" id="addQuestion" onclick="showPopup('addQuestionForm')">Add Question</button>
+    <section class="bodyQuestion" id="bodyQuestion">
+       
+    </section>
+
+    <div id="footer"></div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="/js/display.js"></script>
+    <script src="/js/script.js"></script>
+
+    <script src="/js/fetch.js"></script>
+    <script src="/js/fetchQuestions.js"></script>
+    <script>
+        $('#header').load('/student.html #header');
+        $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
+        });
+     </script>
+</body>
+</html>

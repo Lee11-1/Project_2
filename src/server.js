@@ -3,7 +3,6 @@ const session = require("express-session");
 const bodyParser = require('body-parser');
 const app = express();
 const PORT = 3000;
-const pool = require('./data');
 const path = require('path');
 const compression = require("compression");
 const multer = require("multer");
@@ -43,12 +42,26 @@ app.get('/', (req, res) => {
     return res.redirect(`/home/${user.username}`);
 
 }); 
+app.get('/questionSet', (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+    }
+    const user = req.session.user;
+    return res.redirect(`/${user.username}/questionSet`);
 
+}); 
 app.get("/home/:username", (req, res) => {
     if (!req.session.user) {
         return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
     }
     res.sendFile(path.join(__dirname,'..', "public", "student.html"));
+});
+
+app.get("/:username/questionSet", (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+    }
+    res.sendFile(path.join(__dirname,'..', "public", "questionSet.html"));
 });
 
 app.listen(PORT, () => {

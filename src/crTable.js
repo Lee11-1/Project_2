@@ -44,7 +44,8 @@ const createTable = async () => {
         id SERIAL PRIMARY KEY,
         name VARCHAR(100) NOT NULL,
         owner_id INT REFERENCES users(id) ON DELETE CASCADE,
-        class_id INT REFERENCES classes(id) ON DELETE CASCADE
+        class_id INT REFERENCES classes(id) ON DELETE CASCADE,
+         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
        CREATE TABLE IF NOT EXISTS questions (
@@ -55,7 +56,8 @@ const createTable = async () => {
         answer_A TEXT NOT NULL,
         answer_B TEXT NOT NULL,
         answer_C TEXT NOT NULL,
-        answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C'))
+        answer_D TEXT NOT NULL,
+        answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C' ,'D'))
       );
 
      

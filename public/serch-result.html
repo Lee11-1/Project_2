@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
+    <div id="form"></div>
     <div id="header"></div>
    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
    <script>
@@ -21,6 +22,11 @@
     <div id="footer"></div>
     <script>
         $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+         addClass();
+         createExam();
+         createQuestionSet();
+      });
     </script>
 
     <script src="/js/display.js"></script>

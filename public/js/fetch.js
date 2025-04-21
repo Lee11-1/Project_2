@@ -5,6 +5,9 @@ async function goHome() {
 async function myClass() {
     window.location.href = "/";
  }
+ async function myQuestionSet() {
+    window.location.href = "/questionSet";
+ }
 
 async function signOut() {
     const response = await fetch("/logout", { method: "GET" });
@@ -95,6 +98,35 @@ function createExam(){
     
         try {
             const response = await fetch("/createExam", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(data)
+            }) ;
+    
+            const result = await response.json();
+            if (response.ok) {
+                window.location.href = result.redirect; 
+            } else {
+                alert(result.message);
+            }
+    
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error");
+        }
+        
+    });
+}
+
+
+function createQuestionSet(){
+    document.getElementById("createQuestionSetButton").addEventListener("click", async function () {
+        const form = document.getElementById("crFolder");
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+    
+        try {
+            const response = await fetch("/createQuestionSet", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(data)

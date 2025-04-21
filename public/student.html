@@ -28,8 +28,8 @@
                 <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
                 <h2>Create a new Question set</h2>
                 <form id="crFolder" class="crFolder">
-                    <input type="text" placeholder="Title" name="name"><br><br>
-                    <button class="create" type="button">Create</button>
+                    <input type="text" placeholder="Title" name="title"><br><br>
+                    <button class="createQuestionSetButton" id="createQuestionSetButton" type="button">Create</button>
                 </form>
             </div>
         </div>
@@ -39,7 +39,7 @@
                 <button class="close-btn" onclick="hidePopup('createClass')">&#10005;</button>
                 <h2>Create a new Class</h2>
                 <form id="crClass" class="crClass">
-                    <input type="text" maxlength="20" placeholder="Name" name="className">
+                    <input type="text" maxlength="50" placeholder="Name" name="className">
                     <select id="subject" class="subject" name="subject">
                         <option>Subject</option>
                         <option>Other</option>
@@ -68,7 +68,7 @@
                 <span class="nav-item" onclick="toggleMenu('studyMenu')">Study tools ▼</span>
                 <ul id="studyMenu" class="dropdown-menu">
                     <li onclick="myClass()"><img src="/src/test.png" alt="">My Class</li>
-                    <li ><img src="/src/learn.png" alt="">My Question Set</li>
+                    <li onclick="myQuestionSet()"><img src="/src/learn.png" alt="">My Question Set</li>
                     <li><img src="/src/point.png" alt="">MyPoint</li>
                     <li><img src="/src/check.png" alt="">Checkpoint</li>
                 </ul>

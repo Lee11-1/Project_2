@@ -217,7 +217,7 @@ body{
 .crFolder input,.crClass input{
     padding-left: 10px;
 }
-.create{
+.create, .createQuestionSetButton{
     width: 150px;
     height: 50px;
     border-radius: 0.5rem;
@@ -737,7 +737,7 @@ button{
     border-radius: 0.5rem;
     background: white;
 }
-.h_class{
+.h_class, .h_set{
     margin-top: 2%;
     margin-left: 10%;
     margin-bottom: 2%;
@@ -1166,8 +1166,11 @@ button{
     min-height: 300px;
     height: auto;
 }
-.quiz h3{ 
-    margin-left: 3%;
+.quiz ul{ 
+    margin-left: 20px;
+}
+.correct{
+    color: red;
 }
 .left_test{
     width: 80%;
@@ -1210,4 +1213,105 @@ button{
 }
 .bfExam button:hover{
     background-color: #05334a;
+}
+.left_set{
+    width: 50%;
+}
+.right_set{
+    width: 70%;
+}
+.set_container{
+    width: 80%;
+    margin: auto;
+    padding-top: 20px;
+    min-height: 600px;
+    font-size: 20px;
+    font-weight: 500;
+    border: 2px solid rgb(10, 48, 33);
+    border-radius: 1.25rem;
+}
+.set_container li{
+    padding-left: 20px;
+    display: flex;
+    position: relative;
+    margin-top: 2%;
+}
+.set_container li p{
+    margin-top: auto;
+    margin-bottom: auto;
+    flex: 4;
+}
+.viewSet, .deleteSet{
+    flex: 1;
+    width: 120px;
+    height: 40px;
+    margin-right: 10px;
+    background-color: #14888e;
+    color: white;
+    cursor: pointer;
+    border-radius: 0.5rem;
+    border: none;
+    margin-right: 2%;
+}
+.viewSet:hover{
+    background-color: #05334a;
+}
+.deleteSet:hover{
+    background-color: #05334a;
+}
+.div_input{
+    width: 100%;
+    display: flex;
+}
+.div_input label{
+    flex: 1;
+    padding-top: 10px;  
+}
+.div_input input,.div_input select{
+    flex: 5;
+}
+.crNewQuestion input,.crNewQuestion select{
+    padding-left: 15px;
+    font-size: 20px;
+    width: 80%;
+    height: 45px;
+    border: 2px solid rgb(167, 162, 162);
+    border-radius: 0.5rem;
+    margin-bottom: 0.5%;
+}
+.crF2{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 800px;
+    height: 500px;
+    position: relative;
+}
+.bodyQuestion{
+    width: 90%;
+    min-height: 550px;
+    margin: auto;
+    background-color: white;
+    border-radius: 1.25rem;
+    padding: 20px;
+}
+.addQuestion, .addQuestionButton{
+    width: 150px;
+    height: 50px;
+    border: none;
+    border-radius: 0.5rem;
+    margin-left: 80%;
+    margin-top: 2%;
+    color: white;
+    background-color: #14888e;
+    cursor: pointer;
+}
+.addQuestion:hover{
+    background-color: #05334a;
+}
+.addQuestionButton:hover{
+    background-color: #05334a;
+}
+.h_crQuestion{
+    margin-bottom: 15px;
 }

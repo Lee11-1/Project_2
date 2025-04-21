@@ -1,4 +1,5 @@
 
+
 async function loadStudentData() {
     try {
         const response = await fetch(`/all-classes`);
@@ -20,3 +21,4 @@ async function loadStudentData() {
 loadStudentData();
 addClass();
 createExam();
+createQuestionSet();

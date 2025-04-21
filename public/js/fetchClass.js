@@ -103,3 +103,4 @@ async function addMem(user_id) {
 }
 
 loadClassData();
+createQuestionSet();
