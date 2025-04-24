@@ -115,12 +115,14 @@
             </div>
    
             <div id="createTest" class="Folder">
-               <div class="crF" id="crF">
+               <div class="crT" id="crT">
                    <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
-                   <h2>New test</h2>
-                   <form id="newTest" class="title">
-                      
-                       <button class="nextInfo" type="button" onclick="">Next</button>
+                   <h2>Create a new Test</h2>
+                   <form id="crTest" class="crTest">
+                       <input type="text" placeholder="Title" name="title">
+                       <input type="text" placeholder="Time limit (Example: 30)" name="timelimit">
+                       <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
+                       <button class="create" type="button">Create</button>
                    </form>
                </div>
             </div>
@@ -148,8 +150,8 @@
    <script src="/js/script.js"></script>
    <script src="/js/script_class.js"></script>
 
-   <script src="/js/fetch.js"></script>
-   <script src="/js/fetchClass.js"></script>
+   <script src="/service/fetch.js"></script>
+   <script src="/service/fetchClass.js"></script>
    
    <script>
       $('#header').load('/student.html #header');

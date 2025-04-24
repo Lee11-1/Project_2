@@ -1,8 +1,11 @@
+
+
+
 function displayAllClass(allClass){
     const container = document.getElementById('class_container');
     container.innerHTML = ''; 
     
-    allClass.forEach(classes => {
+    allClass.forEach(classes => { console.log(classes);
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('classes');
     
@@ -130,8 +133,8 @@ function displayClassHome(re_members){
     });
 }
 
-function displayMembers(members) {
-    const membersList = document.getElementById("class-members");
+function displayMembers(members, id) {
+    const membersList = document.getElementById(id);
     membersList.innerHTML = "";
     members.forEach(member => {
         const li = document.createElement("li");
@@ -146,6 +149,7 @@ function displayMembers(members) {
         membersList.appendChild(li);
     });
 }
+
 
  function displayResultFind(allClass , type){
     const container = document.getElementById('bodySearch');
@@ -254,8 +258,8 @@ function displayAllSet(sets) {
     });
 }
 
-function displayAllQuestion(questions) {
-    const questionsList = document.getElementById("bodyQuestion");
+function displayAllQuestion(questions, id) {
+    const questionsList = document.getElementById(id);
     questionsList.innerHTML = ""; 
   
     questions.forEach((question, index) => { 

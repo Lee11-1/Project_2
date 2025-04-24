@@ -9,7 +9,7 @@ async function loadQuestionSetData() {
             return;
         }
         console.log(data.questions);
-       displayAllQuestion(data.questions);
+       displayAllQuestion(data.questions,"bodyQuestion");
 
     } catch (error) {
         console.error("Lỗi:", error);

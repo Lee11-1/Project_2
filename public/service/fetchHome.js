@@ -1,3 +1,44 @@
+
+// import { setClassArray } from '../js/data.js';
+// import { setExamArray } from '../js/data.js';
+// import { setSetArray } from '../js/data.js';
+
+// async function loadStudentData() {
+//     try {
+//         const response = await fetch(`/all-classes`);
+//         const data = await response.json();
+
+//         if (!response.ok) {
+//             alert("Lỗi khi tải dữ liệu");
+//             return;
+//         }
+//         setClassArray(data.allClass);
+//         setExamArray(data.allExams);
+      
+//     } catch (error) {
+//         console.error("Lỗi:", error);
+//         alert("Không thể tải dữ liệu lớp học.");
+//     }
+// }
+
+
+// async function loadQuestionSet() {
+//     try {
+//         const response = await fetch(`/all-questionSet`);
+//         const data = await response.json();
+
+//         if (!response.ok) {
+//             alert("Lỗi khi tải dữ liệu");
+//             return;
+//         }
+//         setSetArray(data.allSet);
+
+//     } catch (error) {
+//         console.error("Lỗi:", error);
+//         alert("Không thể tải dữ liệu.");
+//     }
+// } 
+
 function loadSignUp(){
     document.getElementById("signUp").addEventListener("click", async function() {
    
@@ -15,7 +56,9 @@ function loadSignUp(){
             const result = await response.json();
         
             if (response.ok) {
-                window.location.href = result.redirect; 
+                // loadStudentData();
+                // loadQuestionSet();
+                window.location.href = result.redirect;  
             } else {
                 alert(result.message);
             }
@@ -26,6 +69,8 @@ function loadSignUp(){
     });
 }
 loadSignUp();
+
+
 
 function loadLogin(){
     document.getElementById("signIn").addEventListener("click", async function() {
@@ -44,6 +89,8 @@ function loadLogin(){
             if(result.message != "Đăng nhập thành công!")  alert(result.message);
         
             if (response.ok) {
+                // loadStudentData();
+                // loadQuestionSet();
                 window.location.href = result.redirect; 
             }  
         } catch (error) {

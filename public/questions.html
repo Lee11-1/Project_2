@@ -8,13 +8,21 @@
 </head>
 <body>
     <div id="header"></div>
-
+    <div id="form"></div>
     <div id="addQuestionForm" class="Folder">
         <div class="crF2" id="crF">
             <button class="close-btn" onclick="hidePopup('addQuestionForm')">&#10005;</button>
             <h2 class="h_crQuestion">Create a new Question set</h2>
             <form id="crNewQuestion" class="crNewQuestion">
-                <div class="div_input"><label >Task: </label> <input type="text" name="task"></div>
+                <div class="div_input">
+                    <label >Task: </label> 
+                    <select name="task" id="">
+                        <option >Easy</option>
+                        <option >Medium</option>
+                        <option >Hard</option>
+                        <option >Very Hard</option>
+                    </select> 
+                </div>
                 <div class="div_input"><label >Title: </label> <input type="text" name="title"></div>
                 <div class="div_input"><label >Answer A: </label> <input type="text" name="answer_A">  </div>
                 <div class="div_input"><label >Answer B: </label> <input type="text" name="answer_B"> </div>
@@ -35,11 +43,11 @@
             </form>
         </div>
     </div>
-
-    <button class="addQuestion" id="addQuestion" onclick="showPopup('addQuestionForm')">Add Question</button>
-    <section class="bodyQuestion" id="bodyQuestion">
-       
-    </section>
+    <div class="bodyQuestion">
+        <button class="addQuestion" id="addQuestion" onclick="showPopup('addQuestionForm')">Add Question</button>
+        <section id="bodyQuestion"></section>
+    </div>
+    
 
     <div id="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -47,8 +55,8 @@
     <script src="/js/display.js"></script>
     <script src="/js/script.js"></script>
 
-    <script src="/js/fetch.js"></script>
-    <script src="/js/fetchQuestions.js"></script>
+    <script src="/service/fetch.js"></script>
+    <script src="/service/fetchQuestions.js"></script>
     <script>
         $('#header').load('/student.html #header');
         $('#footer').load('/home.html #footer');

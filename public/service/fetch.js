@@ -27,7 +27,7 @@ async function loadClassData() {
         }
         displayClassInfo(data.infoClass, data.infoOwner);
         displayClassHome(data.re_members);
-        displayMembers(data.members)
+        displayMembers(data.members,"class-members")
 
     } catch (error) {
         console.error("Lỗi:", error);
@@ -63,6 +63,24 @@ async function openExam(exam_id, exam_title) {
     }
 }
 
+
+async function loadExamData() {
+    try {
+        const response = await fetch(`/infoExam`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert("Lỗi khi tải dữ liệu");
+            return;
+        }
+
+        displayMembers(data.members,"examMems")
+
+    } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Không thể tải dữ liệu lớp học.");
+    }
+}
 
 function addClass(){      
     document.getElementById("addClassButton").addEventListener("click", async function () {

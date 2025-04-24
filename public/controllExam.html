@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+    <div id="header"></div>
+    <div id="form"></div>
+
+    <div class="btnControll">
+        <button class="addQuestionToExam" onclick="seeControllTask('addQuestionToExam')">Select questions</button>
+        <button class="addMemberToExam" onclick="showPopup('findMembers')">Add Members</button>
+    </div>
+
+
+ 
+   
+    <div id="findMembers" class="Folder">
+        <div class="crF" id="crF">
+            <button class="close-btn" onclick="hidePopup('findMembers')">&#10005;</button>
+            <h2>Find members</h2>
+            <form id="findMember" class="findMember">
+                <input type="email" placeholder="   Email" name="email">
+                <input type="text" placeholder="   Username" name="username">
+                <button class="findMem" type="button" onclick="addMemToExam()">Add</button>
+            </form>
+        </div>
+     </div>
+        
+    <div id="viewMemAndQues">
+        <div class="viewMemAndQues">
+            <h2 class="headerMemExam">Members</h2>
+            <div class="leftControllExam" id="examMems"> 
+                
+            </div>
+            <h2 class="headerQuesExam">Question</h2>
+            <div class="rightControllExam">  
+                <div class="questionForExam"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="addQuestionToExam" class="bodyControllExam">
+        <button class="close-btn" onclick="seeControllTask('viewMemAndQues')">&#10005;</button>
+
+        <div class="form_select">
+            <form id="selectLabelQuestion" class="selectLabelQuestion">
+                <div class="div_selectName"><label>Question Set: </label><select name="questionSet" id="selectQuestionSet"></select></div>
+                <div class="div_selectTask">
+                    <label >Task:</label>
+                    <select name="task" id="selectTask">
+                        <option> Easy</option>
+                        <option> Medium</option>
+                        <option> Hard</option>
+                        <option> VeryHard</option>
+                    </select>
+                </div>
+               
+            </form>
+          <div class="findQuestion">  <button id="findQuestion" type="button" >Find</button> </div> 
+        </div>
+        
+      
+
+        <form id="selectQuestionToExam"></form>
+        
+    </div>
+   
+
+    <div id="footer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="/js/display.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/script_controllExam.js"></script>
+    <script src="/service/fetch.js"></script>
+    <script src="/service/fetchExam.js"></script>
+    <script>
+        $('#header').load('/student.html #header');
+        $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
+        });
+     </script>
+
+
+</body>
+</html>

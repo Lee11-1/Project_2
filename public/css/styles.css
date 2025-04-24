@@ -1026,9 +1026,11 @@ button{
 }
 .class-members li p{
     flex: 9;
+    padding-top: 10px;
 }
 .deleteMem,.acceptMem{
     background-color: #4f85a4;
+    color: white;
     width: 120px;
     height: 40px;
     border: none;
@@ -1289,22 +1291,27 @@ button{
 }
 .bodyQuestion{
     width: 90%;
-    min-height: 550px;
+    min-height: 600px;
     margin: auto;
+    margin-top: 1%;
+    margin-bottom: 1%;
     background-color: white;
     border-radius: 1.25rem;
     padding: 20px;
 }
-.addQuestion, .addQuestionButton{
+.addQuestion,.addQuestionButton {
     width: 150px;
     height: 50px;
     border: none;
     border-radius: 0.5rem;
-    margin-left: 80%;
-    margin-top: 2%;
+    margin-left: 85%;
+    margin-top: 1%;
     color: white;
     background-color: #14888e;
     cursor: pointer;
+}
+.addQuestionButton{
+    margin-left: 80%;
 }
 .addQuestion:hover{
     background-color: #05334a;
@@ -1314,4 +1321,150 @@ button{
 }
 .h_crQuestion{
     margin-bottom: 15px;
+}
+.btnControll{
+    display: flex;
+}
+.addQuestionToExam{
+    background-color: #14888e;
+    width: 180px;
+    height: 50px;
+    margin-left: 60%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+.addQuestionToExam:hover{
+    background-color: #05334a;
+}
+.addMemberToExam{
+    background-color: #c1661b;
+    width: 180px;
+    height: 50px;
+    margin-left: 1%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+.addMemberToExam:hover{
+    background-color: #633815;
+}
+.bodyControllExam{
+    width: 90%;
+    min-height: 500px;
+    margin: auto;
+    margin-top: 1%;
+    border-radius: 1.25rem;
+    border: 2px solid black;
+    display: flex;
+    position: relative;
+}
+.viewMemAndQues{
+    width: 80%;
+    min-height: 800px;
+    margin: auto;
+    margin-top: 1%;
+    border: 2px solid black;
+    border-radius: 1.5rem;
+}
+.headerMemExam,.headerQuesExam{
+    margin-top: 1%;
+    margin-left: 3%;
+}
+.leftControllExam{
+    min-height: 400px;
+    width: 80%;
+    margin: auto;
+    margin-top: 1%;
+    padding: 0 20px 0 20px;
+}
+.rightControllExam{
+    min-height: 400px;
+    width: 100%;
+    padding: 0 20px 0 20px;
+}
+.leftControllExam li{
+    display: flex;
+}
+.rightControllExam li{
+    display: flex;
+}
+.rightControllExam li p,.leftControllExam li p{
+    flex: 9;
+    font-size: 18px;
+    margin-top: 10px;
+}
+#addQuestionToExam{
+    display: none;
+}
+
+#findQuestion:hover{
+    background-color: #05334a;
+}
+.form_select{
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 50px;
+    margin-top: 2%;
+}
+.selectLabelQuestion{
+    display: flex;
+    position: relative;
+    width: 80%;
+    flex: 6;   
+    display: flex;
+    position: relative;
+    margin-left: 2%;
+    height: 50px;
+}
+.div_selectTask {
+    display: flex;
+    position: relative;
+    flex: 2;
+    margin-left: 2%;
+}
+.div_selectName{
+    display: flex;
+    position: relative;
+    flex: 4;
+}
+
+ .div_selectName label{
+    flex: 1;
+    margin-top: 15px;
+    padding-left: 2%;
+}
+.div_selectTask label{
+    flex: 1;
+    margin-top: 15px;
+}
+.div_selectTask select{
+    flex: 4;
+}
+.div_selectName select{
+   flex: 4;
+}
+.findQuestion{
+    flex: 3;
+    margin-right: 1%;
+    margin-left: 2%;
+    margin-top: 5px;
+}
+.findQuestion button{
+    height: 45px;
+    width: 120px;
+    background-color: #14888e;
+    
+    color: white;
+    cursor: pointer;
+    border: none;
+    border-radius: 0.5rem;
+    margin-left: 2%;
 }

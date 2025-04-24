@@ -16,7 +16,8 @@ async function loadQuestionSet() {
     }
 } 
 loadQuestionSet();
-
+const data = require('../js/data.js');
+displayAllSet(data.setArray);
 
 async function viewQuestionInSet(set_id) {
     try {

@@ -58,7 +58,8 @@ exports.getExamById = async (req, res) => {
         }
 
         req.session.exam_id = exam_id;
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'beforeTest.html'));
+       if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname, '..', '..', 'public', 'beforeTest.html'));
+       else res.sendFile(path.join(__dirname, '..', '..', 'public', 'controllExam.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');
@@ -212,4 +213,80 @@ exports.deleteSet = async (req, res) => {
     await pool.query('DELETE FROM questionSets WHERE id = $1', [set_id]);
 
     res.json({ message: 'Deleted!!!', redirect: `/${user.username}/questionSet` });
+};
+
+
+exports.findMember = async (req, res) => {
+    const user = req.session.user;
+    const exam_id = req.session.exam_id;
+    const { email, username } = req.body;
+
+    if (!email && !username) {
+        return res.status(400).json({ message: 'Thiếu thông tin bắt buộc!' });
+    }
+    let checkUser;
+    if (email && username) {
+        checkUser = await pool.query('SELECT * FROM users WHERE email = $1 AND username = $2', [email, username]);
+    } else if (email) {
+        checkUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
+    } else {
+        checkUser = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
+    }
+
+    if (checkUser.rows.length === 0) {
+        return res.status(400).json({ message: 'Không tìm thấy người dùng!' });
+    }
+
+    const checkInClass = await pool.query(
+        'SELECT * FROM exams_mem WHERE user_id = $1 AND exam_id = $2',
+        [checkUser.rows[0].id, exam_id]
+    );
+    if (checkInClass.rows.length > 0) {
+        return res.status(400).json({ message: 'Người dùng đã ở trong lớp!' });
+    }
+     if (checkUser.rows[0].id == user.id){
+         return res.status(400).json({ message: 'You are owner!' });
+     }
+
+    await pool.query('INSERT INTO exams_mem (exam_id, user_id ) VALUES ($1, $2)', [exam_id, checkUser.rows[0].id]);
+
+    const exam = await pool.query ('SELECT * FROM exams WHERE id = $1', [exam_id]);
+    const redirectUrl = `/exam/${exam.rows[0].title}/${exam_id}`;
+
+    res.json({ message: 'Thêm thành viên thành công!', redirect: redirectUrl });
+};
+
+
+exports.getInfoExam = async (req, res) => {
+    try {
+        const exam_id = req.session.exam_id;
+
+        const examInfo = await pool.query('SELECT * FROM exams WHERE id = $1', [exam_id]);
+        if (examInfo.rows.length === 0) {
+            return res.status(404).json({ message: 'Exam không tồn tại!' });
+        }
+        const member = await pool.query(
+            `SELECT *
+            FROM users JOIN exams_mem ON users.id = exams_mem.user_id
+            JOIN exams ON exams.id = exams_mem.exam_id
+            WHERE exams.id = $1`,
+            [exam_id]
+        );
+
+        const question = await pool.query(`
+            SELECT *
+            FROM questions_exams JOIN exams ON questions_exams.exam_id = exams.id
+            WHERE exams.id = $1`,
+            [exam_id]
+        );
+
+
+        res.json({
+            members: member.rows,
+            questions: question.rows
+        });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
 };

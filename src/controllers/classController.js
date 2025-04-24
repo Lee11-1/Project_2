@@ -34,12 +34,12 @@ exports.getAllClasses = async (req, res) => {
             [user.id]
         );
         const exams = await pool.query(
-            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at
+            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id
             FROM exams 
             JOIN users ON users.id = exams.user_id
             WHERE users.id = $1
             UNION
-            SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title,  exams.created_at
+            SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title,  exams.created_at, exams.user_id
             FROM exams
             JOIN exams_mem ON exams.id = exams_mem.exam_id
             WHERE exams_mem.user_id = $1
@@ -235,6 +235,9 @@ exports.findMember = async (req, res) => {
     );
     if (checkInClass.rows.length > 0) {
         return res.status(400).json({ message: 'Người dùng đã ở trong lớp!' });
+    }
+    if (checkUser.rows[0].id == user.id){
+        return res.status(400).json({ message: 'You are owner!' });
     }
 
     await pool.query('INSERT INTO class_members (class_id, user_id ) VALUES ($1, $2)', [idClass, checkUser.rows[0].id]);

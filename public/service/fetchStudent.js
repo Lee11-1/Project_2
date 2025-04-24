@@ -1,5 +1,3 @@
-
-
 async function loadStudentData() {
     try {
         const response = await fetch(`/all-classes`);
@@ -19,6 +17,10 @@ async function loadStudentData() {
     }
 }
 loadStudentData();
+// import { getClassArray } from '../js/data.js';
+// import { examArray } from '../js/data.js';
 addClass();
 createExam();
 createQuestionSet();
+// displayAllClass(getClassArray());
+// displayExam(examArray);
