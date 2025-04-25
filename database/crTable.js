@@ -78,6 +78,7 @@ const createTable = async () => {
         answer_A TEXT NOT NULL,
         answer_B TEXT NOT NULL,
         answer_C TEXT NOT NULL,
+        answer_D TEXT NOT NULL,
         answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C'))
       );
 
@@ -121,6 +122,7 @@ const createTable = async () => {
         answer_A TEXT NOT NULL,
         answer_B TEXT NOT NULL,
         answer_C TEXT NOT NULL,
+        answer_D TEXT NOT NULL,
         answer_correct TEXT NOT NULL CHECK (answer_correct IN ('A', 'B', 'C'))
       );
 `;

@@ -14,9 +14,9 @@ router.post('/createQuestionSet', examController.createQuestionSet);
 router.get('/all-questionSet', examController.getAllSet);
 router.get('/questionSet/:set_id', examController.getQuestionSetById);
 router.get('/infoSet', examController.getInfoQuestionSet);
-router.post('/addQuestion', examController.addQuestion);
+router.post('/addQuestion', examController.addQuestionToSet);
 router.post('/deleteSet', examController.deleteSet);
-
+router.post('/addQuestionToExam', examController.addQuestionToExam);
 
 
 module.exports = router;

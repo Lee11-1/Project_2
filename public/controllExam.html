@@ -8,16 +8,15 @@
 </head>
 <body>
 
-    <div id="header"></div>
+    <div id="header2" class="header"></div>
     <div id="form"></div>
 
     <div class="btnControll">
-        <button class="addQuestionToExam" onclick="seeControllTask('addQuestionToExam')">Select questions</button>
-        <button class="addMemberToExam" onclick="showPopup('findMembers')">Add Members</button>
+        <button type="button" class="addQuestionToExam" onclick="seeControllTask('addQuestionToExam')">Select questions</button>
+        <button type="button" class="addMemberToExam" onclick="showPopup('findMembers')">Add Members</button>
+        <button type="button" class="deleteSelect" id="deleteSelect">Delete All</button>
+        <button type="button" id="numOfQuestionSelected" class="numOfQuestionSelected"></button>
     </div>
-
-
- 
    
     <div id="findMembers" class="Folder">
         <div class="crF" id="crF">
@@ -38,9 +37,9 @@
                 
             </div>
             <h2 class="headerQuesExam">Question</h2>
-            <div class="rightControllExam">  
-                <div class="questionForExam"></div>
-            </div>
+    
+            <div class="rightControllExam" id="examQuestions"></div>
+           
         </div>
     </div>
 
@@ -63,12 +62,11 @@
                 </form>
               <div class="findQuestion">  
                 <button id="findQuestion" type="button" >Find</button> 
-                <button id="" type="button" >Add</button> 
+                <button id="addQuestionToExamButton" type="button" >Add</button> 
             </div> 
             </div>
-            
+
           
-    
             <form id="selectQuestionToExam" class="selectQuestionToExam"></form>
             
         </div>
@@ -85,7 +83,7 @@
     <script src="/service/fetch.js"></script>
     <script src="/service/fetchExam.js"></script>
     <script>
-        $('#header').load('/student.html #header');
+        $('#header2').load('/student.html #header');
         $('#footer').load('/home.html #footer');
         $('#form').load('/student.html #form', function(){
            addClass();

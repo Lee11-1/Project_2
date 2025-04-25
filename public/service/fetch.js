@@ -15,7 +15,7 @@ async function signOut() {
         // localStorage.removeItem('classes');
         // localStorage.removeItem('exams');
         // localStorage.removeItem('sets');
-        // localStorage.removeItem('sets');
+        // localStorage.removeItem('num');
         localStorage.clear();
         window.location.href = response.url; 
     }
@@ -62,6 +62,7 @@ async function openClass(class_id) {
 async function openExam(exam_id, exam_title) {
     try {
         window.location.href = `/exam/${exam_title}/${exam_id}`
+
     } catch (error) {
         console.error("Lỗi:", error);
         alert("Có lỗi xảy ra, vui lòng thử lại.");
@@ -79,7 +80,8 @@ async function loadExamData() {
             return;
         }
 
-        displayMembers(data.members,"examMems")
+        displayMembers(data.members,"examMems");
+        displayAllQuestion(data.questions,"examQuestions");
 
     } catch (error) {
         console.error("Lỗi:", error);

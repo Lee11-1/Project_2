@@ -188,7 +188,7 @@ exports.getInfoQuestionSet = async (req, res) => {
     }
 };
 
-exports.addQuestion = async (req, res) =>{
+exports.addQuestionToSet = async (req, res) =>{
     try {
         const { task, title, answer_A, answer_B, answer_C, answer_D, answer_correct  } = req.body;
 
@@ -265,6 +265,42 @@ exports.findMember = async (req, res) => {
 
     res.json({ message: 'Thêm thành viên thành công!', redirect: redirectUrl });
 };
+
+
+exports.addQuestionToExam = async (req, res) => {
+    try {
+        const { questionID } = req.body;
+        const exam_id = req.session.exam_id;
+
+        for (let i = 0; i < questionID.length; i++) {
+            const result = await pool.query('SELECT * FROM questions WHERE id = $1', [questionID[i]]);
+            const thisQuestion = result.rows[0];
+
+            if (!thisQuestion) {
+                return res.status(404).json({ message: `Không tìm thấy câu hỏi với ID ${questionID[i]}` });
+            }
+
+            await pool.query(
+                'INSERT INTO questions_exams (exam_id, question_text, answer_A, answer_B, answer_C, answer_D, answer_correct) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+                [
+                    exam_id,
+                    thisQuestion.question_text,
+                    thisQuestion.answer_a,
+                    thisQuestion.answer_b,
+                    thisQuestion.answer_c,
+                    thisQuestion.answer_d,
+                    thisQuestion.answer_correct
+                ]
+            );
+        }
+
+        res.status(200).json({ message: 'Thêm câu hỏi thành công!' });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+};
+
 
 // exports.getListQuestionSet = async(req, res) => {
 //     try {

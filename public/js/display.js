@@ -288,6 +288,18 @@ function displayAllSet(sets) {
 function displayAllQuestion(questions, id) {
     const questionsList = document.getElementById(id);
     questionsList.innerHTML = ""; 
+
+    function getSelectedCheckboxes() {
+        const saved = localStorage.getItem('selectedQuestions');
+        return saved ? JSON.parse(saved) : [];
+    }
+    
+      // Function to save selected checkbox IDs to Local Storage
+    function saveSelectedCheckboxes(selectedIds) {
+        localStorage.setItem('selectedQuestions', JSON.stringify(selectedIds));
+    }
+    
+    let selectedCheckboxes = getSelectedCheckboxes(); // Load saved state
   
     questions.forEach((question, index) => { 
     
@@ -295,7 +307,9 @@ function displayAllQuestion(questions, id) {
       quizDiv.className = "quiz";
   
       const questionTitle = document.createElement("h3");
-      questionTitle.textContent = `Câu số ${index + 1} (${question.task}):`;
+      //questionTitle.textContent = `Câu số ${index + 1} (${question.task}):`;
+      questionTitle.textContent = `Câu số ${index + 1}${id !== "examQuestions" ? ` (${question.task})` : ''}:`;
+
   
       const questionText = document.createElement("p");
       questionText.textContent = question.question_text;
@@ -320,26 +334,45 @@ function displayAllQuestion(questions, id) {
       correctAnswer.textContent = `Correct Answer: ${question.answer_correct}`;
 
       if (id == "selectQuestionToExam"){
+
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.id = `question-${index}-${question.task}`; // Unique ID for the checkbox
+        checkbox.id = `${question.id}`; // Unique ID for the checkbox
         checkbox.className = "question-checkbox"; // Class for styling if needed
-
-
-
-        const savedState = localStorage.getItem(`checkboxState-${index}-${question.task}`);
-        const isChecked = savedState === "true"; // Chuyển đổi chuỗi "true" thành boolean true
+        
+        const isChecked = selectedCheckboxes.includes(checkbox.id);
         checkbox.checked = isChecked;
-
-        // Lưu trạng thái ban đầu vào Local Storage
-        localStorage.setItem(`checkboxState-${index}-${question.task}`, isChecked.toString());
-
+    
         // Lắng nghe sự kiện 'change' của checkbox
         checkbox.addEventListener("change", function() {
-        // Cập nhật trạng thái tương ứng trong Local Storage khi checkbox thay đổi
-        localStorage.setItem(`checkboxState-${index}-${question.task}`, this.checked.toString());
-        console.log(localStorage.getItem(`checkboxState-${index}-${question.task}`));
-    });
+          if (this.checked) {
+            // Add to the list of selected checkboxes
+            if (!selectedCheckboxes.includes(this.id)) {
+              selectedCheckboxes.push(this.id);
+            }
+          } else {
+            // Remove from the list of selected checkboxes
+            selectedCheckboxes = selectedCheckboxes.filter(id => id !== this.id);
+          }
+          saveSelectedCheckboxes(selectedCheckboxes); // Save the updated list
+          displayNumOfQuestionSelected()
+          console.log(selectedCheckboxes);
+        });
+
+
+        // const savedState = localStorage.getItem(`checkboxState-${index}-${question.task}`);
+        // const isChecked = savedState === "true"; // Chuyển đổi chuỗi "true" thành boolean true
+        // checkbox.checked = isChecked;
+
+        // // Lưu trạng thái ban đầu vào Local Storage
+        // localStorage.setItem(`checkboxState-${index}-${question.task}`, isChecked.toString());
+
+        // // Lắng nghe sự kiện 'change' của checkbox
+        // checkbox.addEventListener("change", function() {
+
+        // localStorage.setItem(`checkboxState-${index}-${question.task}`, this.checked.toString());
+        // console.log(localStorage.getItem(`checkboxState-${index}-${question.task}`));
+    // });
         const questionHeader = document.createElement("div"); //create a div to hold checkbox and questionTitle
         questionHeader.style.display = "flex"; //use flexbox to align items
         questionHeader.style.alignItems = "center"; // vertically center items
@@ -357,9 +390,10 @@ function displayAllQuestion(questions, id) {
   
       questionsList.appendChild(quizDiv);
     });
-  }
+    saveSelectedCheckboxes(selectedCheckboxes); //save initial state
+}
 
-  function displayListQuestionSet(allSets){
+function displayListQuestionSet(allSets){
     const setList = document.getElementById("selectQuestionSet");
     setList.innerHTML = ""; 
 
@@ -369,4 +403,12 @@ function displayAllQuestion(questions, id) {
         option.value = set.id;
         setList.appendChild(option);
     });
-  }
+}
+
+function displayNumOfQuestionSelected(){
+    const divNum = document.getElementById("numOfQuestionSelected");
+    divNum.innerHTML = ""; 
+    const saved = localStorage.getItem('selectedQuestions');
+    let questionList = saved ? JSON.parse(saved) : [];
+    divNum.innerHTML =  `Selected: ${questionList.length}`;
+}

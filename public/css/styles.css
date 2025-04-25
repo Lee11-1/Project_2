@@ -14,14 +14,25 @@ li{
     list-style: none;
 }
 
-.header {
+#header{
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
     padding: 15px 20px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
+.header {
+    /* display: flex; */
+    position: sticky;
+    top: 0; /* <- quan trọng! */
+    /* justify-content: space-between;
+    align-items: center; */
+    background-color: white;
+   
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000; /* nên thêm để tránh bị đè */
+}
+
 body{
     background-color: rgb(248, 247, 250);
 }
@@ -1165,7 +1176,7 @@ button{
     background-color: #05334a;
 }
 .quiz{
-    min-height: 300px;
+    min-height: 150px;
     height: auto;
 }
 .quiz ul{ 
@@ -1324,12 +1335,27 @@ button{
 }
 .btnControll{
     display: flex;
+    top: 80px; /* <- quan trọng! */
+    position: sticky;
+    z-index: 1000; 
 }
 .addQuestionToExam{
     background-color: #14888e;
     width: 180px;
     height: 50px;
-    margin-left: 60%;
+    margin-left: 50%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+}
+.deleteSelect{
+    background-color: #ae3131;
+    width: 150px;
+    height: 50px;
+    margin-left: 1%;
     margin-top: 1%;
     border: none;
     border-radius: 0.5rem;
@@ -1338,7 +1364,11 @@ button{
     cursor: pointer;
 }
 .addQuestionToExam:hover{
-    background-color: #05334a;
+    background-color: #0c474a;
+}
+.deleteSelect:hover{
+   
+    background-color: #441010;
 }
 .addMemberToExam{
     background-color: #c1661b;
@@ -1375,6 +1405,8 @@ button{
 .headerMemExam,.headerQuesExam{
     margin-top: 1%;
     margin-left: 3%;
+    margin-bottom: 1%;
+    color: #0b5559;
 }
 .leftControllExam{
     min-height: 400px;
@@ -1386,7 +1418,7 @@ button{
 .rightControllExam{
     min-height: 400px;
     width: 100%;
-    padding: 0 20px 0 20px;
+    padding: 0 20px 0 50px;
 }
 .leftControllExam li{
     display: flex;
@@ -1481,4 +1513,16 @@ button{
     margin-right: 2%;
     width: 20px;
     border: 2px solid black;
+}
+
+.numOfQuestionSelected{
+    background-color: #22a869;
+    width: 150px;
+    height: 50px;
+    margin-left: 1%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
 }

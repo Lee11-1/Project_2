@@ -42,7 +42,10 @@ async function getListQuestionSet() {
     console.log(savedQuestionSet);
     let setList = savedQuestionSet ? JSON.parse(savedQuestionSet) : [];
     displayListQuestionSet(setList);
-   
+    displayNumOfQuestionSelected();
+
+    // let num = 0;
+    // localStorage.setItem('numOfQuestion', JSON.stringify(num));
 }
 function findQuestion(){
     document.getElementById("findQuestion").addEventListener("click", async function () {
@@ -69,6 +72,65 @@ function findQuestion(){
         }  
     });
 }
+
+function deleteSelect(){
+    document.getElementById("deleteSelect").addEventListener("click", function () {
+        localStorage.removeItem('selectedQuestions');
+        displayNumOfQuestionSelected();
+        location.reload();
+
+    });
+};
+function addQuestion() {
+    document.getElementById("addQuestionToExamButton").addEventListener("click", async function () {
+        const saved = localStorage.getItem('selectedQuestions');
+        let questionID = [];
+
+        try {
+            const parsed = JSON.parse(saved);
+            if (Array.isArray(parsed)) {
+                questionID = parsed;
+            } else {
+                console.warn("selectedQuestions không phải mảng hợp lệ.");
+                alert("Dữ liệu câu hỏi không hợp lệ.");
+                return;
+            }
+        } catch (err) {
+            console.error("Không thể phân tích JSON:", err);
+            alert("Dữ liệu câu hỏi bị lỗi.");
+            return;
+        }
+
+        if (questionID.length === 0) {
+            alert("Bạn chưa chọn câu hỏi nào.");
+            return;
+        }
+
+        try {
+            const response = await fetch("/addQuestionToExam", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ questionID })
+            });
+
+            const result = await response.json();
+            if (response.ok) {
+                alert(result.message || "Thêm câu hỏi thành công!");
+                loadExamData(); 
+            } else {
+                alert(result.message || "Thêm câu hỏi thất bại!");
+            }
+        } catch (error) {
+            console.error("Lỗi:", error);
+            alert("Có lỗi xảy ra, vui lòng thử lại.");
+        }
+    });
+}
+
+
+addQuestion();
+deleteSelect();
 findQuestion();
 getListQuestionSet();
 loadExamData();
+displayNumOfQuestionSelected();
