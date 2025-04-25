@@ -1169,7 +1169,7 @@ button{
     height: auto;
 }
 .quiz ul{ 
-    margin-left: 20px;
+    margin-left: 30px;
 }
 .correct{
     color: red;
@@ -1356,14 +1356,13 @@ button{
     background-color: #633815;
 }
 .bodyControllExam{
-    width: 90%;
+    width: 100%;
     min-height: 500px;
     margin: auto;
     margin-top: 1%;
     border-radius: 1.25rem;
     border: 2px solid black;
-    display: flex;
-    position: relative;
+  
 }
 .viewMemAndQues{
     width: 80%;
@@ -1401,7 +1400,10 @@ button{
     margin-top: 10px;
 }
 #addQuestionToExam{
-    display: none;
+    display: none ;
+    position: relative;
+    width: 90%;
+    margin: auto;
 }
 
 #findQuestion:hover{
@@ -1423,6 +1425,13 @@ button{
     position: relative;
     margin-left: 2%;
     height: 50px;
+}
+.selectQuestionToExam{
+    width: 80%;
+    margin: auto;
+    padding: 10px;
+    margin-top: 1%;
+    min-height: 100px;
 }
 .div_selectTask {
     display: flex;
@@ -1467,4 +1476,9 @@ button{
     border: none;
     border-radius: 0.5rem;
     margin-left: 2%;
+}
+.question-checkbox{
+    margin-right: 2%;
+    width: 20px;
+    border: 2px solid black;
 }

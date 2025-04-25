@@ -7,7 +7,7 @@ const fs = require('fs');
 
 exports.getAllClasses = async (req, res) => {
     if (!req.session.user) {
-        return res.status(401).json({ error: 'Bạn chưa đăng nhập' });
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
     }
 
     try {
@@ -47,6 +47,13 @@ exports.getAllClasses = async (req, res) => {
             [user.id]
         );
 
+        const sets = await pool.query(
+            `SELECT id, name
+             FROM questionSets
+             WHERE owner_id = $1 `,
+             [user.id]
+        );
+        req.session.listSet = sets.rows;
         res.json({
             allClass: classes.rows,
             allExams: exams.rows
@@ -58,6 +65,9 @@ exports.getAllClasses = async (req, res) => {
 };
 
 exports.addClass = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     try {
         const { className, subject, type } = req.body;
 
@@ -84,11 +94,20 @@ exports.addClass = async (req, res) => {
             'INSERT INTO classes (name, owner_id, subject, type) VALUES ($1, $2, $3, $4)',
             [className, userId, subject, type]
         );
+        const newCls = await pool.query( `
+            SELECT
+                c.id AS class_id,
+                c.name AS class_name,
+                c.subject AS subject,
+                c.created_at
+            FROM classes c
+            WHERE c.name = $1 AND c.owner_id = $2 AND c.subject = $3 `,
+            [className, userId, subject]);
 
         const user = req.session.user;
         const redirectUrl = `/home/${user.username}`;
 
-        res.json({ message: 'Tạo lớp thành công!', redirect: redirectUrl });
+        res.json({ message: 'Tạo lớp thành công!', redirect: redirectUrl , newClass: newCls.rows[0]});
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: '❌ Có lỗi xảy ra, vui lòng thử lại sau.' });
@@ -98,6 +117,9 @@ exports.addClass = async (req, res) => {
 
 
 exports.deleteClass = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     const user = req.session.user;
     if (req.session.owner != user.id) {
         return res.status(400).json({ message: 'Bạn không có quyền' });
@@ -134,6 +156,9 @@ exports.getClassById = async (req, res) => {
 };
 
 exports.getInfoClass = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     try {
         const class_id = req.session.class_id;
 

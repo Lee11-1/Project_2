@@ -6,8 +6,8 @@ router.post('/createExam', examController.createExam);
 router.get('/exam/:exam_title/:exam_id', examController.getExamById);
 router.post('/findMemtoExam', examController.findMember);
 router.get('/infoExam', examController.getInfoExam);
-
-
+// router.get('/getListQuestionSet', examController.getListQuestionSet);
+router.post('/findQuestion', examController.findQuestions);
 
 
 router.post('/createQuestionSet', examController.createQuestionSet);

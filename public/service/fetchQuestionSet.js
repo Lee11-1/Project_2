@@ -1,23 +1,13 @@
 
-async function loadQuestionSet() {
-    try {
-        const response = await fetch(`/all-questionSet`);
-        const data = await response.json();
 
-        if (!response.ok) {
-            alert("Lỗi khi tải dữ liệu");
-            return;
-        }
-        displayAllSet(data.allSet);
+function loadData(){
+    let savedQuestionSet = localStorage.getItem('sets');
+    console.log(savedQuestionSet);
+    let setList = savedQuestionSet ? JSON.parse(savedQuestionSet) : [];
+    displayAllSet(setList);
+}
 
-    } catch (error) {
-        console.error("Lỗi:", error);
-        alert("Không thể tải dữ liệu.");
-    }
-} 
-loadQuestionSet();
-const data = require('../js/data.js');
-displayAllSet(data.setArray);
+loadData();
 
 async function viewQuestionInSet(set_id) {
     try {
@@ -38,7 +28,14 @@ async function deleteSet(set_id) {
 
         const result = await response.json();
         if (response.ok) {
-           loadQuestionSet();
+            let savedQuestionSet = localStorage.getItem('sets');
+            let setList = savedQuestionSet ? JSON.parse(savedQuestionSet) : [];
+          
+            // Lọc bỏ lớp có ID trùng với classId
+            setList = setList.filter(s => s.id !== set_id);
+         
+            localStorage.setItem('sets', JSON.stringify(setList));
+           loadData();
         } else {
             alert(result.message); 
         }

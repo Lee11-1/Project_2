@@ -1,5 +1,5 @@
 
-async function deleteClass() {
+async function deleteClass(classId) {
     try{
         const response = await fetch("/deleteClass" ,{
             method: "POST",
@@ -8,6 +8,14 @@ async function deleteClass() {
 
         const result = await response.json();
         if (response.ok) {
+            let savedClasses = localStorage.getItem('classes');
+            let classList = savedClasses ? JSON.parse(savedClasses) : [];
+
+            // Lọc bỏ lớp có ID trùng với classId
+            classList = classList.filter(c => c.class_id !== classId);
+
+            // Lưu danh sách đã cập nhật vào Local Storage
+            localStorage.setItem('classes', JSON.stringify(classList));
             window.location.href = result.redirect; 
         } else {
             alert(result.message); 
@@ -103,4 +111,3 @@ async function addMem(user_id) {
 }
 
 loadClassData();
-createQuestionSet();

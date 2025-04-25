@@ -30,10 +30,15 @@ exports.createExam = async (req, res) => {
             [title, timelimit, numberQuestion, userId]
         );
 
+        const newEx = await pool.query( 
+            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id
+             FROM exams
+             WHERE title = $1 AND user_id = $2`,
+             [title, userId]);
         const user = req.session.user;
         const redirectUrl = `/home/${user.username}`;
 
-        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl });
+        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl, newExam: newEx.rows[0] });
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: '❌ Có lỗi xảy ra, vui lòng thử lại sau.' });
@@ -93,11 +98,16 @@ exports.createQuestionSet = async (req, res) => {
             'INSERT INTO questionSets (name, owner_id) VALUES ($1, $2)',
             [title,  userId]
         );
+        const set = await pool.query(`
+            SELECT name, created_at, id
+            FROM questionSets 
+            WHERE name = $1 AND owner_id = $2`,
+            [title, userId]);
 
         const user = req.session.user;
         const redirectUrl = `/${user.username}/questionSet`;
 
-        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl });
+        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl, newSet: set.rows[0] });
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: '❌ Có lỗi xảy ra, vui lòng thử lại sau.' });
@@ -256,6 +266,33 @@ exports.findMember = async (req, res) => {
     res.json({ message: 'Thêm thành viên thành công!', redirect: redirectUrl });
 };
 
+// exports.getListQuestionSet = async(req, res) => {
+//     try {
+//         if (!req.session.user) {
+//             return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+//         }
+//             res.json({
+//                 listQuestionSet: req.session.listSet
+//             }); 
+//     } catch (error ) {
+//         console.error('Lỗi:', error);
+//         res.status(500).json({ message: 'Lỗi server!' });
+//     } 
+// }
+exports.findQuestions = async(req, res) => {
+    try {
+        console.log(req.body);
+        const { idQuestionSet, task } = req.body;
+        const questions = await pool.query('SELECT* FROM questions WHERE id_Set = $1 AND task = $2', [idQuestionSet, task]);
+
+        res.json({
+            questions: questions.rows
+        });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
 
 exports.getInfoExam = async (req, res) => {
     try {

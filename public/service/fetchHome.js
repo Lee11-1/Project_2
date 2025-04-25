@@ -56,9 +56,10 @@ function loadSignUp(){
             const result = await response.json();
         
             if (response.ok) {
-                // loadStudentData();
-                // loadQuestionSet();
+                
+               // loadQuestionSet();
                 window.location.href = result.redirect;  
+                //loadStudentData();
             } else {
                 alert(result.message);
             }

@@ -12,6 +12,11 @@ async function myClass() {
 async function signOut() {
     const response = await fetch("/logout", { method: "GET" });
     if (response.redirected) {
+        // localStorage.removeItem('classes');
+        // localStorage.removeItem('exams');
+        // localStorage.removeItem('sets');
+        // localStorage.removeItem('sets');
+        localStorage.clear();
         window.location.href = response.url; 
     }
 }
@@ -96,6 +101,12 @@ function addClass(){
             const result = await response.json();
             console.log(result); 
             if (response.ok) {
+                let savedClasses = localStorage.getItem('classes');
+                let classList = savedClasses ? JSON.parse(savedClasses) : [];
+                classList.unshift(result.newClass);
+                localStorage.setItem('classes', JSON.stringify(classList));
+                console.log('Đã thêm lớp học mới và cập nhật Local Storage:', classList);
+
                 window.location.href = result.redirect; 
             } else{
                 alert(result.message);
@@ -123,6 +134,12 @@ function createExam(){
     
             const result = await response.json();
             if (response.ok) {
+                let savedExams = localStorage.getItem('exams');
+                let examList = savedExams ? JSON.parse(savedExams) : [];
+                examList.unshift(result.newExam);
+                localStorage.setItem('exams', JSON.stringify(examList));
+                console.log('Đã thêm lớp học mới và cập nhật Local Storage:', examList);
+
                 window.location.href = result.redirect; 
             } else {
                 alert(result.message);
@@ -152,6 +169,13 @@ function createQuestionSet(){
     
             const result = await response.json();
             if (response.ok) {
+    
+                let savedSets = localStorage.getItem('sets');
+                let setList = savedSets ? JSON.parse(savedSets) : [];
+                setList.unshift(result.newSet);
+                localStorage.setItem('sets', JSON.stringify(setList));
+                console.log('Đã thêm lớp học mới và cập nhật Local Storage:', setList);
+
                 window.location.href = result.redirect; 
             } else {
                 alert(result.message);

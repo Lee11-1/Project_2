@@ -44,30 +44,34 @@
         </div>
     </div>
 
-    <div id="addQuestionToExam" class="bodyControllExam">
+    <div id="addQuestionToExam">
         <button class="close-btn" onclick="seeControllTask('viewMemAndQues')">&#10005;</button>
-
-        <div class="form_select">
-            <form id="selectLabelQuestion" class="selectLabelQuestion">
-                <div class="div_selectName"><label>Question Set: </label><select name="questionSet" id="selectQuestionSet"></select></div>
-                <div class="div_selectTask">
-                    <label >Task:</label>
-                    <select name="task" id="selectTask">
-                        <option> Easy</option>
-                        <option> Medium</option>
-                        <option> Hard</option>
-                        <option> VeryHard</option>
-                    </select>
-                </div>
-               
-            </form>
-          <div class="findQuestion">  <button id="findQuestion" type="button" >Find</button> </div> 
+        <div  class="bodyControllExam">
+            <div class="form_select">
+                <form id="selectLabelQuestion" class="selectLabelQuestion">
+                    <div class="div_selectName"><label>Question Set: </label><select name="idQuestionSet" id="selectQuestionSet"></select></div>
+                    <div class="div_selectTask">
+                        <label >Task:</label>
+                        <select name="task" id="selectTask">
+                            <option value="Easy"> Easy</option>
+                            <option value="Medium"> Medium</option>
+                            <option value="Hard"> Hard</option>
+                            <option value="Very Hard"> Very Hard</option>
+                        </select>
+                    </div>
+                   
+                </form>
+              <div class="findQuestion">  
+                <button id="findQuestion" type="button" >Find</button> 
+                <button id="" type="button" >Add</button> 
+            </div> 
+            </div>
+            
+          
+    
+            <form id="selectQuestionToExam" class="selectQuestionToExam"></form>
+            
         </div>
-        
-      
-
-        <form id="selectQuestionToExam"></form>
-        
     </div>
    
 

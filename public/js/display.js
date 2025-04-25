@@ -1,10 +1,11 @@
 
-
-
 function displayAllClass(allClass){
     const container = document.getElementById('class_container');
     container.innerHTML = ''; 
-    
+
+    let savedClasses = localStorage.getItem('classes');
+    let classList = savedClasses ? JSON.parse(savedClasses) : [];
+
     allClass.forEach(classes => { console.log(classes);
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('classes');
@@ -44,13 +45,21 @@ function displayAllClass(allClass){
         projectDiv.appendChild(img);
         projectDiv.appendChild(infoDiv);
         container.appendChild(projectDiv);
+
+        if (!classList.find(c => c.class_id === classes.class_id)) { 
+            classList.push(classes);
+          }
+       
     });
+    localStorage.setItem('classes', JSON.stringify(classList));
 }
 
 
 function displayExam(allExams){
     const container = document.getElementById('class_container');
-    
+
+    let savedExams= localStorage.getItem('exams');
+    let examList = savedExams ? JSON.parse(savedExams) : [];
     allExams.forEach(exam => {
         const projectDiv = document.createElement('div');
         projectDiv.classList.add('classes');
@@ -90,7 +99,12 @@ function displayExam(allExams){
         projectDiv.appendChild(img);
         projectDiv.appendChild(infoDiv);
         container.appendChild(projectDiv);
+
+        if (!examList.find(e => e.id === exam.id)) { 
+            examList.push(exam);
+          }
     });
+    localStorage.setItem('exams', JSON.stringify(examList));
 }
 
 
@@ -105,6 +119,16 @@ function displayClassInfo(classInfo, infoOwner){
     <p>Owner: ${infoOwner.fullname} </p>
     <p>Email: ${infoOwner.email} </p>
 `;
+    const infoDiv2 = document.getElementById('classInfo');
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.textContent = "Delete Class"; 
+    button.classList.add("deleteClass"); 
+    button.addEventListener("click",async function(event) {  event.preventDefault(); deleteClass( classInfo.id)  });
+
+    infoDiv2.appendChild(button);
+
 }
 
 function displayClassHome(re_members){
@@ -230,8 +254,9 @@ function displayMembers(members, id) {
 
 
 function displayAllSet(sets) {
-    const setList = document.getElementById("set_container");
-    setList.innerHTML = "";
+    const setLists = document.getElementById("set_container");
+    setLists.innerHTML = "";
+
     sets.forEach(set => {
         const li = document.createElement("li");
         li.innerHTML = ` <p>  ${set.name}  </p> <p> ${new Date(set.created_at).toLocaleDateString("vi-VN")}</p>`;
@@ -254,8 +279,10 @@ function displayAllSet(sets) {
         });
         li.appendChild(button);
         li.appendChild(button2);
-        setList.appendChild(li);
+        setLists.appendChild(li);
+       
     });
+ 
 }
 
 function displayAllQuestion(questions, id) {
@@ -292,11 +319,54 @@ function displayAllQuestion(questions, id) {
       correctAnswer.className = "correct";
       correctAnswer.textContent = `Correct Answer: ${question.answer_correct}`;
 
-      quizDiv.appendChild(questionTitle);
+      if (id == "selectQuestionToExam"){
+        const checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.id = `question-${index}-${question.task}`; // Unique ID for the checkbox
+        checkbox.className = "question-checkbox"; // Class for styling if needed
+
+
+
+        const savedState = localStorage.getItem(`checkboxState-${index}-${question.task}`);
+        const isChecked = savedState === "true"; // Chuyển đổi chuỗi "true" thành boolean true
+        checkbox.checked = isChecked;
+
+        // Lưu trạng thái ban đầu vào Local Storage
+        localStorage.setItem(`checkboxState-${index}-${question.task}`, isChecked.toString());
+
+        // Lắng nghe sự kiện 'change' của checkbox
+        checkbox.addEventListener("change", function() {
+        // Cập nhật trạng thái tương ứng trong Local Storage khi checkbox thay đổi
+        localStorage.setItem(`checkboxState-${index}-${question.task}`, this.checked.toString());
+        console.log(localStorage.getItem(`checkboxState-${index}-${question.task}`));
+    });
+        const questionHeader = document.createElement("div"); //create a div to hold checkbox and questionTitle
+        questionHeader.style.display = "flex"; //use flexbox to align items
+        questionHeader.style.alignItems = "center"; // vertically center items
+        questionHeader.appendChild(checkbox);
+        questionHeader.appendChild(questionTitle);
+        quizDiv.appendChild(questionHeader); 
+      }
+      else{
+        quizDiv.appendChild(questionTitle);
+      }
+      
       quizDiv.appendChild(questionText);
       quizDiv.appendChild(answerList);
       quizDiv.appendChild(correctAnswer);
   
       questionsList.appendChild(quizDiv);
+    });
+  }
+
+  function displayListQuestionSet(allSets){
+    const setList = document.getElementById("selectQuestionSet");
+    setList.innerHTML = ""; 
+
+    allSets.forEach(set => {
+        const option = document.createElement("option");
+        option.innerHTML = `${set.name}`;
+        option.value = set.id;
+        setList.appendChild(option);
     });
   }
