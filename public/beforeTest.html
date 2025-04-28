@@ -6,22 +6,38 @@
     <title>Document</title>
     <link rel="stylesheet" href="/css/styles.css">
 <body>
-    <div id="header" ></div>
+    <div id="header2"  class="header"></div>
+    <div id="form"></div>
     <div class="headerExam" id="headerExam"></div>
 
     <section class="bfExam" id="bodyBfExam">
         <img src="/src/bfexam.png" alt="">
-        <button type="button" id="startExam"> Start</button>
+        <button type="button" id="startExam" onclick="start()"> Start</button>
+
+        <h3>Previous attempts</h3>
+        <div class="userAttempts" id="userAttempts"></div>
+   
     </section>
 
 
     <div id="footer"></div>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/display.js"></script>
     <script src="/js/script.js"></script>
-  
+    <script src="/service/fetch.js"></script>
+    <script src="/service/fetchExam.js"></script>
+
+
     <script>
-        $('#header').load('/student.html #header');
+        $('#header2').load('/student.html #header');
         $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
+        });
+        getUserAttemp();
+        
      </script>
     
 </body>

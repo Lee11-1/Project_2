@@ -23,6 +23,37 @@ async function addMemToExam() {
         alert("Có lỗi xảy ra, vui lòng thử lại.");
     }
 } 
+
+async function start() {
+    try {
+        const response = await fetch("/checkStartExam");
+        const result = await response.json();
+        if (response.ok) {
+            window.location.href = result.redirect; 
+        } else{
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
+}
+
+async function getUserAttemp() {
+    try {
+        const response = await fetch("/getAttempt");
+        const result = await response.json();
+        if (response.ok) {
+            displayAttempt(result.attempts);
+        } else{
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }    
+}
+
 async function getListQuestionSet() {
 
     // try {
@@ -115,8 +146,11 @@ function addQuestion() {
 
             const result = await response.json();
             if (response.ok) {
-                alert(result.message || "Thêm câu hỏi thành công!");
+               // alert(result.message || "Thêm câu hỏi thành công!");
                 loadExamData(); 
+                localStorage.removeItem('selectedQuestions');
+                displayNumOfQuestionSelected();
+                location.reload();
             } else {
                 alert(result.message || "Thêm câu hỏi thất bại!");
             }
@@ -126,11 +160,3 @@ function addQuestion() {
         }
     });
 }
-
-
-addQuestion();
-deleteSelect();
-findQuestion();
-getListQuestionSet();
-loadExamData();
-displayNumOfQuestionSelected();

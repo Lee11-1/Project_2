@@ -8,7 +8,11 @@ router.post('/findMemtoExam', examController.findMember);
 router.get('/infoExam', examController.getInfoExam);
 // router.get('/getListQuestionSet', examController.getListQuestionSet);
 router.post('/findQuestion', examController.findQuestions);
-
+router.get('/checkStartExam', examController.checkStartExam);
+router.get('/exam/:exam_title', examController.startExam);
+router.get('/getDataForExam', examController.getDataForExam);
+router.get('/getAttempt', examController.getAttempt);
+router.post('/submitExam', examController.submitExam);
 
 router.post('/createQuestionSet', examController.createQuestionSet);
 router.get('/all-questionSet', examController.getAllSet);
@@ -17,6 +21,7 @@ router.get('/infoSet', examController.getInfoQuestionSet);
 router.post('/addQuestion', examController.addQuestionToSet);
 router.post('/deleteSet', examController.deleteSet);
 router.post('/addQuestionToExam', examController.addQuestionToExam);
+router.post('/deleteQuestionToExam', examController.deleteQuestionToExam);
 
 
 module.exports = router;

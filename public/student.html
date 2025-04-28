@@ -11,13 +11,14 @@
 
     <div class="form" id="form">
         <div id="createExam" class="Folder">
-            <div class="crT" id="crT">
+            <div class="crT2" id="crT">
                 <button class="close-btn" onclick="hidePopup('createExam')">&#10005;</button>
                 <h2>Create a new Exam</h2>
                 <form id="crTest" class="crTest">
                     <input type="text" placeholder="Title" name="title">
                     <input type="text" placeholder="Time limit (Example: 30) (minute)" name="timelimit">
                     <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
+                    <input type="datetime-local" placeholder="Ngày và giờ kết thúc (ví dụ: 2024-08-03T17:30)" name="Ended">
                     <button class="create" type="button" id="createExamButton">Create</button>
                 </form>
             </div>

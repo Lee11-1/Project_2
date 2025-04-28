@@ -1,16 +1,20 @@
 
-const { accessSync } = require('fs');
 const pool = require('../data');
 const path = require('path');
 
 exports.createExam = async (req, res) => {
     try {
-        const { title, timelimit, numberQuestion } = req.body;
+        const { title, timelimit, numberQuestion, Ended } = req.body;
 
-        if (!title || !timelimit || !numberQuestion) {
+        if (!title || !timelimit || !numberQuestion||!Ended) {
             return res.status(400).json({ message: 'Thiếu thông tin bắt buộc!' });
         }
-
+        const now = new Date();
+        const endedDate = new Date(Ended);
+        
+        if (endedDate <= now) {
+            return res.status(400).json({ message: "Ngày kết thúc phải lớn hơn thời điểm hiện tại!" });
+        }
         const userId = req.session.user?.id;
 
         if (!userId) {
@@ -26,12 +30,12 @@ exports.createExam = async (req, res) => {
             return res.status(400).json({ message: 'Lớp đã tồn tại!' });
         }
         await pool.query(
-            'INSERT INTO exams (title, timelimit, numberQuestion, user_id) VALUES ($1, $2, $3, $4)',
-            [title, timelimit, numberQuestion, userId]
+            'INSERT INTO exams (title, timelimit, numberQuestion, user_id, Ended) VALUES ($1, $2, $3, $4, $5)',
+            [title, timelimit, numberQuestion, userId, Ended]
         );
 
         const newEx = await pool.query( 
-            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id
+            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id, exams.Ended
              FROM exams
              WHERE title = $1 AND user_id = $2`,
              [title, userId]);
@@ -272,6 +276,7 @@ exports.addQuestionToExam = async (req, res) => {
         const { questionID } = req.body;
         const exam_id = req.session.exam_id;
 
+     //   const questions = await pool.query("SELECT questions.id FROM questions JOIN questions_exams ON questions. WHERE exam_id = $1", [exam_id]);
         for (let i = 0; i < questionID.length; i++) {
             const result = await pool.query('SELECT * FROM questions WHERE id = $1', [questionID[i]]);
             const thisQuestion = result.rows[0];
@@ -280,16 +285,12 @@ exports.addQuestionToExam = async (req, res) => {
                 return res.status(404).json({ message: `Không tìm thấy câu hỏi với ID ${questionID[i]}` });
             }
 
+           // if()
             await pool.query(
-                'INSERT INTO questions_exams (exam_id, question_text, answer_A, answer_B, answer_C, answer_D, answer_correct) VALUES ($1, $2, $3, $4, $5, $6, $7)',
+                'INSERT INTO questions_exams (exam_id, question_id) VALUES ($1, $2)',
                 [
                     exam_id,
-                    thisQuestion.question_text,
-                    thisQuestion.answer_a,
-                    thisQuestion.answer_b,
-                    thisQuestion.answer_c,
-                    thisQuestion.answer_d,
-                    thisQuestion.answer_correct
+                   questionID[i]
                 ]
             );
         }
@@ -299,6 +300,19 @@ exports.addQuestionToExam = async (req, res) => {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
     }
+};
+
+
+exports.deleteQuestionToExam = async (req, res) => {
+    const exam_id = req.session.exam_id;
+    const {questionID} = req.body;
+    if (!questionID) {
+        return res.status(400).json({ message: 'Thiếu id!' });
+    }
+
+    await pool.query('DELETE FROM questions_exams WHERE question_id = $1 AND exam_id = $2', [questionID, exam_id]);
+
+    res.json({ message: 'Deleted!!!' });
 };
 
 
@@ -347,8 +361,10 @@ exports.getInfoExam = async (req, res) => {
         );
 
         const question = await pool.query(`
-            SELECT *
-            FROM questions_exams JOIN exams ON questions_exams.exam_id = exams.id
+            SELECT  questions.id, questions.question_text, questions.answer_A, questions.answer_B, questions.answer_C, questions.answer_D, questions.answer_correct
+            FROM questions
+            JOIN questions_exams ON questions.id = questions_exams.question_id
+            JOIN exams ON questions_exams.exam_id = exams.id
             WHERE exams.id = $1`,
             [exam_id]
         );
@@ -363,3 +379,96 @@ exports.getInfoExam = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server!' });
     }
 };
+
+exports.checkStartExam = async(req, res) =>{
+    try {
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Bạn chưa đăng nhập' });
+        }
+        const exam_id = req.session.exam_id;
+        const exam = await pool.query("SELECT title as title, Ended as Ended FROM exams WHERE id = $1", [exam_id]);
+        const now = new Date();
+        const endedDate = new Date(exam.rows[0].Ended);
+        
+        if (endedDate <= now) {
+            return res.status(400).json({ message: "Da qua han lam bai!" });
+        }
+        const redirectUrl = `/exam/${exam.rows[0].title}`;
+        res.json({ message: 'Tạo lớp thành công!', redirect: redirectUrl });
+
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
+
+exports.startExam = async(req, res) =>{
+    try {
+        res.sendFile(path.join(__dirname, '..', '..', 'public', 'test.html'));
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
+
+
+exports.getDataForExam = async (req, res) => {
+    try {
+        const exam_id = req.session.exam_id;
+
+        const question = await pool.query(`
+            SELECT  questions.id, questions.question_text, questions.answer_A, questions.answer_B, questions.answer_C, questions.answer_D, questions.answer_correct
+            FROM questions
+            JOIN questions_exams ON questions.id = questions_exams.question_id
+            JOIN exams ON questions_exams.exam_id = exams.id
+            WHERE exams.id = $1`,
+            [exam_id]
+        );
+
+        const time = await pool.query(
+            ` SELECT timelimit, title, numberQuestion FROM exams WHERE id = $1`,
+            [exam_id]
+        )
+
+        res.json({
+            questions: question.rows,
+            time: time.rows[0]
+        });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+};
+
+exports.getAttempt = async (req, res) => {
+    try {
+        const exam_id = req.session.exam_id;
+        const user_id = req.session.user.id;
+
+        const attemps = await pool.query("SELECT score, submitted_at FROM exam_attempts WHERE exam_id = $1 AND user_id = $2 ORDER BY submitted_at  DESC", [exam_id, user_id]);
+        
+        res.json({
+            attempts: attemps.rows
+        });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
+
+exports.submitExam = async (req, res) => {
+    try {
+        const exam_id = req.session.exam_id;
+        const user_id = req.session.user.id;
+        const {score} = req.body;
+        console.log(score);
+        await pool.query("INSERT INTO exam_attempts (user_id, exam_id, score)  VALUES ($1, $2, $3) ", [user_id, exam_id, score]);
+
+        const exam = await pool.query("SELECT title, id FROM exams WHERE id = $1", [exam_id]);
+        res.json({ message: "Save thanh cong!!", redirect: `/exam/${exam.rows[0].title}/${exam_id}` });
+
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}

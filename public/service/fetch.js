@@ -176,7 +176,7 @@ function createQuestionSet(){
                 let setList = savedSets ? JSON.parse(savedSets) : [];
                 setList.unshift(result.newSet);
                 localStorage.setItem('sets', JSON.stringify(setList));
-                console.log('Đã thêm lớp học mới và cập nhật Local Storage:', setList);
+                console.log('Đã thêm set và cập nhật Local Storage:', setList);
 
                 window.location.href = result.redirect; 
             } else {
@@ -189,4 +189,25 @@ function createQuestionSet(){
         }
         
     });
+}
+
+async function deleteQuestion(questionID) {
+    try {
+        const response = await fetch("/deleteQuestionToExam", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({questionID})
+        }) ;
+
+        const result = await response.json();
+        if (response.ok) {
+            loadExamData();
+        } else {
+            alert(result.message);
+        }
+
+    } catch (error) {
+        console.error("Error:", error);
+        alert("Error");
+    }
 }

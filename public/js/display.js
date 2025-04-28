@@ -78,7 +78,7 @@ function displayExam(allExams){
         idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; // \u00A0 là khoảng trắng không ngắt dòng
                                                                                                                       
         const date = document.createElement('p');
-        date.textContent = `Date: ${new Date(exam.created_at).toLocaleDateString()}`;
+        date.textContent = `Ended: ${new Date(exam.ended).toLocaleDateString()}`;
 
         const viewClassButton = document.createElement('button');
         viewClassButton.textContent = 'View Exam';
@@ -359,24 +359,27 @@ function displayAllQuestion(questions, id) {
           console.log(selectedCheckboxes);
         });
 
-
-        // const savedState = localStorage.getItem(`checkboxState-${index}-${question.task}`);
-        // const isChecked = savedState === "true"; // Chuyển đổi chuỗi "true" thành boolean true
-        // checkbox.checked = isChecked;
-
-        // // Lưu trạng thái ban đầu vào Local Storage
-        // localStorage.setItem(`checkboxState-${index}-${question.task}`, isChecked.toString());
-
-        // // Lắng nghe sự kiện 'change' của checkbox
-        // checkbox.addEventListener("change", function() {
-
-        // localStorage.setItem(`checkboxState-${index}-${question.task}`, this.checked.toString());
-        // console.log(localStorage.getItem(`checkboxState-${index}-${question.task}`));
-    // });
         const questionHeader = document.createElement("div"); //create a div to hold checkbox and questionTitle
         questionHeader.style.display = "flex"; //use flexbox to align items
         questionHeader.style.alignItems = "center"; // vertically center items
         questionHeader.appendChild(checkbox);
+        questionHeader.appendChild(questionTitle);
+        quizDiv.appendChild(questionHeader); 
+      }
+      else if(id == "examQuestions" ){
+        const button = document.createElement("button");
+        button.type = "button";
+        button.textContent = "Delete"
+       
+        button.addEventListener("click",async function(event) {
+            event.preventDefault();
+            deleteQuestion(question.id);
+        });
+
+        const questionHeader = document.createElement("div"); 
+        questionHeader.style.display = "flex"; 
+        questionHeader.style.alignItems = "center"; 
+        questionHeader.appendChild(button);
         questionHeader.appendChild(questionTitle);
         quizDiv.appendChild(questionHeader); 
       }
@@ -412,3 +415,140 @@ function displayNumOfQuestionSelected(){
     let questionList = saved ? JSON.parse(saved) : [];
     divNum.innerHTML =  `Selected: ${questionList.length}`;
 }
+
+function displayQuestionForExam(questions, time) { 
+  const questionsList = document.getElementById("quiz_container");
+  questionsList.innerHTML = "";
+
+  const quizContainer = document.createElement("div");
+  quizContainer.className = "quiz_container";
+  quizContainer.id = "quiz_container";
+
+  questions.forEach((question, index) => {
+    const quizDiv = document.createElement("div");
+    quizDiv.className = "quiz";
+    quizDiv.id = `quiz-${index}`; // Thêm ID để dễ truy cập
+
+    const questionHTML = `
+      <h3>Câu số ${index + 1}:</h3>
+      <p>${question.question_text}</p>
+      <ul>
+        <li><input class="answer" name="answer${index + 1}" type="radio" value="A"> A. ${question.answer_a}</li>
+        <li><input class="answer" name="answer${index + 1}" type="radio" value="B"> B. ${question.answer_b}</li>
+        <li><input class="answer" name="answer${index + 1}" type="radio" value="C"> C. ${question.answer_c}</li>
+        <li><input class="answer" name="answer${index + 1}" type="radio" value="D"> D. ${question.answer_d}</li>
+      </ul>
+    `;
+    quizDiv.innerHTML = questionHTML;
+    quizContainer.appendChild(quizDiv);
+
+    // Lắng nghe sự kiện thay đổi của các radio button
+    const answerInputs = quizDiv.querySelectorAll('.answer');
+    answerInputs.forEach(input => {
+      input.addEventListener('change', () => {
+        // Lưu đáp án đã chọn vào thuộc tính data của questionDiv
+        quizDiv.dataset.selectedAnswer = input.value;
+      });
+    });
+  });
+
+  questionsList.appendChild(quizContainer);
+
+  document.getElementById("submitTest").addEventListener("click", async function () {
+         submitExam(questions, questions.length);
+  })
+}
+
+  function displayTime(time, questions){
+
+    // const header = document.getElementById("headTest");
+    // header.innerHTML= "";
+    // header.innerHTML = `${time.title}`;
+
+    let duration = time.timelimit * 60; 
+    const timerDisplay = document.getElementById('timer');
+
+    const countdown = setInterval(() => {
+        const minutes = Math.floor(duration / 60);
+        const seconds = duration % 60;
+        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+        duration--;
+
+        if (duration < 0) {
+            clearInterval(countdown);
+            alert("Hết thời gian! Bài sẽ được nộp tự động.");
+            submitExam(questions, questions.length);
+        }
+    }, 1000);
+  }
+
+ 
+
+  function displayAttempt(attempts) {
+    const attemptList = document.getElementById("userAttempts");
+    attemptList.innerHTML = ''; // Clear any existing content
+  
+    // Create the table element
+    const table = document.createElement("table");
+    table.style.width = "100%";
+    table.style.borderCollapse = "collapse";
+    table.style.margin = "20px 0";
+  
+    // Create the table header
+    const thead = document.createElement("thead");
+    const headerRow = document.createElement("tr");
+  
+    const idHeader = document.createElement("th");
+    idHeader.textContent = "ID";
+    idHeader.style.padding = "10px";
+    idHeader.style.borderBottom = "1px solid #ddd";
+    idHeader.style.textAlign = "left";
+    idHeader.style.background = " #14888e;"
+  
+    const scoreHeader = document.createElement("th");
+    scoreHeader.textContent = "Score";
+    scoreHeader.style.padding = "10px";
+    scoreHeader.style.borderBottom = "1px solid #ddd";
+    scoreHeader.style.textAlign = "left";
+  
+    const timeHeader = document.createElement("th");
+    timeHeader.textContent = "Time Attempt";
+    timeHeader.style.padding = "10px";
+    timeHeader.style.borderBottom = "1px solid #ddd";
+    timeHeader.style.textAlign = "left";
+  
+    headerRow.appendChild(idHeader);
+    headerRow.appendChild(scoreHeader);
+    headerRow.appendChild(timeHeader);
+    thead.appendChild(headerRow);
+    table.appendChild(thead);
+  
+    // Create the table body
+    const tbody = document.createElement("tbody");
+    attempts.forEach((attempt, index) => { console.log(attempt);
+      const row = document.createElement("tr");
+      const idCell = document.createElement("td");
+      idCell.textContent = index + 1; // ID tăng dần
+      idCell.style.padding = "10px";
+      idCell.style.borderBottom = "1px solid #ddd";
+  
+      const scoreCell = document.createElement("td");
+      scoreCell.textContent = attempt.score;
+      scoreCell.style.padding = "10px";
+      scoreCell.style.borderBottom = "1px solid #ddd";
+  
+      const timeCell = document.createElement("td");
+      timeCell.textContent = attempt.submitted_at; // Giả sử tên thuộc tính là time_attempt
+      timeCell.style.padding = "10px";
+      timeCell.style.borderBottom = "1px solid #ddd";
+  
+      row.appendChild(idCell);
+      row.appendChild(scoreCell);
+      row.appendChild(timeCell);
+      tbody.appendChild(row);
+    });
+    table.appendChild(tbody);
+  
+    // Add the table to the container
+    attemptList.appendChild(table);
+  }

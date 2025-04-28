@@ -34,12 +34,12 @@ exports.getAllClasses = async (req, res) => {
             [user.id]
         );
         const exams = await pool.query(
-            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id
+            `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id, exams.Ended
             FROM exams 
             JOIN users ON users.id = exams.user_id
             WHERE users.id = $1
             UNION
-            SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title,  exams.created_at, exams.user_id
+            SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title,  exams.created_at, exams.user_id, exams.Ended
             FROM exams
             JOIN exams_mem ON exams.id = exams_mem.exam_id
             WHERE exams_mem.user_id = $1
