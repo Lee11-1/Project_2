@@ -15,6 +15,7 @@ li{
 
 #header{
     display: flex;
+    width: 100%;
     justify-content: space-between;
     align-items: center;
     background-color: white;
@@ -43,6 +44,14 @@ body{
     text-decoration: none;
     cursor: pointer;
 }
+.logoAd{
+    font-size: 24px;
+    font-weight: bold;
+    color: #3a57e8;
+    text-decoration: none;
+    cursor: pointer;
+    margin-left: 7%;
+}
 
 .nav {
     display: flex;
@@ -61,6 +70,11 @@ body{
     gap: 10px;
 }
 
+.ad-buttons{
+    display: flex;
+    gap: 10px;
+    margin-right: 8%;
+}
 .btn {
     padding: 8px 15px;
     border: none;
@@ -713,7 +727,7 @@ button{
     display: flex;
     position: relative;
 }
-.label p{
+.label a{
     margin-left: 65%;
     color: rgb(45, 45, 233);
     font-size: 0.8rem;
@@ -744,6 +758,12 @@ button{
     height: auto;
     cursor: pointer;
     margin-right: auto;
+}
+.avtAd{
+    border-radius: 100%;
+    width: 35px ;
+    height: auto;
+    cursor: pointer;
 }
 
 
@@ -1268,7 +1288,7 @@ button{
     border-radius: 0.5rem;
     border: none;
     margin-right: 2%;
-    z-index: 1000; 
+    z-index: 500; 
 }
 .viewSet:hover{
     background-color: #05334a;
@@ -1340,7 +1360,7 @@ button{
 .btnControll{
     display: flex;
     width: 60%;
-    margin-left: 50%;
+    margin-left: 70%;
     top: 80px; /* <- quan trọng! */
     position: sticky;
    
@@ -1362,7 +1382,7 @@ button{
     background-color: #ae3131;
     width: 150px;
     height: 50px;
-    margin-left: 1%;
+    margin-left: 3%;
     margin-top: 1%;
     border: none;
     border-radius: 0.5rem;
@@ -1388,7 +1408,7 @@ button{
     color: white;
     font-size: 20px;
     cursor: pointer;
-    z-index: 1000; 
+    z-index: 800; 
 }
 .addMemberToExam:hover{
     background-color: #633815;
@@ -1401,6 +1421,23 @@ button{
     border-radius: 1.25rem;
     border: 2px solid black;
   
+}
+.deleteExam{
+    background-color: #e92323;
+    display: none;
+    width: 180px;
+    height: 50px;
+    margin-left: 13%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 800; 
+}
+.deleteExam:hover{
+    background-color: rgb(100, 13, 13);
 }
 .viewMemAndQues{
     width: 80%;
@@ -1510,8 +1547,11 @@ button{
     flex: 1;
     margin-top: 15px;
 }
-.div_selectTask select{
+.div_selectTask input{
     flex: 4;
+    border-radius: 0.5rem;
+    padding: 10px;
+    border: 1px solid #ccc;
 }
 .div_selectName select{
    flex: 4;
@@ -1560,4 +1600,77 @@ button{
     min-height: 200px;
     height: auto;
     margin-bottom: 2%;
+}
+.bodyAcount{
+    width: 80%;
+    min-height: 600px;
+    margin: auto;
+    margin-top: 5%;
+    border: 1px solid #ccc;
+    border-radius: 0.75rem;
+}
+
+.allClass{
+    border: 2px solid #ccc;
+    border-radius: 1rem;
+    min-height: 600px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+    width: 100%;
+}
+.allUser{
+    display: none;
+    border: 2px solid #951919;
+    border-radius: 1rem;
+    min-height: 600px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+}
+.allExam{
+    display: none;
+    border: 2px solid #41919c;
+    border-radius: 1rem;
+    min-height: 600px;
+    margin-top: 2%;
+    margin-bottom: 5%;
+}
+
+.label_admin{
+    width: 100%;
+    margin-bottom: 1px;
+}
+.label_admin h2{
+    width: 100%;
+    padding: 20px 0 20px 20px;
+}
+.label_admin input{
+    width: 20%;
+    padding: 1%;
+    margin-left: 5%;
+    height: 50px;
+    border: 1px solid #ccc;
+    border-radius: 0.5rem;
+}
+.label_admin button{
+    width: 120px;
+    height: 50px;
+    border: none;
+    border-radius: 0.5rem;
+    background-color: #107277;
+    cursor: pointer;
+    color: white;
+    margin-left: 5%;
+}
+.label_admin button:hover{
+    background-color: #05334a;
+}
+
+.user_container table{
+    width: 90%;
+    margin: auto;
+    border: 2px solid black;
+}
+
+#header3{
+    display: none;
 }

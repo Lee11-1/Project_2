@@ -22,7 +22,8 @@ const createTable = async () => {
         username VARCHAR(100) UNIQUE NOT NULL,
         profession VARCHAR(100) NOT NULL,
         password TEXT NOT NULL,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        last_login TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
       CREATE TABLE IF NOT EXISTS classes (

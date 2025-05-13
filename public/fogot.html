@@ -11,11 +11,12 @@
 
     <div id="signInDiv"></div>
     <div id="signUpDiv"></div>
+    <div id="form"></div>
 
 
     <div id="main">
         <div>
-            <div id="header" ></div>
+            <div id="header2" ></div>
 
             <div class="fogot">
                 <h1>Reset your password</h1>
@@ -39,13 +40,19 @@
     
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script>
-        $('#header').load('/home.html #header');
+        $('#header2').load('/home.html #header');
         $('#footer').load('/home.html #footer');
+    
         $('#signInDiv').load('/home.html #signInPage', function () {
             loadLogin(); 
         });
         $('#signUpDiv').load('/home.html #signUpPage', function() {
             loadSignUp();
+        });
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
         });
     </script>
    

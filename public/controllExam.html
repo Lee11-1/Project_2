@@ -9,13 +9,15 @@
 <body>
 
     <div id="header2" class="header"></div>
+    <div id="header3" class="header"> </div>
+   
+ 
     <div id="form"></div>
 
     <div class="btnControll">
-        <button type="button" class="addQuestionToExam" onclick="seeControllTask('addQuestionToExam')">Select questions</button>
-        <button type="button" class="addMemberToExam" onclick="showPopup('findMembers')">Add Members</button>
-        <button type="button" class="deleteSelect" id="deleteSelect">Delete All</button>
-        <button type="button" id="numOfQuestionSelected" class="numOfQuestionSelected"></button>
+        <button type="button" class="addQuestionToExam" id = "openAddQuestionToExam" onclick="seeControllTask('addQuestionToExam')">Select questions</button>
+        <button type="button" class="addMemberToExam" id = "openAddMemberToExam" onclick="showPopup('findMembers')">Add Members</button>
+        <button type="button" class="deleteExam" id = "deleteExam" onclick="deleteExam()">Delete Exam</button>
     </div>
    
     <div id="findMembers" class="Folder">
@@ -46,17 +48,14 @@
     <div id="addQuestionToExam">
         <button class="close-btn" onclick="seeControllTask('viewMemAndQues')">&#10005;</button>
         <div  class="bodyControllExam">
+            <button type="button" class="deleteSelect" id="deleteSelect">Delete All</button>
+            <button type="button" id="numOfQuestionSelected" class="numOfQuestionSelected"></button>
             <div class="form_select">
                 <form id="selectLabelQuestion" class="selectLabelQuestion">
                     <div class="div_selectName"><label>Question Set: </label><select name="idQuestionSet" id="selectQuestionSet"></select></div>
                     <div class="div_selectTask">
                         <label >Task:</label>
-                        <select name="task" id="selectTask">
-                            <option value="Easy"> Easy</option>
-                            <option value="Medium"> Medium</option>
-                            <option value="Hard"> Hard</option>
-                            <option value="Very Hard"> Very Hard</option>
-                        </select>
+                        <input type="text" name="task" id="selectTask">
                     </div>
                    
                 </form>
@@ -84,6 +83,7 @@
     <script src="/service/fetchExam.js"></script>
     <script>
         $('#header2').load('/student.html #header');
+        $('#header3').load('/admin.html #header');
         $('#footer').load('/home.html #footer');
         $('#form').load('/student.html #form', function(){
            addClass();

@@ -21,6 +21,34 @@ async function signOut() {
     }
 }
 
+async function  myAcount() {
+    try {
+        window.location.href = "/myAcount";
+    }
+     catch (error) {
+        console.error("Lỗi:", error);
+        alert("Không thể tải dữ liệu ");
+    }
+   
+}
+
+async function getAcountInfo() {
+    try {
+        const response = await fetch(`/infoAcount`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert("Lỗi khi tải dữ liệu");
+            return;
+        }
+
+        displayAcountInfo(data.user);
+    } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Không thể tải dữ liệu ");
+    }
+}
+
 async function loadClassData() {
     try {
         const response = await fetch(`/infoClass`);
@@ -82,7 +110,18 @@ async function loadExamData() {
 
         displayMembers(data.members,"examMems");
         displayAllQuestion(data.questions,"examQuestions");
-
+        if(data.profession == "Admin"){
+            const btn1 = document.getElementById("openAddQuestionToExam");
+            const btn2 = document.getElementById("openAddMemberToExam");
+            const btn3 = document.getElementById("deleteExam");
+            btn1.style.display = "none";
+            btn2.style.display = "none";
+            btn3.style.display = "block";
+            const h1 = document.getElementById("header2");
+            h1.style.display = "none";
+            const h2 = document.getElementById("header3");
+            h2.style.display = "block";
+        }
     } catch (error) {
         console.error("Lỗi:", error);
         alert("Không thể tải dữ liệu lớp học.");

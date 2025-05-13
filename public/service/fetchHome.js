@@ -102,7 +102,7 @@ function loadLogin(){
 }
 loadLogin();
 
-async function openForgot() {
+function openForgot() {
     window.location.href = "/forgot"; 
 }
 async function changePass() {

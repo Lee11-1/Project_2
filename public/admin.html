@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title> 
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div id="header">
+            <div class="logoAd" onclick="goHome()">Quizlet Admin</div>
+            <nav class="nav">
+                <div class="dropdown">
+                    <span class="nav-item" onclick="toggleMenu('adMenu')">Admin Tools ▼</span>
+                    <ul id="adMenu" class="dropdown-menu">
+                        <li onclick='seeTask("allUser")'><img src="/src/test.png" alt="">Users</li>
+                        <li onclick='seeTask("allClass")'><img src="/src/learn.png" alt="">Classes</li>
+                        <li onclick='seeTask("allExam")'><img src="/src/learn.png" alt="">Exam</li>
+                    </ul>
+                </div>
+            </nav>
+    
+            <div class="search-box">
+                <input type="text" placeholder="🔍 Search">
+            </div>
+            
+            <div class="ad-buttons">
+                <div class="dropdown">
+                    <img src="/src/avt.png" class="avtAd" onclick="toggleMenu('adtool')">
+                    <ul id="adtool" class="dropdown-menu2">
+                       <li><button  onclick="myAcount()">Account</a></button></li>
+                       <li><button onclick="signOut()">Sign out</button></li>
+                    </ul>
+                </div>  
+            </div>
+        </div>
+       
+    </header>
+
+    <body >
+      
+                
+                <div id="allClass" class="allClass">
+                    <div >
+                        <div class="label_admin" >
+                            <h2>All Class</h2>
+                            <!-- <input type="text" placeholder="Name">
+                            <input type="text" placeholder="Date">
+                            <input type="text">
+                            <button>Find</button> -->
+                        </div>
+                       
+                        <div id="class_container" class="class_container">
+    
+                        </div>
+                    </div>
+                </div>
+              
+                <div id="allUser" class="allUser">
+                    <div>
+                        <div class="label_admin">
+                            <h2>All User</h2>
+                        </div>
+                        
+                        <!-- <input type="text">
+                        <input type="text">
+                        <input type="text"> -->
+                        <div id="user_container">
+                        </div>
+                    </div>    
+                </div>
+                
+                
+                <div id="allExam" class="allExam">
+                    <div>
+                        <div class="label_admin">
+                            <h2>All Exam</h2>
+                        </div>
+                        
+                        <!-- <input type="text">
+                        <input type="text">
+                        <input type="text"> -->
+                        <div id="exam_container">
+    
+                        </div>
+                    </div>
+                </div>
+              
+         
+    </body>
+
+    <script src="/js/display.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/service/fetch.js"></script>
+    <script src="/js/script_admin.js"></script>
+    <script src="/service/fetchAdmin.js"></script>
+
+</body>
+</html>

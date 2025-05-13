@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet"  href="/css/styles.css">
+</head>
+<body>
+    <div id="header2" class="header" ></div>
+
+    <div class="form" id="form"> </div>
+
+    <div class="bodyAcount" id="bodyAcount">
+
+    </div>
+    <div id="footer"></div>
+
+
+    <div id="updatePassword" class="Folder">
+        <div class="crT" id="crT">
+            <button class="close-btn" onclick="hidePopup('updatePassword')">&#10005;</button>
+            <h2>Update your password</h2>
+            <form id="crTest" class="crTest">
+                <input type="text" placeholder="Current password" name="currentPassword">
+                <input type="text" placeholder="New password" name="newPassword">
+                <input type="text" placeholder="New password" name="newPassword2">
+                <button class="create" type="button" id="createExamButton">Update</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/display.js"></script>
+    <script src="/service/fetch.js"></script>
+    <script src="/js/script.js"></script>
+    <script>
+        $('#header2').load('/student.html #header');
+        $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
+        });
+        getAcountInfo();
+     </script>
+
+</body>
+</html>

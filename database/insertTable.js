@@ -1,4 +1,6 @@
 const pool = require('./data');
+const bcrypt = require("bcryptjs");
+
 const insertClass = async (class_id, user_id) => {
     try {
       const query = `
@@ -16,7 +18,24 @@ const insertClass = async (class_id, user_id) => {
     }
   };
   
-  // Gọi hàm để chèn dữ liệu
-  insertClass(17, 6);
-  insertClass(17, 7);
-  insertClass(17, 8);
+
+  const insertAdmin = async (fullname, username, password, profession, email ) => {
+    
+    try {
+      const query = `
+        INSERT INTO users (fullname, username, password, profession, email)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING *;
+      `;
+  
+      
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const values = [fullname, username, hashedPassword, profession, email];
+
+      const { rows } = await pool.query(query, values);
+      console.log("✅ users đã được thêm:", rows[0]);
+    } catch (err) {
+      console.error("❌ Lỗi khi chèn users:", err);
+    }
+  };
+  insertAdmin("ADMIN1", "admin1", "admin1password","Admin","adminemail@.gmail.com")

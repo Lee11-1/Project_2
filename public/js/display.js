@@ -1,6 +1,6 @@
 
 function displayAllClass(allClass){
-    const container = document.getElementById('class_container');
+    const container = document.getElementById("class_container");
     container.innerHTML = ''; 
 
     let savedClasses = localStorage.getItem('classes');
@@ -56,7 +56,7 @@ function displayAllClass(allClass){
 
 
 function displayExam(allExams){
-    const container = document.getElementById('class_container');
+    const container = document.getElementById("class_container");
 
     let savedExams= localStorage.getItem('exams');
     let examList = savedExams ? JSON.parse(savedExams) : [];
@@ -455,32 +455,91 @@ function displayQuestionForExam(questions, time) {
   questionsList.appendChild(quizContainer);
 
   document.getElementById("submitTest").addEventListener("click", async function () {
-         submitExam(questions, questions.length);
+         submitExam(questions.length);
+         localStorage.removeItem(`startTime_${time.id}`);
   })
 }
+// function displayTime(time, questions) {
+//   const timerDisplay = document.getElementById('timer');
+  
+//   let duration = time.timelimit * 60;
+//   const examTimeKey = `examTime_${time.id}`; 
 
-  function displayTime(time, questions){
+//   if (localStorage.getItem(examTimeKey)) {
+//   duration = parseInt(localStorage.getItem(examTimeKey), 10);
+//   } else {
+  
+//   localStorage.setItem(examTimeKey, duration.toString());
+//   }
+  
+//   const countdown = setInterval(() => {
+//   const minutes = Math.floor(duration / 60);
+//   const seconds = duration % 60;
+//   timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+//   duration--;
+ 
+//   localStorage.setItem(examTimeKey, duration.toString());
+  
+//   if (duration < 0) {
+//     clearInterval(countdown);
+//     timerDisplay.textContent = "Hết giờ"; 
+//     alert("Hết thời gian! Bài sẽ được nộp tự động.");
+//     submitExam(questions.length);
+//   }
+// }, 1000);
+//   }
+function displayTime(time, questions) {
+  const timerDisplay = document.getElementById('timer');
+  const examTimeKey = `examTime_${time.id}`;
+  const startTimeKey = `startTime_${time.id}`; // Key để lưu thời điểm bắt đầu
 
-    // const header = document.getElementById("headTest");
-    // header.innerHTML= "";
-    // header.innerHTML = `${time.title}`;
+  let duration = time.timelimit * 60;
+  let startTime;
 
-    let duration = time.timelimit * 60; 
-    const timerDisplay = document.getElementById('timer');
-
-    const countdown = setInterval(() => {
-        const minutes = Math.floor(duration / 60);
-        const seconds = duration % 60;
-        timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-        duration--;
-
-        if (duration < 0) {
-            clearInterval(countdown);
-            alert("Hết thời gian! Bài sẽ được nộp tự động.");
-            submitExam(questions, questions.length);
-        }
-    }, 1000);
+  // Kiểm tra xem thời gian bắt đầu đã được lưu chưa
+  if (localStorage.getItem(startTimeKey)) {
+      startTime = parseInt(localStorage.getItem(startTimeKey), 10);
+      const now = Date.now();
+      const elapsed = Math.floor((now - startTime) / 1000); 
+      duration = Math.max(0, duration - elapsed); 
+  } else {
+      // Nếu chưa có, lưu thời điểm bắt đầu
+      startTime = Date.now();
+      localStorage.setItem(startTimeKey, startTime.toString());
+      localStorage.setItem(examTimeKey, duration.toString()); // Lưu cả duration để đồng bộ
   }
+  if (duration <= 0) {
+    timerDisplay.textContent = "Hết giờ";
+    alert("Hết thời gian! Bài sẽ được nộp tự động.");
+    submitExam(questions.length);
+    localStorage.removeItem(startTimeKey);
+  }
+  else{
+    function updateTimerDisplay() {
+      const minutes = Math.floor(duration / 60);
+      const seconds = duration % 60;
+      timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+  }
+
+  updateTimerDisplay(); // Hiển thị ngay lập tức
+
+  const timerInterval = setInterval(() => {
+      duration--;
+      localStorage.setItem(examTimeKey, duration.toString()); // Lưu thời gian còn lại
+      updateTimerDisplay();
+
+      if (duration <= 0) {
+          clearInterval(timerInterval);
+          timerDisplay.textContent = "Hết giờ";
+          alert("Hết thời gian! Bài sẽ được nộp tự động.");
+          submitExam(questions.length);
+          localStorage.removeItem(startTimeKey);
+      }
+  }, 1000);
+  }
+  
+}
+
 
  
 
@@ -552,3 +611,361 @@ function displayQuestionForExam(questions, time) {
     // Add the table to the container
     attemptList.appendChild(table);
   }
+
+  function displayAcountInfo(info) {
+    const bodyPage = document.getElementById('bodyAcount');
+  
+    if (!bodyPage) {
+      console.error("Không tìm thấy phần tử có id 'bodyAcount' trong DOM.");
+      return;
+    }
+  
+    // Xóa nội dung cũ nếu có
+    bodyPage.innerHTML = '';
+  
+    const container = document.createElement('div');
+    container.classList.add('container');
+  
+    const heading = document.createElement('h2');
+    heading.textContent = 'Thông tin tài khoản cơ bản';
+    container.appendChild(heading);
+  
+    const description = document.createElement('p');
+    description.textContent = 'Thiết lập thông tin cơ bản về tài khoản của bạn.';
+    container.appendChild(description);
+  
+    // Hàm tạo một hàng thông tin
+    function createInfoRow(labelText, valueText, descriptionText, isInput = false, inputType = 'text') {
+      const formGroup = document.createElement('div');
+      formGroup.classList.add('form-group');
+  
+      const labelColumn = document.createElement('div');
+      labelColumn.classList.add('label-column');
+      labelColumn.textContent = labelText;
+  
+      const valueColumn = document.createElement('div');
+      valueColumn.classList.add('value-column');
+  
+      if (isInput) {
+        const inputElement = document.createElement('input');
+        inputElement.type = inputType;
+        inputElement.value = valueText || '';
+        valueColumn.appendChild(inputElement);
+      } else {
+        valueColumn.textContent = valueText;
+      }
+  
+      const descriptionColumn = document.createElement('div');
+      descriptionColumn.classList.add('description-column');
+      descriptionColumn.textContent = descriptionText;
+  
+      formGroup.appendChild(labelColumn);
+      formGroup.appendChild(valueColumn);
+      formGroup.appendChild(descriptionColumn);
+  
+      return formGroup;
+    }
+  
+    // Tạo các hàng thông tin
+    container.appendChild(createInfoRow(
+      'Tên đăng nhập',
+      info.username,
+      'Tên định danh trên MOOC daotao.ai. Bạn không thể thay đổi tên đăng nhập.'
+    ));
+  
+    container.appendChild(createInfoRow(
+      'Tên đầy đủ',
+      info.fullname,
+      'Tên được sử dụng để xác minh ID và xuất hiện trên chứng chỉ của bạn.',
+      true
+    ));
+  
+    container.appendChild(createInfoRow(
+      'Địa chỉ Email (Đăng nhập)',
+      info.email,
+      'Bạn nhận được tin nhắn từ MOOC daotao.ai tại địa chỉ này.',
+      true,
+      'email'
+    ));
+  
+    container.appendChild(createInfoRow(
+      'Profession',
+      info.profession || '', // Giả sử info có thuộc tính phone
+      'Your profession',
+      true
+    ));
+  
+    // Phần mật khẩu
+    const passwordGroup = document.createElement('div');
+    passwordGroup.classList.add('password-group');
+  
+    const passwordFormGroup = document.createElement('div');
+    passwordFormGroup.classList.add('form-group');
+  
+    const passwordLabelColumn = document.createElement('div');
+    passwordLabelColumn.classList.add('label-column');
+    passwordLabelColumn.textContent = 'Mật khẩu';
+  
+    const passwordValueColumn = document.createElement('div');
+    passwordValueColumn.classList.add('value-column');
+    const resetButton = document.createElement('button');
+    resetButton.classList.add('password-button');
+    resetButton.textContent = 'Đặt lại mật khẩu';
+    resetButton.addEventListener("click", function () {
+      showPopup('updatePassword');
+    })
+
+    passwordValueColumn.appendChild(resetButton);
+
+
+  
+    const passwordDescriptionColumn = document.createElement('div');
+    passwordDescriptionColumn.classList.add('description-column');
+    passwordDescriptionColumn.textContent = 'Kiểm tra tài khoản email để được hướng dẫn đặt lại mật khẩu.';
+  
+    passwordFormGroup.appendChild(passwordLabelColumn);
+    passwordFormGroup.appendChild(passwordValueColumn);
+    passwordFormGroup.appendChild(passwordDescriptionColumn);
+  
+    passwordGroup.appendChild(passwordFormGroup);
+    container.appendChild(passwordGroup);
+  
+    bodyPage.appendChild(container);
+  
+    // Đừng quên thêm CSS vào phần <head> của file HTML của bạn
+    const style = document.createElement('style');
+    style.textContent = `
+      .container {
+        width: 90%; /* Điều chỉnh độ rộng tùy ý */
+        padding: 20px;
+        font-family: sans-serif;
+      }
+
+      .container p{
+        margin-top : 10px;
+        margin-bottom: 10px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+      }
+  
+      .label-column {
+        flex: 1;
+        width: 150px;
+        font-weight: bold;
+        padding-right: 15px;
+        text-align: left;
+      }
+  
+      .value-column {
+        flex:2;
+      }
+  
+      .value-column input[type="text"],
+      .value-column input[type="email"] {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+  
+      .description-column {
+        flex: 2;
+        font-size: 0.9em;
+        color: #777;
+        margin-left: 15px;
+      }
+  
+      .password-group {
+        margin-top: 30px;
+      }
+  
+      .password-button {
+        padding: 10px 20px;
+        background-color: #f44336; /* Màu đỏ tương tự */
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+  
+      .password-button:hover {
+        background-color:rgb(125, 31, 31);
+      }
+    `;
+    document.head.appendChild(style);
+  }
+  
+function displayDataForAdmin(users, allClass, allExams){
+
+  const container = document.getElementById('class_container');
+  container.innerHTML = ''; 
+
+  allClass.forEach(classes => { console.log(classes);
+      const projectDiv = document.createElement('div');
+      projectDiv.classList.add('classes');
+  
+      const img = document.createElement('img');
+      img.src = "/src/class.png";
+      img.alt = "Ảnh lớp học";  
+  
+      const infoDiv = document.createElement('div');
+      infoDiv.classList.add('cl_2');
+
+      const name = document.createElement('h3');
+      name.textContent = ` ${classes.class_name}`;
+ 
+      const idSubject = document.createElement('p');
+      idSubject.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; // \u00A0 là khoảng trắng không ngắt dòng
+
+      const date = document.createElement('p');
+      date.textContent = `Date: ${new Date(classes.created_at).toLocaleDateString()}`;
+
+      const viewClassButton = document.createElement('button');
+      viewClassButton.textContent = 'View Class';
+  
+      const addClass = document.createElement('p');
+      addClass.classList.add('addClass')
+      addClass.appendChild(viewClassButton);
+  
+      projectDiv.addEventListener("click", function() {
+          openClass(classes.class_id);
+      });
+  
+      infoDiv.appendChild(name);
+      infoDiv.appendChild(idSubject);
+      infoDiv.appendChild(date);
+      infoDiv.appendChild(addClass);
+  
+      projectDiv.appendChild(img);
+      projectDiv.appendChild(infoDiv);
+      container.appendChild(projectDiv);
+  });
+
+  const container2 = document.getElementById("exam_container");
+
+  allExams.forEach(exam => {
+      const projectDiv = document.createElement('div');
+      projectDiv.classList.add('classes');
+  
+      const img = document.createElement('img');
+      img.src = "/src/exam.png";
+      img.alt = "Ảnh lớp học";  
+  
+      const infoDiv = document.createElement('div');
+      infoDiv.classList.add('cl_2');
+
+      const name = document.createElement('h3');
+      name.textContent = ` ${exam.title}`;
+ 
+      const idSubject = document.createElement('p');
+      idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; // \u00A0 là khoảng trắng không ngắt dòng
+                                                                                                                    
+      const date = document.createElement('p');
+      date.textContent = `Ended: ${new Date(exam.ended).toLocaleDateString()}`;
+
+      const viewClassButton = document.createElement('button');
+      viewClassButton.textContent = 'View Exam';
+  
+      const addClass = document.createElement('p');
+      addClass.classList.add('addClass')
+      addClass.appendChild(viewClassButton);
+  
+      projectDiv.addEventListener("click", function() {
+          openExam(exam.id, exam.title);
+      });
+  
+      infoDiv.appendChild(name);
+      infoDiv.appendChild(idSubject);
+      infoDiv.appendChild(date);
+      infoDiv.appendChild(addClass);
+  
+      projectDiv.appendChild(img);
+      projectDiv.appendChild(infoDiv);
+      container2.appendChild(projectDiv);
+  });
+
+  const usersList = document.getElementById("user_container");
+  usersList.innerHTML = "";
+  
+  // Giả sử 'users' là một mảng các đối tượng user
+  // Tạo phần tử bảng
+  const table = document.createElement("table");
+  table.style.width = "90%";
+  table.style.borderCollapse = "collapse";
+  table.style.margin = "auto";
+  table.style.marginTop = "20px";
+  table.style.border = "2px solid black";
+  
+  // Tạo hàng tiêu đề
+  const thead = document.createElement("thead");
+  const headerRow = document.createElement("tr");
+  const headers = ["Username", "Email", "Profession", "Fullname", "Last login"];
+  
+  headers.forEach(headerText => {
+    const th = document.createElement("th");
+    th.textContent = headerText;
+    th.style.padding = "10px";
+    th.style.borderBottom = "2px solid #ccc";
+    th.style.textAlign = "left";
+    headerRow.appendChild(th);
+  });
+  thead.appendChild(headerRow);
+  table.appendChild(thead);
+  
+  // Tạo phần thân bảng (tbody)
+  const tbody = document.createElement("tbody");
+  users.forEach(user => {
+    const row = document.createElement("tr");
+
+    const date = new Date(user.last_login);
+    date.setHours(date.getHours() + 7);
+    // Lấy từng thành phần
+    const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    const year = date.getFullYear();
+    const hours = date.getHours(); // Không cần padStart nếu muốn hiển thị 1 chữ số khi nhỏ hơn 10
+    const minutes = String(date.getMinutes()).padStart(2, '0');
+
+    // Kết hợp lại
+    const formatted = `${day}/${month}/${year} ${hours}:${minutes}`;
+    const userData = [user.username, user.email, user.profession, user.fullname, formatted];
+  
+    userData.forEach(data => {
+      const td = document.createElement("td");
+      td.textContent = data;
+      td.style.padding = "8px";
+      td.style.borderBottom = "1px solid #eee";
+      row.appendChild(td);
+    });
+
+    const td = document.createElement("td");
+    td.style.padding = "8px";
+    td.style.borderBottom = "1px solid #eee";
+    const btn = document.createElement("button");
+    btn.textContent = "Delete";
+    btn.style.border = "none";
+    btn.style.background = "red";
+    btn.style.width = "120px"
+    btn.style.height = "40px"
+    btn.style.color = "white";
+    btn.style.cursor = "pointer";
+    btn.addEventListener("mouseover", () => {
+      btn.style.backgroundColor = " #831109";
+    });
+    btn.addEventListener("mouseout", () => {
+      btn.style.backgroundColor = "red"; // Hoặc màu nền mặc định của bạn
+    });
+    td.appendChild(btn);
+    row.appendChild(td);
+
+    tbody.appendChild(row);
+  });
+  table.appendChild(tbody);
+  
+  // Thêm bảng vào container
+  usersList.appendChild(table);
+}
