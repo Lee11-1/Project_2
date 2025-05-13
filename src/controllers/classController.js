@@ -121,14 +121,15 @@ exports.deleteClass = async (req, res) => {
         return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
     }
     const user = req.session.user;
-    if (req.session.owner != user.id) {
+    if (req.session.owner != user.id && user.profession != "Admin") {
         return res.status(400).json({ message: 'Bạn không có quyền' });
     }
 
     const idClass = req.session.class_id;
     await pool.query('DELETE FROM classes WHERE id = $1', [idClass]);
 
-    res.json({ message: 'Deleted!!!', redirect: `/home/${user.username}` });
+    if(user.profession !="Admin") res.json({ message: 'Deleted!!!', redirect: `/home/${user.username}` });
+    else res.json({ message: 'Deleted!!!', redirect: `/admin/${user.username}` });
 };
 
 exports.getClassById = async (req, res) => {
@@ -198,6 +199,9 @@ exports.getInfoClass = async (req, res) => {
 
 
 exports.deleteMember = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     const user = req.session.user.id;
     if (req.session.owner != user) {
         return res.status(400).json({ message: 'Bạn không có quyền' });
@@ -214,7 +218,11 @@ exports.deleteMember = async (req, res) => {
 };
 
 exports.deleteRequestMember = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     const user = req.session.user;
+    
     if (req.session.owner != user.id) {
         return res.status(400).json({ message: 'Bạn không có quyền' });
     }
@@ -230,6 +238,9 @@ exports.deleteRequestMember = async (req, res) => {
 };
 
 exports.findMember = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     const user = req.session.user;
     const idClass = req.session.class_id;
     const { email, username } = req.body;
@@ -273,6 +284,9 @@ exports.findMember = async (req, res) => {
 };
 
 exports.addMember = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     const user = req.session.user;
     if (req.session.owner != user.id) {
         return res.status(400).json({ message: 'Bạn không có quyền' });

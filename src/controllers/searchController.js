@@ -22,6 +22,9 @@ exports.findClassBySubject = async (req, res) => {
 };
 
 exports.resultFind = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     try {
         const subject = req.session.subject;
         const user = req.session.user;

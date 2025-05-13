@@ -2,7 +2,7 @@ const express = require('express');
 const session = require("express-session");
 const bodyParser = require('body-parser');
 const app = express();
-const PORT = 3000;
+const PORT = 8080;
 const path = require('path');
 const compression = require("compression");
 const multer = require("multer");
@@ -12,6 +12,7 @@ const classRoutes = require('./routes/classRoutes');
 const requestRoutes = require('./routes/requestRoutes');
 const searchRoutes = require('./routes/searchRoutes');
 const examRoutes = require('./routes/examRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 app.use(compression());
 
@@ -33,12 +34,14 @@ app.use(classRoutes);
 app.use(requestRoutes);
 app.use( searchRoutes);
 app.use(examRoutes);
+app.use(adminRoutes);
 
 app.get('/', (req, res) => {
     if (!req.session.user) {
         return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
     }
     const user = req.session.user;
+    if(user.profession == "Admin")  return res.redirect(`/admin/${user.username}`);
     return res.redirect(`/home/${user.username}`);
 
 }); 
@@ -56,6 +59,14 @@ app.get("/home/:username", (req, res) => {
     }
     res.sendFile(path.join(__dirname,'..', "public", "student.html"));
 });
+
+app.get("/admin/:username", (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+    }
+    res.sendFile(path.join(__dirname,'..', "public", "admin.html"));
+});
+
 
 app.get("/:username/questionSet", (req, res) => {
     if (!req.session.user) {

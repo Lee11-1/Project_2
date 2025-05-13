@@ -32,7 +32,7 @@ exports.register = async (req, res) => {
 
         const userQuery = await pool.query("SELECT * FROM users WHERE username = $1", [username]);
         const user = userQuery.rows[0];
-        req.session.user = { id: user.id, profession: user.profession, username: user.username };
+        req.session.user = { id: user.id, profession: user.profession, username: user.username, password: password, email: email, fullname: fullname};
 
         redirectUrl = `/home/${user.username}`;
       
@@ -59,9 +59,14 @@ exports.signIn = async (req, res) => {
             return res.status(400).json({ message: "Email hoặc mật khẩu không đúng!" });
         }
 
-        req.session.user = { id: user.id, profession: user.profession, username: user.username };
+        
 
-        redirectUrl = `/home/${user.username}`;
+        req.session.user = { id: user.id, profession: user.profession, username: user.username ,password: password, email: user.email, fullname: user.fullname};
+        await pool.query(`UPDATE users SET last_login = CURRENT_TIMESTAMP WHERE id = $1`, [user.id]);
+
+
+        if(user.profession === "Teacher" || user.profession === "Student")  redirectUrl = `/home/${user.username}`;
+        else redirectUrl = `/admin/${user.username}`
        
         res.json({ message: "Đăng nhập thành công!", redirect: redirectUrl });
     } catch (error) {
@@ -109,6 +114,9 @@ exports.forgotPassword = async (req, res) => {
 
 
 exports.logout = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     req.session.destroy((err) => {
         if (err) {
             console.error("Lỗi khi đăng xuất:", err);
@@ -117,4 +125,19 @@ exports.logout = async (req, res) => {
     });
 };
 
+exports.myAcount = async (req, res) => {
+    if (!req.session.user){
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
+    return res.sendFile(path.join(__dirname, '..', '..', 'public', 'acount.html'));
+}
 
+exports.getAcountInfo = async (req, res)  => {
+    if (!req.session.user){
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
+
+    const user = req.session.user;
+    res.json({   user: user });
+   // req.session.user = { id: user.id, profession: user.profession, username: user.username, password: password};
+}

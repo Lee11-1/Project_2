@@ -2,6 +2,9 @@
 const pool = require('../data');
 
 exports.sendRequest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     try {
         const {idClass} = req.body;
         const user = req.session.user;
@@ -18,6 +21,9 @@ exports.sendRequest = async (req, res) => {
 };
 
 exports.unRequest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+    }
     try {
         const {idClass} = req.body;
         const user = req.session.user;

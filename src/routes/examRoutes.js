@@ -13,6 +13,8 @@ router.get('/exam/:exam_title', examController.startExam);
 router.get('/getDataForExam', examController.getDataForExam);
 router.get('/getAttempt', examController.getAttempt);
 router.post('/submitExam', examController.submitExam);
+// router.get("/getCorrectAnswer", examController.Answer);
+
 
 router.post('/createQuestionSet', examController.createQuestionSet);
 router.get('/all-questionSet', examController.getAllSet);
