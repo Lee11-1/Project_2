@@ -76,7 +76,7 @@ exports.signIn = async (req, res) => {
 };
 
 exports.forgot = async (req, res) => {
-    res.sendFile(path.join(__dirname, '..','..', "public", "fogot.html"));
+    res.sendFile(path.join(__dirname, '..', "public", "fogot.html"));
 };
 
 exports.forgotPassword = async (req, res) => {
@@ -115,7 +115,7 @@ exports.forgotPassword = async (req, res) => {
 
 exports.logout = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     req.session.destroy((err) => {
         if (err) {
@@ -127,14 +127,14 @@ exports.logout = async (req, res) => {
 
 exports.myAcount = async (req, res) => {
     if (!req.session.user){
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
-    return res.sendFile(path.join(__dirname, '..', '..', 'public', 'acount.html'));
+    return res.sendFile(path.join(__dirname,  '..', 'public', 'acount.html'));
 }
 
 exports.getAcountInfo = async (req, res)  => {
     if (!req.session.user){
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
 
     const user = req.session.user;

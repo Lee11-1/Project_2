@@ -7,7 +7,7 @@ const fs = require('fs');
 
 exports.getAllClasses = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
 
     try {
@@ -66,7 +66,7 @@ exports.getAllClasses = async (req, res) => {
 
 exports.addClass = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     try {
         const { className, subject, type } = req.body;
@@ -118,7 +118,7 @@ exports.addClass = async (req, res) => {
 
 exports.deleteClass = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     const user = req.session.user;
     if (req.session.owner != user.id && user.profession != "Admin") {
@@ -134,7 +134,7 @@ exports.deleteClass = async (req, res) => {
 
 exports.getClassById = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const class_id = req.params.class_id;
@@ -149,7 +149,7 @@ exports.getClassById = async (req, res) => {
         }
 
         req.session.class_id = class_id;
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'class.html'));
+        res.sendFile(path.join(__dirname, '..', 'public', 'class.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');
@@ -158,7 +158,7 @@ exports.getClassById = async (req, res) => {
 
 exports.getInfoClass = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const class_id = req.session.class_id;
@@ -200,7 +200,7 @@ exports.getInfoClass = async (req, res) => {
 
 exports.deleteMember = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     const user = req.session.user.id;
     if (req.session.owner != user) {
@@ -219,7 +219,7 @@ exports.deleteMember = async (req, res) => {
 
 exports.deleteRequestMember = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     const user = req.session.user;
     
@@ -239,7 +239,7 @@ exports.deleteRequestMember = async (req, res) => {
 
 exports.findMember = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     const user = req.session.user;
     const idClass = req.session.class_id;
@@ -285,7 +285,7 @@ exports.findMember = async (req, res) => {
 
 exports.addMember = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     const user = req.session.user;
     if (req.session.owner != user.id) {
@@ -306,7 +306,7 @@ exports.addMember = async (req, res) => {
 
 exports.createFolder = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..',  '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,   '..', 'public', 'home.html'));
     }
     const { folderName } = req.body;
     const folderPath = path.join(__dirname, '..', 'uploads', folderName);

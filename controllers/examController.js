@@ -18,7 +18,7 @@ exports.createExam = async (req, res) => {
         const userId = req.session.user?.id;
 
         if (!req.session.user) {
-            return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+            return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
         }
 
         const checkExam = await pool.query(
@@ -52,7 +52,7 @@ exports.createExam = async (req, res) => {
 
 exports.getExamById = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     try {
         const exam_id = req.params.exam_id;
@@ -67,9 +67,9 @@ exports.getExamById = async (req, res) => {
         }
 
         req.session.exam_id = exam_id;
-        if (req.session.user.profession == "Admin") res.sendFile(path.join(__dirname, '..', '..', 'public', 'controllExam.html'));
-        else if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname, '..', '..', 'public', 'beforeTest.html'));
-        else res.sendFile(path.join(__dirname, '..', '..', 'public', 'controllExam.html'));
+        if (req.session.user.profession == "Admin") res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
+        else if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname,  '..', 'public', 'beforeTest.html'));
+        else res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');
@@ -88,7 +88,7 @@ exports.createQuestionSet = async (req, res) => {
         const userId = req.session.user?.id;
 
         if (!req.session.user) {
-            return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+            return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
         }
 
         const checkSet = await pool.query(
@@ -122,7 +122,7 @@ exports.createQuestionSet = async (req, res) => {
 
 exports.getAllSet= async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
 
     try {
@@ -146,7 +146,7 @@ exports.getAllSet= async (req, res) => {
 
 exports.getQuestionSetById = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     try {
         const set_id = req.params.set_id;
@@ -161,7 +161,7 @@ exports.getQuestionSetById = async (req, res) => {
         }
 
         req.session.set_id = set_id;
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'questions.html'));
+        res.sendFile(path.join(__dirname, '..', 'public', 'questions.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');
@@ -171,7 +171,7 @@ exports.getQuestionSetById = async (req, res) => {
 exports.getInfoQuestionSet = async (req, res) => {
     try {
         if (!req.session.user) {
-            return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+            return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
         }
         const set_id = req.session.set_id;
 
@@ -200,7 +200,7 @@ exports.addQuestionToSet = async (req, res) =>{
     try {
 
         if (!req.session.user) {
-            return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+            return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
         }
         const { task, title, answer_A, answer_B, answer_C, answer_D, answer_correct  } = req.body;
 
@@ -227,7 +227,7 @@ exports.addQuestionToSet = async (req, res) =>{
 
 exports.deleteSet = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     const user = req.session.user;
     const {set_id} = req.body;
@@ -243,7 +243,7 @@ exports.deleteSet = async (req, res) => {
 
 exports.findMember = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     const user = req.session.user;
     const exam_id = req.session.exam_id;
@@ -287,7 +287,7 @@ exports.findMember = async (req, res) => {
 
 exports.addQuestionToExam = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const { questionID } = req.body;
@@ -322,7 +322,7 @@ exports.addQuestionToExam = async (req, res) => {
 
 exports.deleteQuestionToExam = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     const exam_id = req.session.exam_id;
     const {questionID} = req.body;
@@ -351,7 +351,7 @@ exports.deleteQuestionToExam = async (req, res) => {
 // }
 exports.findQuestions = async(req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         console.log(req.body);
@@ -369,7 +369,7 @@ exports.findQuestions = async(req, res) => {
 
 exports.getInfoExam = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const exam_id = req.session.exam_id;
@@ -409,7 +409,7 @@ exports.getInfoExam = async (req, res) => {
 
 exports.checkStartExam = async(req, res) =>{
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const exam_id = req.session.exam_id;
@@ -431,10 +431,10 @@ exports.checkStartExam = async(req, res) =>{
 
 exports.startExam = async(req, res) =>{
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     try {
-        res.sendFile(path.join(__dirname, '..', '..', 'public', 'test.html'));
+        res.sendFile(path.join(__dirname, '..', 'public', 'test.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
@@ -444,7 +444,7 @@ exports.startExam = async(req, res) =>{
 
 exports.getDataForExam = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     try {
         const exam_id = req.session.exam_id;
@@ -477,7 +477,7 @@ exports.getDataForExam = async (req, res) => {
 
 exports.getAttempt = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const exam_id = req.session.exam_id;
@@ -496,7 +496,7 @@ exports.getAttempt = async (req, res) => {
 
 exports.submitExam = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const now = new Date();

@@ -21,7 +21,7 @@ function displayAllClass(allClass){
         name.textContent = ` ${classes.class_name}`;
    
         const idSubject = document.createElement('p');
-        idSubject.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; // \u00A0 là khoảng trắng không ngắt dòng
+        idSubject.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; 
  
         const date = document.createElement('p');
         date.textContent = `Date: ${new Date(classes.created_at).toLocaleDateString()}`;
@@ -75,7 +75,7 @@ function displayExam(allExams){
         name.textContent = ` ${exam.title}`;
    
         const idSubject = document.createElement('p');
-        idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; // \u00A0 là khoảng trắng không ngắt dòng
+        idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; 
                                                                                                                       
         const date = document.createElement('p');
         date.textContent = `Ended: ${new Date(exam.ended).toLocaleDateString()}`;
@@ -294,12 +294,12 @@ function displayAllQuestion(questions, id) {
         return saved ? JSON.parse(saved) : [];
     }
     
-      // Function to save selected checkbox IDs to Local Storage
+    
     function saveSelectedCheckboxes(selectedIds) {
         localStorage.setItem('selectedQuestions', JSON.stringify(selectedIds));
     }
     
-    let selectedCheckboxes = getSelectedCheckboxes(); // Load saved state
+    let selectedCheckboxes = getSelectedCheckboxes(); 
   
     questions.forEach((question, index) => { 
     
@@ -307,7 +307,7 @@ function displayAllQuestion(questions, id) {
       quizDiv.className = "quiz";
   
       const questionTitle = document.createElement("h3");
-      //questionTitle.textContent = `Câu số ${index + 1} (${question.task}):`;
+  
       questionTitle.textContent = `Câu số ${index + 1}${id !== "examQuestions" ? ` (${question.task})` : ''}:`;
 
   
@@ -337,31 +337,31 @@ function displayAllQuestion(questions, id) {
 
         const checkbox = document.createElement("input");
         checkbox.type = "checkbox";
-        checkbox.id = `${question.id}`; // Unique ID for the checkbox
-        checkbox.className = "question-checkbox"; // Class for styling if needed
+        checkbox.id = `${question.id}`; 
+        checkbox.className = "question-checkbox"; 
         
         const isChecked = selectedCheckboxes.includes(checkbox.id);
         checkbox.checked = isChecked;
     
-        // Lắng nghe sự kiện 'change' của checkbox
+       
         checkbox.addEventListener("change", function() {
           if (this.checked) {
-            // Add to the list of selected checkboxes
+           
             if (!selectedCheckboxes.includes(this.id)) {
               selectedCheckboxes.push(this.id);
             }
           } else {
-            // Remove from the list of selected checkboxes
+   
             selectedCheckboxes = selectedCheckboxes.filter(id => id !== this.id);
           }
-          saveSelectedCheckboxes(selectedCheckboxes); // Save the updated list
+          saveSelectedCheckboxes(selectedCheckboxes);
           displayNumOfQuestionSelected()
           console.log(selectedCheckboxes);
         });
 
-        const questionHeader = document.createElement("div"); //create a div to hold checkbox and questionTitle
-        questionHeader.style.display = "flex"; //use flexbox to align items
-        questionHeader.style.alignItems = "center"; // vertically center items
+        const questionHeader = document.createElement("div"); 
+        questionHeader.style.display = "flex"; 
+        questionHeader.style.alignItems = "center";
         questionHeader.appendChild(checkbox);
         questionHeader.appendChild(questionTitle);
         quizDiv.appendChild(questionHeader); 
@@ -393,7 +393,7 @@ function displayAllQuestion(questions, id) {
   
       questionsList.appendChild(quizDiv);
     });
-    saveSelectedCheckboxes(selectedCheckboxes); //save initial state
+    saveSelectedCheckboxes(selectedCheckboxes); 
 }
 
 function displayListQuestionSet(allSets){
@@ -427,7 +427,7 @@ function displayQuestionForExam(questions, time) {
   questions.forEach((question, index) => {
     const quizDiv = document.createElement("div");
     quizDiv.className = "quiz";
-    quizDiv.id = `quiz-${index}`; // Thêm ID để dễ truy cập
+    quizDiv.id = `quiz-${index}`; 
 
     const questionHTML = `
       <h3>Câu số ${index + 1}:</h3>
@@ -442,11 +442,11 @@ function displayQuestionForExam(questions, time) {
     quizDiv.innerHTML = questionHTML;
     quizContainer.appendChild(quizDiv);
 
-    // Lắng nghe sự kiện thay đổi của các radio button
+    
     const answerInputs = quizDiv.querySelectorAll('.answer');
     answerInputs.forEach(input => {
       input.addEventListener('change', () => {
-        // Lưu đáp án đã chọn vào thuộc tính data của questionDiv
+     
         quizDiv.dataset.selectedAnswer = input.value;
       });
     });
@@ -491,22 +491,22 @@ function displayQuestionForExam(questions, time) {
 function displayTime(time, questions) {
   const timerDisplay = document.getElementById('timer');
   const examTimeKey = `examTime_${time.id}`;
-  const startTimeKey = `startTime_${time.id}`; // Key để lưu thời điểm bắt đầu
+  const startTimeKey = `startTime_${time.id}`;
 
   let duration = time.timelimit * 60;
   let startTime;
 
-  // Kiểm tra xem thời gian bắt đầu đã được lưu chưa
+
   if (localStorage.getItem(startTimeKey)) {
       startTime = parseInt(localStorage.getItem(startTimeKey), 10);
       const now = Date.now();
       const elapsed = Math.floor((now - startTime) / 1000); 
       duration = Math.max(0, duration - elapsed); 
   } else {
-      // Nếu chưa có, lưu thời điểm bắt đầu
+
       startTime = Date.now();
       localStorage.setItem(startTimeKey, startTime.toString());
-      localStorage.setItem(examTimeKey, duration.toString()); // Lưu cả duration để đồng bộ
+      localStorage.setItem(examTimeKey, duration.toString());
   }
   if (duration <= 0) {
     timerDisplay.textContent = "Hết giờ";
@@ -521,11 +521,11 @@ function displayTime(time, questions) {
       timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
   }
 
-  updateTimerDisplay(); // Hiển thị ngay lập tức
+  updateTimerDisplay(); 
 
   const timerInterval = setInterval(() => {
       duration--;
-      localStorage.setItem(examTimeKey, duration.toString()); // Lưu thời gian còn lại
+      localStorage.setItem(examTimeKey, duration.toString());
       updateTimerDisplay();
 
       if (duration <= 0) {
@@ -543,17 +543,17 @@ function displayTime(time, questions) {
 
  
 
-  function displayAttempt(attempts) {
-    const attemptList = document.getElementById("userAttempts");
-    attemptList.innerHTML = ''; // Clear any existing content
+  function displayAttempt(attempts, id) {
+    const attemptList = document.getElementById(id);
+    attemptList.innerHTML = ''; 
   
-    // Create the table element
+    
     const table = document.createElement("table");
     table.style.width = "100%";
     table.style.borderCollapse = "collapse";
     table.style.margin = "20px 0";
   
-    // Create the table header
+  
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
   
@@ -582,12 +582,12 @@ function displayTime(time, questions) {
     thead.appendChild(headerRow);
     table.appendChild(thead);
   
-    // Create the table body
+  
     const tbody = document.createElement("tbody");
     attempts.forEach((attempt, index) => { console.log(attempt);
       const row = document.createElement("tr");
       const idCell = document.createElement("td");
-      idCell.textContent = index + 1; // ID tăng dần
+      idCell.textContent = index + 1;
       idCell.style.padding = "10px";
       idCell.style.borderBottom = "1px solid #ddd";
   
@@ -597,7 +597,7 @@ function displayTime(time, questions) {
       scoreCell.style.borderBottom = "1px solid #ddd";
   
       const timeCell = document.createElement("td");
-      timeCell.textContent = attempt.submitted_at; // Giả sử tên thuộc tính là time_attempt
+      timeCell.textContent = attempt.submitted_at;
       timeCell.style.padding = "10px";
       timeCell.style.borderBottom = "1px solid #ddd";
   
@@ -608,7 +608,7 @@ function displayTime(time, questions) {
     });
     table.appendChild(tbody);
   
-    // Add the table to the container
+   
     attemptList.appendChild(table);
   }
 
@@ -620,7 +620,6 @@ function displayTime(time, questions) {
       return;
     }
   
-    // Xóa nội dung cũ nếu có
     bodyPage.innerHTML = '';
   
     const container = document.createElement('div');
@@ -634,7 +633,7 @@ function displayTime(time, questions) {
     description.textContent = 'Thiết lập thông tin cơ bản về tài khoản của bạn.';
     container.appendChild(description);
   
-    // Hàm tạo một hàng thông tin
+
     function createInfoRow(labelText, valueText, descriptionText, isInput = false, inputType = 'text') {
       const formGroup = document.createElement('div');
       formGroup.classList.add('form-group');
@@ -666,7 +665,7 @@ function displayTime(time, questions) {
       return formGroup;
     }
   
-    // Tạo các hàng thông tin
+ 
     container.appendChild(createInfoRow(
       'Tên đăng nhập',
       info.username,
@@ -690,12 +689,11 @@ function displayTime(time, questions) {
   
     container.appendChild(createInfoRow(
       'Profession',
-      info.profession || '', // Giả sử info có thuộc tính phone
+      info.profession || '', 
       'Your profession',
       true
     ));
-  
-    // Phần mật khẩu
+ 
     const passwordGroup = document.createElement('div');
     passwordGroup.classList.add('password-group');
   
@@ -732,7 +730,6 @@ function displayTime(time, questions) {
   
     bodyPage.appendChild(container);
   
-    // Đừng quên thêm CSS vào phần <head> của file HTML của bạn
     const style = document.createElement('style');
     style.textContent = `
       .container {
@@ -819,7 +816,7 @@ function displayDataForAdmin(users, allClass, allExams){
       name.textContent = ` ${classes.class_name}`;
  
       const idSubject = document.createElement('p');
-      idSubject.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; // \u00A0 là khoảng trắng không ngắt dòng
+      idSubject.textContent = `ID: ${classes.class_id} \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Subject: ${classes.subject}`; 
 
       const date = document.createElement('p');
       date.textContent = `Date: ${new Date(classes.created_at).toLocaleDateString()}`;
@@ -862,7 +859,7 @@ function displayDataForAdmin(users, allClass, allExams){
       name.textContent = ` ${exam.title}`;
  
       const idSubject = document.createElement('p');
-      idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; // \u00A0 là khoảng trắng không ngắt dòng
+      idSubject.textContent = `Time linmit: ${exam.timelimit} minute \u00A0\u00A0\u00A0\u00A0\u00A0\u00A0 Number questions: ${exam.numberquestion}`; 
                                                                                                                     
       const date = document.createElement('p');
       date.textContent = `Ended: ${new Date(exam.ended).toLocaleDateString()}`;
@@ -891,8 +888,7 @@ function displayDataForAdmin(users, allClass, allExams){
   const usersList = document.getElementById("user_container");
   usersList.innerHTML = "";
   
-  // Giả sử 'users' là một mảng các đối tượng user
-  // Tạo phần tử bảng
+
   const table = document.createElement("table");
   table.style.width = "90%";
   table.style.borderCollapse = "collapse";
@@ -900,7 +896,7 @@ function displayDataForAdmin(users, allClass, allExams){
   table.style.marginTop = "20px";
   table.style.border = "2px solid black";
   
-  // Tạo hàng tiêu đề
+
   const thead = document.createElement("thead");
   const headerRow = document.createElement("tr");
   const headers = ["Username", "Email", "Profession", "Fullname", "Last login"];
@@ -916,21 +912,21 @@ function displayDataForAdmin(users, allClass, allExams){
   thead.appendChild(headerRow);
   table.appendChild(thead);
   
-  // Tạo phần thân bảng (tbody)
+  
   const tbody = document.createElement("tbody");
   users.forEach(user => {
     const row = document.createElement("tr");
 
     const date = new Date(user.last_login);
     date.setHours(date.getHours() + 7);
-    // Lấy từng thành phần
+  
     const day = String(date.getDate()).padStart(2, '0');
-    const month = String(date.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+    const month = String(date.getMonth() + 1).padStart(2, '0');
     const year = date.getFullYear();
-    const hours = date.getHours(); // Không cần padStart nếu muốn hiển thị 1 chữ số khi nhỏ hơn 10
+    const hours = date.getHours(); 
     const minutes = String(date.getMinutes()).padStart(2, '0');
 
-    // Kết hợp lại
+    
     const formatted = `${day}/${month}/${year} ${hours}:${minutes}`;
     const userData = [user.username, user.email, user.profession, user.fullname, formatted];
   
@@ -957,7 +953,7 @@ function displayDataForAdmin(users, allClass, allExams){
       btn.style.backgroundColor = " #831109";
     });
     btn.addEventListener("mouseout", () => {
-      btn.style.backgroundColor = "red"; // Hoặc màu nền mặc định của bạn
+      btn.style.backgroundColor = "red"; 
     });
     td.appendChild(btn);
     row.appendChild(td);
@@ -966,6 +962,5 @@ function displayDataForAdmin(users, allClass, allExams){
   });
   table.appendChild(tbody);
   
-  // Thêm bảng vào container
   usersList.appendChild(table);
 }

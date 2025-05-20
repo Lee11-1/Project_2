@@ -1360,10 +1360,10 @@ button{
 .btnControll{
     display: flex;
     width: 60%;
-    margin-left: 70%;
+    margin-left: 55%;
     top: 80px; /* <- quan trọng! */
     position: sticky;
-   
+   z-index: 800;
 }
 .addQuestionToExam{
     background-color: #14888e;
@@ -1375,7 +1375,7 @@ button{
     color: white;
     font-size: 20px;
     cursor: pointer;
-    z-index: 1000; 
+    z-index: 800; 
 }
 
 .deleteSelect{
@@ -1415,7 +1415,7 @@ button{
 }
 .bodyControllExam{
     width: 100%;
-    min-height: 500px;
+    min-height: 700px;
     margin: auto;
     margin-top: 1%;
     border-radius: 1.25rem;
@@ -1437,6 +1437,23 @@ button{
     z-index: 800; 
 }
 .deleteExam:hover{
+    background-color: rgb(100, 13, 13);
+}
+.viewPoint{
+    background-color: #e92323;
+    width: 180px;
+    height: 50px;
+    margin-left: 1%;
+    margin-right: 1%;
+    margin-top: 1%;
+    border: none;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    z-index: 800;  
+}
+.viewPoint:hover{
     background-color: rgb(100, 13, 13);
 }
 .viewMemAndQues{
@@ -1572,6 +1589,7 @@ button{
     border: none;
     border-radius: 0.5rem;
     margin-left: 2%;
+    z-index: 500;
 }
 #addQuestionToExamButton:hover{
     background-color: #0c474a;

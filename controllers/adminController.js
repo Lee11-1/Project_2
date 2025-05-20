@@ -2,7 +2,7 @@ const pool = require('../data');
 
 exports.getAllData = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
 
     try {

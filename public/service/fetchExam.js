@@ -44,7 +44,7 @@ async function getUserAttemp() {
         const response = await fetch("/getAttempt");
         const result = await response.json();
         if (response.ok) {
-            displayAttempt(result.attempts);
+            displayAttempt(result.attempts, "userAttempts");
         } else{
             alert(result.message);
         }
@@ -53,6 +53,7 @@ async function getUserAttemp() {
         alert("Có lỗi xảy ra, vui lòng thử lại.");
     }    
 }
+
 
 async function getListQuestionSet() {
 

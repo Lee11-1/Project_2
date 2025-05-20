@@ -86,7 +86,9 @@ async function openClass(class_id) {
         alert("Có lỗi xảy ra, vui lòng thử lại.");
     }
 }
-
+async function allAttempts(exam_id) {
+     
+}
 async function openExam(exam_id, exam_title) {
     try {
         window.location.href = `/exam/${exam_title}/${exam_id}`

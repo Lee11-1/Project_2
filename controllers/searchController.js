@@ -3,7 +3,7 @@ const path = require('path');
 
 exports.findClassBySubject = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..','..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const subject = req.params.subject;
@@ -13,7 +13,7 @@ exports.findClassBySubject = async (req, res) => {
         }
 
         req.session.subject = subject;
-        res.sendFile(path.join(__dirname, '..','..', 'public', 'serch-result.html'));
+        res.sendFile(path.join(__dirname, '..', 'public', 'serch-result.html'));
 
     } catch (error) {
         console.error("Lỗi:", error);
@@ -23,7 +23,7 @@ exports.findClassBySubject = async (req, res) => {
 
 exports.resultFind = async (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname, '..', '..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
     }
     try {
         const subject = req.session.subject;

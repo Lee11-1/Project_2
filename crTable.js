@@ -75,7 +75,7 @@ const createTable = async () => {
       CREATE TABLE IF NOT EXISTS questions_tests (
         id SERIAL PRIMARY KEY,
         test_id INT REFERENCES tests(id) ON DELETE CASCADE,
-        question_id INT REFERENCES questions(id) ON DELETE CASCADE,
+        question_id INT REFERENCES questions(id) ON DELETE CASCADE
       );
 
       CREATE TABLE IF NOT EXISTS test_attempts (
@@ -120,26 +120,13 @@ const createTable = async () => {
       CREATE TABLE IF NOT EXISTS exams_mem(
         id SERIAL PRIMARY KEY,
         exam_id INT REFERENCES exams(id) ON DELETE CASCADE,
-        user_id INT REFERENCES users(id) ON DELETE CASCADE )
+        user_id INT REFERENCES users(id) ON DELETE CASCADE );
 `;
 
-const query1 = `  
-      CREATE TABLE IF NOT EXISTS questions_tests (
-        id SERIAL PRIMARY KEY,
-        test_id INT REFERENCES tests(id) ON DELETE CASCADE,
-        question_id INT REFERENCES questions(id) ON DELETE CASCADE
-      );
-      CREATE TABLE IF NOT EXISTS questions_exams (
-        id SERIAL PRIMARY KEY,
-        exam_id INT REFERENCES exams(id) ON DELETE CASCADE,
-        question_id INT REFERENCES questions(id) ON DELETE CASCADE
-      );
 
-
-                    ` ;
      
 
-    await pool.query(query1);
+    await pool.query(query);
     console.log("✅ Tạo bảng thành công!");
   } catch (err) {
     console.error("❌ Lỗi tạo bảng:", err);

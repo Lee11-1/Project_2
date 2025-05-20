@@ -26,8 +26,8 @@ app.use(session({
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-app.use(express.static(path.join(__dirname,'..', 'public')));
-app.use(express.static(path.join(__dirname,'..', 'src')));
+app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'src')));
 
 app.use(authRoutes);
 app.use(classRoutes);
@@ -38,7 +38,7 @@ app.use(adminRoutes);
 
 app.get('/', (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
     }
     const user = req.session.user;
     if(user.profession == "Admin")  return res.redirect(`/admin/${user.username}`);
@@ -47,7 +47,7 @@ app.get('/', (req, res) => {
 }); 
 app.get('/questionSet', (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
     }
     const user = req.session.user;
     return res.redirect(`/${user.username}/questionSet`);
@@ -55,24 +55,24 @@ app.get('/questionSet', (req, res) => {
 }); 
 app.get("/home/:username", (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
     }
-    res.sendFile(path.join(__dirname,'..', "public", "student.html"));
+    res.sendFile(path.join(__dirname, "public", "student.html"));
 });
 
 app.get("/admin/:username", (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
     }
-    res.sendFile(path.join(__dirname,'..', "public", "admin.html"));
+    res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
 
 app.get("/:username/questionSet", (req, res) => {
     if (!req.session.user) {
-        return res.sendFile(path.join(__dirname,'..', 'public', 'home.html'));
+        return res.sendFile(path.join(__dirname, 'public', 'home.html'));
     }
-    res.sendFile(path.join(__dirname,'..', "public", "questionSet.html"));
+    res.sendFile(path.join(__dirname, "public", "questionSet.html"));
 });
 
 app.listen(PORT, () => {
