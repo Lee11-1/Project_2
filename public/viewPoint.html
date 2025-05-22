@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attempts</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #bodyViewPoint {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        #allAttempts {
+            margin-bottom: 40px;
+        }
+
+        .view-point-table {
+            width: 80%;
+            border-collapse: collapse;
+            margin: auto;
+            font-size: 16px;
+            border: 2px solid #14888e;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .view-point-table th,
+        .view-point-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #b3b5b6;
+            vertical-align: middle;
+        }
+
+        .view-point-table th {
+            background-color: #14888e;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+        .view-point-table td {
+            font-size: 16px;
+        }
+
+        /* Style cho biểu đồ */
+        #bodyViewPoint canvas {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        /* Style cho h*/
+        #footer {
+            margin-top: 40px;
+            padding: 20px 0;
+            background-color: #f8f9fa;
+            border-top: 1px solid #dee2e6;
+        }
+
+        /* Responsive design */
+        @media (max-width: 768px) {
+            #bodyViewPoint {
+                margin: 10px;
+                padding: 10px;
+            }
+
+            .view-point-table {
+                font-size: 14px;
+            }
+
+            .view-point-table th,
+            .view-point-table td {
+                padding: 10px;
+            }
+        }
+
+        /* Style cho tiêu đề */
+        h2 {
+            color: #14888e;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        /* Style cho container */
+        .container {
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div id="header2" class="header"></div>
+    <div id="form"></div>
+
+    <div id="bodyViewPoint">
+        <h2>Kết quả bài thi</h2>
+        <div id="allAttempts"></div>
+    </div>
+    <div id="footer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="/js/display.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/service/fetch.js"></script>
+    <script src="/service/fetchExam.js"></script>
+    <script>
+        $('#header2').load('/student.html #header');
+        $('#form').load('/student.html #form', function(){
+            addClass();
+           createExam();
+           createQuestionSet();   
+        } );
+        $('#footer').load('/home.html #footer');
+    </script>
+    <script>
+        window.addEventListener('load', function() {
+            const attemptsData = localStorage.getItem('attemptsData');
+            if (attemptsData) {
+                const attempts = JSON.parse(attemptsData);
+                displayViewPoint(attempts, "allAttempts");
+                displayGraph(attempts, "bodyViewPoint");
+            }
+        });
+    </script>
+</body>
+</html>

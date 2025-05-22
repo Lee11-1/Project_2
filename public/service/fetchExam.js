@@ -1,4 +1,3 @@
-
 async function addMemToExam() {
     const form = document.getElementById("findMember"); 
     const formData = new FormData(form);
@@ -160,4 +159,20 @@ function addQuestion() {
             alert("Có lỗi xảy ra, vui lòng thử lại.");
         }
     });
+}
+
+async function allAttempts(exam_id) {
+    try {
+        const response = await fetch(`/getAllAttempts/${exam_id}`);
+        const result = await response.json();
+        if (response.ok) {
+            localStorage.setItem('attemptsData', JSON.stringify(result.attempts));
+            window.location.href = "/viewPoint";
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
 }

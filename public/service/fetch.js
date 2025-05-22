@@ -86,9 +86,7 @@ async function openClass(class_id) {
         alert("Có lỗi xảy ra, vui lòng thử lại.");
     }
 }
-async function allAttempts(exam_id) {
-     
-}
+
 async function openExam(exam_id, exam_title) {
     try {
         window.location.href = `/exam/${exam_title}/${exam_id}`
@@ -124,6 +122,10 @@ async function loadExamData() {
             const h2 = document.getElementById("header3");
             h2.style.display = "block";
         }
+        const btn4 = document.getElementById("viewPoint");
+        btn4.addEventListener("click", function(){
+            allAttempts(data.exam_id);
+        });
     } catch (error) {
         console.error("Lỗi:", error);
         alert("Không thể tải dữ liệu lớp học.");

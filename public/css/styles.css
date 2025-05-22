@@ -976,6 +976,7 @@ button{
     width: 100%;
     font-size: 20px;
     border-radius: 0.5rem;
+    padding: 10px;
     border: 1px solid black;
 }
 .findMem, .nextInfo{
@@ -1080,6 +1081,7 @@ button{
 .deleteMem{
     margin-left: 1%;
     margin-right: 1%;
+    margin-bottom: 2px;
 }
 
 .deleteMem:hover{
@@ -1170,6 +1172,7 @@ button{
 .time{
     display: flex;
     position: relative;
+    width: 300px;
     margin-top: 2%;
     margin-left: 75%;
     margin-right: 5%;
@@ -1182,8 +1185,8 @@ button{
     font-weight: 600;
     margin: auto;
 
-}
-.submitTest{
+} 
+/* .submitTest{
     width: 120px;
     height: 40px;
     color: white;
@@ -1194,7 +1197,7 @@ button{
 }
 .submitTest:hover{
     background-color: #05334a;
-}
+} */
 .quiz{
     min-height: 150px;
     height: auto;
@@ -1203,7 +1206,7 @@ button{
     margin-left: 8%;
 }
 .quiz p{
-    margin-left: 7%;
+    margin-left: 45px;
 }
 .correct{
     color: red;
@@ -1250,28 +1253,15 @@ button{
 .bfExam button:hover{
     background-color: #05334a;
 }
-.left_set{
-    width: 50%;
-}
-.right_set{
-    width: 70%;
-}
+
 .set_container{
     width: 80%;
     margin: auto;
-    padding-top: 20px;
     min-height: 600px;
     font-size: 20px;
     font-weight: 500;
-    border: 2px solid rgb(10, 48, 33);
-    border-radius: 1.25rem;
 }
-.set_container li{
-    padding-left: 20px;
-    display: flex;
-    position: relative;
-    margin-top: 2%;
-}
+
 .set_container li p{
     margin-top: auto;
     margin-bottom: auto;
@@ -1281,13 +1271,6 @@ button{
     flex: 1;
     width: 120px;
     height: 40px;
-    margin-right: 10px;
-    background-color: #14888e;
-    color: white;
-    cursor: pointer;
-    border-radius: 0.5rem;
-    border: none;
-    margin-right: 2%;
     z-index: 500; 
 }
 .viewSet:hover{
@@ -1691,4 +1674,12 @@ button{
 
 #header3{
     display: none;
+}
+
+#bodyViewPoint{
+    width: 100%;
+    margin: auto;
+    min-height: 600px;
+    margin-top: 2%;
+    
 }

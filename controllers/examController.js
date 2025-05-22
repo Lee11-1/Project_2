@@ -1,4 +1,3 @@
-
 const pool = require('../data');
 const path = require('path');
 
@@ -399,7 +398,8 @@ exports.getInfoExam = async (req, res) => {
         res.json({
             members: member.rows,
             questions: question.rows,
-            profession: req.session.user.profession 
+            profession: req.session.user.profession,
+            exam_id: exam_id  
         });
     } catch (error) {
         console.error('Lỗi:', error);
@@ -536,7 +536,12 @@ exports.submitExam = async (req, res) => {
             });
           }
 
-        let score = parseFloat(score1*10)/numOfQuestion; 
+        console.log(numOfQuestion)
+        ;
+        let score ;
+        if(numOfQuestion) score = parseFloat(score1*10)/numOfQuestion; 
+        else score = 0;
+        
         await pool.query("INSERT INTO exam_attempts (user_id, exam_id, score)  VALUES ($1, $2, $3) ", [user_id, exam_id, score]);
 
         res.json({ message: "Save thanh cong!!", redirect: `/exam/${exam.rows[0].title}/${exam_id}`});
@@ -546,6 +551,31 @@ exports.submitExam = async (req, res) => {
         res.status(500).json({ message: 'Lỗi server!' });
     }
 }
+
+exports.getAllAttempts = async (req, res) => {
+    const exam_id = req.params.exam_id;
+    const attempts = await pool.query(
+        `SELECT DISTINCT ON (users.id)
+            exam_attempts.*,
+            users.fullname
+        FROM exam_attempts
+        JOIN users ON exam_attempts.user_id = users.id
+        WHERE exam_attempts.exam_id = $1
+        ORDER BY users.id, exam_attempts.score DESC, exam_attempts.submitted_at DESC
+`,
+        [exam_id]
+    );
+    const testAttempts = await pool.query("SELECT * FROM exam_attempts WHERE exam_id = $1", [exam_id]);
+    console.log(attempts.rows);
+    console.log(testAttempts.rows);
+    res.json({ attempts: attempts.rows });
+}   
+
+exports.viewPoint = async (req, res) => {
+    res.sendFile(path.join(__dirname, '..', 'public', 'viewPoint.html'));
+}
+
+
 
 // exports.Answer = async (req, res) => {
 //     try {

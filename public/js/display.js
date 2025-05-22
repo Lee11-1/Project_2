@@ -1,4 +1,3 @@
-
 function displayAllClass(allClass){
     const container = document.getElementById("class_container");
     container.innerHTML = ''; 
@@ -112,65 +111,344 @@ function displayExam(allExams){
 
 function displayClassInfo(classInfo, infoOwner){
     const infoDiv = document.getElementById('class-name');
-    infoDiv.innerHTML = '';
+    if (!infoDiv) {
+        console.error('Element with id "class-name" not found');
+        return;
+    }
+
+    // Thêm CSS cho class info
+    const style = document.createElement('style');
+    style.textContent = `
+        .class-info-container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin: 20px auto;
+            max-width: 800px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        .class-info-container h2 {
+            color: #14888e;
+            font-size: 24px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #14888e;
+        }
+
+        .class-info-container p {
+            font-size: 16px;
+            margin: 12px 0;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+
+        .class-info-container p::before {
+            content: "•";
+            color: #14888e;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .deleteClass {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+
+        .deleteClass:hover {
+            background-color: #c82333;
+        }
+
+        @media (max-width: 768px) {
+            .class-info-container {
+                margin: 10px;
+                padding: 15px;
+            }
+
+            .class-info-container h2 {
+                font-size: 20px;
+            }
+
+            .class-info-container p {
+                font-size: 14px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
     infoDiv.innerHTML = `
-    <h2>Class name: ${classInfo.name}</h2>
-    <p>Start: ${new Date(classInfo.created_at).toLocaleString()}</p>
-    <p>Owner: ${infoOwner.fullname} </p>
-    <p>Email: ${infoOwner.email} </p>
-`;
+        <div class="class-info-container">
+            <h2>Class name: ${classInfo.name}</h2>
+            <p>Start: ${new Date(classInfo.created_at).toLocaleString()}</p>
+            <p>Owner: ${infoOwner.fullname}</p>
+            <p>Email: ${infoOwner.email}</p>
+        </div>
+    `;
+
     const infoDiv2 = document.getElementById('classInfo');
+    if (!infoDiv2) {
+        console.error('Element with id "classInfo" not found');
+        return;
+    }
 
     const button = document.createElement("button");
     button.type = "button";
     button.textContent = "Delete Class"; 
     button.classList.add("deleteClass"); 
-    button.addEventListener("click",async function(event) {  event.preventDefault(); deleteClass( classInfo.id)  });
+    button.addEventListener("click", async function(event) {  
+        event.preventDefault(); 
+        deleteClass(classInfo.id);
+    });
 
     infoDiv2.appendChild(button);
-
 }
 
 function displayClassHome(re_members){
     const infoDiv = document.getElementById('reMem');
-    infoDiv.innerHTML = '';
-    re_members.forEach(re_mem =>{
+    if (!infoDiv) {
+        console.error('Element with id "reMem" not found');
+        return;
+    }
+
+    // Thêm CSS cho danh sách thành viên
+    const style = document.createElement('style');
+    style.textContent = `
+        .member-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .member-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+
+        .member-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .member-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .member-info p {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .member-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .acceptMem {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .acceptMem:hover {
+            background-color:rgb(23, 88, 37);
+        }
+
+        .deleteMem {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            max-width: 120px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .deleteMem:hover {
+            background-color:rgb(138, 20, 32);
+        }
+
+        @media (max-width: 768px) {
+            .member-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .member-info {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .member-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    infoDiv.innerHTML = '<ul class="member-list"></ul>';
+    const memberList = infoDiv.querySelector('.member-list');
+
+    re_members.forEach(re_mem => {
         const li = document.createElement("li");
-        li.innerHTML = `<p> Name: ${re_mem.fullname} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: ${re_mem.email} </p>`;
+        li.className = 'member-item';
+        
+        const infoDiv = document.createElement("div");
+        infoDiv.className = 'member-info';
+        infoDiv.innerHTML = `<p>Name: ${re_mem.fullname} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: ${re_mem.email}</p>`;
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "Delete"; 
-        button.classList.add("deleteMem"); 
-        button.addEventListener("click",async function(event) {  event.preventDefault(); deleteReMem( re_mem.user_id)  });
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = 'member-actions';
 
+        const acceptButton = document.createElement("button");
+        acceptButton.type = "button";
+        acceptButton.textContent = "Accept";
+        acceptButton.classList.add("acceptMem");
+        acceptButton.addEventListener("click", async function(event) {
+            event.preventDefault();
+            addMem(re_mem.user_id);
+        });
 
-        const button1 = document.createElement("button");
-        button1.textContent = "Accept"; 
-        button1.classList.add("acceptMem"); 
-        button1.addEventListener("click",async function(event) {  event.preventDefault(); addMem(re_mem.user_id)  });
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("deleteMem");
+        deleteButton.addEventListener("click", async function(event) {
+            event.preventDefault();
+            deleteReMem(re_mem.user_id);
+        });
 
-        li.appendChild(button1);
-        li.appendChild(button);
+        actionsDiv.appendChild(acceptButton);
+        actionsDiv.appendChild(deleteButton);
 
-        infoDiv.appendChild(li);
+        li.appendChild(infoDiv);
+        li.appendChild(actionsDiv);
+        memberList.appendChild(li);
     });
 }
 
 function displayMembers(members, id) {
     const membersList = document.getElementById(id);
-    membersList.innerHTML = "";
+    if (!membersList) {
+        console.error(`Element with id "${id}" not found`);
+        return;
+    }
+
+    // Thêm CSS cho danh sách thành viên
+    const style = document.createElement('style');
+    style.textContent = `
+        .members-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .member-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+
+        .member-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .member-info {
+            flex: 1;
+            margin-right: 20px;
+        }
+
+        .member-info p {
+            margin: 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .deleteMem {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            max-width: 120px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .deleteMem:hover {
+            background-color:rgb(108, 20, 29);
+        }
+
+        @media (max-width: 768px) {
+            .member-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .member-info {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .deleteMem {
+                align-self: flex-end;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    membersList.innerHTML = '<ul class="members-list"></ul>';
+    const list = membersList.querySelector('.members-list');
+
     members.forEach(member => {
         const li = document.createElement("li");
-        li.innerHTML = ` <p> Name: ${member.fullname}  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: ${member.email} </p>`;
+        li.className = 'member-item';
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "Delete"; 
-        button.classList.add("deleteMem"); 
-        button.addEventListener("click",async function(event) {  event.preventDefault(); deleteMem(member.user_id)  });
-        li.appendChild(button);
-        membersList.appendChild(li);
+        const infoDiv = document.createElement("div");
+        infoDiv.className = 'member-info';
+        infoDiv.innerHTML = `<p>Name: ${member.fullname} &nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Email: ${member.email}</p>`;
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("deleteMem");
+        deleteButton.addEventListener("click", async function(event) {
+            event.preventDefault();
+            deleteMem(member.user_id);
+        });
+
+        li.appendChild(infoDiv);
+        li.appendChild(deleteButton);
+        list.appendChild(li);
     });
 }
 
@@ -255,145 +533,355 @@ function displayMembers(members, id) {
 
 function displayAllSet(sets) {
     const setLists = document.getElementById("set_container");
-    setLists.innerHTML = "";
+    if (!setLists) {
+        console.error('Element with id "set_container" not found');
+        return;
+    }
+
+    // Thêm CSS cho danh sách set
+    const style = document.createElement('style');
+    style.textContent = `
+        .set-list {
+            list-style: none;
+            padding: 0;
+            margin: 20px 0;
+        }
+
+        .set-item {
+            background-color: white;
+            border-radius: 8px;
+            height: auto;
+            min-height: 50px;
+            padding: 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s ease;
+        }
+
+        .set-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .set-info {
+            flex: 2;
+            margin-right: 20px;
+            display: flex;
+        }
+
+        .set-info p {
+            margin: 5px 0;
+            font-size: 16px;
+            color: #333;
+        }
+
+        .set-info p:first-child {
+            font-weight: bold;
+            color: #14888e;
+            font-size: 18px;
+        }
+
+        .set-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .viewSet {
+            background-color: #14888e;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            max-width: 120px;
+        }
+
+        .viewSet:hover {
+            background-color: rgb(16, 97, 100);
+        }
+
+        .deleteSet {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            max-width: 120px;
+        }
+
+        .deleteSet:hover {
+            background-color: rgb(138, 20, 32);
+        }
+
+        @media (max-width: 768px) {
+            .set-item {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .set-info {
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+
+            .set-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    setLists.innerHTML = '<ul class="set-list"></ul>';
+    const list = setLists.querySelector('.set-list');
 
     sets.forEach(set => {
         const li = document.createElement("li");
-        li.innerHTML = ` <p>  ${set.name}  </p> <p> ${new Date(set.created_at).toLocaleDateString("vi-VN")}</p>`;
+        li.className = 'set-item';
 
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "View"; 
-        button.classList.add("viewSet"); 
-        button.addEventListener("click",async function(event) {  
-            event.preventDefault();  
+        const infoDiv = document.createElement("div");
+        infoDiv.className = 'set-info';
+        infoDiv.innerHTML = `
+            <p>${set.name}</p>
+            <p>Ngày tạo: ${new Date(set.created_at).toLocaleDateString("vi-VN")}</p>
+        `;
+
+        const actionsDiv = document.createElement("div");
+        actionsDiv.className = 'set-actions';
+
+        const viewButton = document.createElement("button");
+        viewButton.type = "button";
+        viewButton.textContent = "View";
+        viewButton.classList.add("viewSet");
+        viewButton.addEventListener("click", async function(event) {
+            event.preventDefault();
             viewQuestionInSet(set.id);
         });
-        const button2 = document.createElement("button");
-        button2.type = "button";
-        button2.textContent = "Delete"; 
-        button2.classList.add("deleteSet"); 
-        button2.addEventListener("click",async function(event) {  
-            event.preventDefault();  
-           deleteSet(set.id);
+
+        const deleteButton = document.createElement("button");
+        deleteButton.type = "button";
+        deleteButton.textContent = "Delete";
+        deleteButton.classList.add("deleteSet");
+        deleteButton.addEventListener("click", async function(event) {
+            event.preventDefault();
+            deleteSet(set.id);
         });
-        li.appendChild(button);
-        li.appendChild(button2);
-        setLists.appendChild(li);
-       
+
+        actionsDiv.appendChild(viewButton);
+        actionsDiv.appendChild(deleteButton);
+
+        li.appendChild(infoDiv);
+        li.appendChild(actionsDiv);
+        list.appendChild(li);
     });
- 
 }
 
 function displayAllQuestion(questions, id) {
     const questionsList = document.getElementById(id);
-    questionsList.innerHTML = ""; 
+    if (!questionsList) {
+        console.error(`Element with id "${id}" not found`);
+        return;
+    }
+
+    // Thêm CSS cho danh sách câu hỏi
+    const style = document.createElement('style');
+    style.textContent = `
+        .quiz {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.2s ease;
+        }
+
+        .quiz:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .quiz h3 {
+            color: #14888e;
+            font-size: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .quiz p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .quiz ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 40px;
+        }
+
+        .quiz ul li {
+            padding: 8px 12px;
+            margin-bottom: 8px;
+            background-color: #f8f9fa;
+            border-radius: 4px;
+            font-size: 15px;
+            color: #444;
+        }
+
+        .quiz .correct {
+            width: 200px;
+            height: 40px;
+            padding-top: 10px;
+            text-align: center;
+            background-color: #d4edda;
+            color: #155724;
+            border-left: 4px solid #28a745;
+            font-weight: bold;
+        }
+
+        .question-checkbox {
+            width: 18px;
+            height: 18px;
+            margin-right: 10px;
+            cursor: pointer;
+        }
+
+        .question-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+       
+
+        @media (max-width: 768px) {
+            .quiz {
+                padding: 15px;
+            }
+
+            .quiz h3 {
+                font-size: 16px;
+            }
+
+            .quiz p {
+                font-size: 14px;
+            }
+
+            .quiz ul li {
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    questionsList.innerHTML = "";
 
     function getSelectedCheckboxes() {
         const saved = localStorage.getItem('selectedQuestions');
         return saved ? JSON.parse(saved) : [];
     }
     
-    
     function saveSelectedCheckboxes(selectedIds) {
         localStorage.setItem('selectedQuestions', JSON.stringify(selectedIds));
     }
     
-    let selectedCheckboxes = getSelectedCheckboxes(); 
+    let selectedCheckboxes = getSelectedCheckboxes();
   
-    questions.forEach((question, index) => { 
-    
-      const quizDiv = document.createElement("div");
-      quizDiv.className = "quiz";
+    questions.forEach((question, index) => {
+        const quizDiv = document.createElement("div");
+        quizDiv.className = "quiz";
   
-      const questionTitle = document.createElement("h3");
+        const questionTitle = document.createElement("h3");
+        questionTitle.textContent = `Câu số ${index + 1} :`;
   
-      questionTitle.textContent = `Câu số ${index + 1}${id !== "examQuestions" ? ` (${question.task})` : ''}:`;
-
+        const questionText = document.createElement("p");
+        questionText.textContent = question.question_text;
   
-      const questionText = document.createElement("p");
-      questionText.textContent = question.question_text;
+        const answerList = document.createElement("ul");
   
-      const answerList = document.createElement("ul");
+        const answers = [
+            { text: question.answer_a, letter: 'A' },
+            { text: question.answer_b, letter: 'B' },
+            { text: question.answer_c, letter: 'C' },
+            { text: question.answer_d, letter: 'D' }
+        ];
   
-      const answers = [
-        { text: question.answer_a, letter: 'A' },
-        { text: question.answer_b, letter: 'B' },
-        { text: question.answer_c, letter: 'C' },
-        { text: question.answer_d, letter: 'D' }
-      ];
-  
-      answers.forEach(answer => {
-        const answerItem = document.createElement("li");
-        answerItem.textContent = `${answer.letter}. ${answer.text}`;
-        answerList.appendChild(answerItem);
-      });
-  
-      const correctAnswer = document.createElement("li");
-      correctAnswer.className = "correct";
-      correctAnswer.textContent = `Correct Answer: ${question.answer_correct}`;
-
-      if (id == "selectQuestionToExam"){
-
-        const checkbox = document.createElement("input");
-        checkbox.type = "checkbox";
-        checkbox.id = `${question.id}`; 
-        checkbox.className = "question-checkbox"; 
-        
-        const isChecked = selectedCheckboxes.includes(checkbox.id);
-        checkbox.checked = isChecked;
-    
-       
-        checkbox.addEventListener("change", function() {
-          if (this.checked) {
-           
-            if (!selectedCheckboxes.includes(this.id)) {
-              selectedCheckboxes.push(this.id);
-            }
-          } else {
-   
-            selectedCheckboxes = selectedCheckboxes.filter(id => id !== this.id);
-          }
-          saveSelectedCheckboxes(selectedCheckboxes);
-          displayNumOfQuestionSelected()
-          console.log(selectedCheckboxes);
+        answers.forEach(answer => {
+            const answerItem = document.createElement("li");
+            answerItem.textContent = `${answer.letter}. ${answer.text}`;
+            answerList.appendChild(answerItem);
         });
+  
+        const correctAnswer = document.createElement("li");
+        correctAnswer.className = "correct";
+        correctAnswer.textContent = `Correct Answer: ${question.answer_correct}`;
 
-        const questionHeader = document.createElement("div"); 
-        questionHeader.style.display = "flex"; 
-        questionHeader.style.alignItems = "center";
-        questionHeader.appendChild(checkbox);
-        questionHeader.appendChild(questionTitle);
-        quizDiv.appendChild(questionHeader); 
-      }
-      else if(id == "examQuestions" ){
-        const button = document.createElement("button");
-        button.type = "button";
-        button.textContent = "Delete"
-       
-        button.addEventListener("click",async function(event) {
-            event.preventDefault();
-            deleteQuestion(question.id);
-        });
+        if (id == "selectQuestionToExam") {
+            const questionHeader = document.createElement("div");
+            questionHeader.className = "question-header";
+            
+            const checkbox = document.createElement("input");
+            checkbox.type = "checkbox";
+            checkbox.id = `${question.id}`;
+            checkbox.className = "question-checkbox";
+            
+            const isChecked = selectedCheckboxes.includes(checkbox.id);
+            checkbox.checked = isChecked;
+            
+            checkbox.addEventListener("change", function() {
+                if (this.checked) {
+                    if (!selectedCheckboxes.includes(this.id)) {
+                        selectedCheckboxes.push(this.id);
+                    }
+                } else {
+                    selectedCheckboxes = selectedCheckboxes.filter(id => id !== this.id);
+                }
+                saveSelectedCheckboxes(selectedCheckboxes);
+                displayNumOfQuestionSelected();
+            });
 
-        const questionHeader = document.createElement("div"); 
-        questionHeader.style.display = "flex"; 
-        questionHeader.style.alignItems = "center"; 
-        questionHeader.appendChild(button);
-        questionHeader.appendChild(questionTitle);
-        quizDiv.appendChild(questionHeader); 
-      }
-      else{
-        quizDiv.appendChild(questionTitle);
-      }
+            questionHeader.appendChild(checkbox);
+            questionHeader.appendChild(questionTitle);
+            quizDiv.appendChild(questionHeader);
+        }
+        else if (id == "examQuestions") {
+            const questionHeader = document.createElement("div");
+            questionHeader.className = "question-header";
+            
+            const button = document.createElement("button");
+            button.type = "button";
+            button.textContent = "Delete";
+            button.addEventListener("click", async function(event) {
+                event.preventDefault();
+                deleteQuestion(question.id);
+            });
+
+            questionHeader.appendChild(button);
+            questionHeader.appendChild(questionTitle);
+            quizDiv.appendChild(questionHeader);
+        }
+        else {
+            quizDiv.appendChild(questionTitle);
+        }
       
-      quizDiv.appendChild(questionText);
-      quizDiv.appendChild(answerList);
-      quizDiv.appendChild(correctAnswer);
+        quizDiv.appendChild(questionText);
+        quizDiv.appendChild(answerList);
+        quizDiv.appendChild(correctAnswer);
   
-      questionsList.appendChild(quizDiv);
+        questionsList.appendChild(quizDiv);
     });
-    saveSelectedCheckboxes(selectedCheckboxes); 
+    
+    saveSelectedCheckboxes(selectedCheckboxes);
 }
 
 function displayListQuestionSet(allSets){
@@ -417,77 +905,148 @@ function displayNumOfQuestionSelected(){
 }
 
 function displayQuestionForExam(questions, time) { 
-  const questionsList = document.getElementById("quiz_container");
-  questionsList.innerHTML = "";
+    const questionsList = document.getElementById("quiz_container");
+    if (!questionsList) {
+        console.error('Element with id "quiz_container" not found');
+        return;
+    }
 
-  const quizContainer = document.createElement("div");
-  quizContainer.className = "quiz_container";
-  quizContainer.id = "quiz_container";
+    // Thêm CSS cho form bài thi và timer
+    const style = document.createElement('style');
+    style.textContent = `
+        .quiz_container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+        }
 
-  questions.forEach((question, index) => {
-    const quizDiv = document.createElement("div");
-    quizDiv.className = "quiz";
-    quizDiv.id = `quiz-${index}`; 
+        .quiz {
+            background-color: white;
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
 
-    const questionHTML = `
-      <h3>Câu số ${index + 1}:</h3>
-      <p>${question.question_text}</p>
-      <ul>
-        <li><input class="answer" name="answer${index + 1}" type="radio" value="A"> A. ${question.answer_a}</li>
-        <li><input class="answer" name="answer${index + 1}" type="radio" value="B"> B. ${question.answer_b}</li>
-        <li><input class="answer" name="answer${index + 1}" type="radio" value="C"> C. ${question.answer_c}</li>
-        <li><input class="answer" name="answer${index + 1}" type="radio" value="D"> D. ${question.answer_d}</li>
-      </ul>
+        .quiz h3 {
+            color: #14888e;
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .quiz p {
+            font-size: 18px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .quiz ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 20px 40px;
+        }
+
+        .quiz ul li {
+            padding: 12px 15px;
+            margin-bottom: 12px;
+            background-color: #f8f9fa;
+            border-radius: 6px;
+            font-size: 16px;
+            color: #444;
+        }
+
+        .quiz input[type="radio"] {
+            width: 18px;
+            height: 18px;
+            margin-right: 12px;
+            cursor: pointer;
+        }
+
+        .time {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        #timer {
+            font-size: 20px;
+            font-weight: bold;
+            color: #14888e;
+            margin: 0 10px;
+        }
+
+        #submitTest {
+            background-color:rgb(204, 31, 31);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+
+        #submitTest:hover {
+            background-color: rgb(90, 16, 16);
+        }
     `;
-    quizDiv.innerHTML = questionHTML;
-    quizContainer.appendChild(quizDiv);
+    document.head.appendChild(style);
 
-    
-    const answerInputs = quizDiv.querySelectorAll('.answer');
-    answerInputs.forEach(input => {
-      input.addEventListener('change', () => {
-     
-        quizDiv.dataset.selectedAnswer = input.value;
-      });
+    questionsList.innerHTML = "";
+
+    const quizContainer = document.createElement("div");
+    quizContainer.className = "quiz_container";
+    quizContainer.id = "quiz_container";
+
+    questions.forEach((question, index) => {
+        const quizDiv = document.createElement("div");
+        quizDiv.className = "quiz";
+        quizDiv.id = `quiz-${index}`;
+
+        const questionHTML = `
+            <h3>Câu số ${index + 1}:</h3>
+            <p>${question.question_text}</p>
+            <ul>
+                <li>
+                    <input class="answer" name="answer${index + 1}" type="radio" value="A" id="q${index + 1}a">
+                    <label for="q${index + 1}a">A. ${question.answer_a}</label>
+                </li>
+                <li>
+                    <input class="answer" name="answer${index + 1}" type="radio" value="B" id="q${index + 1}b">
+                    <label for="q${index + 1}b">B. ${question.answer_b}</label>
+                </li>
+                <li>
+                    <input class="answer" name="answer${index + 1}" type="radio" value="C" id="q${index + 1}c">
+                    <label for="q${index + 1}c">C. ${question.answer_c}</label>
+                </li>
+                <li>
+                    <input class="answer" name="answer${index + 1}" type="radio" value="D" id="q${index + 1}d">
+                    <label for="q${index + 1}d">D. ${question.answer_d}</label>
+                </li>
+            </ul>
+        `;
+        quizDiv.innerHTML = questionHTML;
+        quizContainer.appendChild(quizDiv);
+
+        const answerInputs = quizDiv.querySelectorAll('.answer');
+        answerInputs.forEach(input => {
+            input.addEventListener('change', () => {
+                quizDiv.dataset.selectedAnswer = input.value;
+            });
+        });
     });
-  });
 
-  questionsList.appendChild(quizContainer);
+    questionsList.appendChild(quizContainer);
 
-  document.getElementById("submitTest").addEventListener("click", async function () {
-         submitExam(questions.length);
-         localStorage.removeItem(`startTime_${time.id}`);
-  })
+    const submitButton = document.getElementById("submitTest");
+    if (submitButton) {
+        submitButton.addEventListener("click", async function() {
+            submitExam(questions.length);
+            localStorage.removeItem(`startTime_${time.id}`);
+        });
+    }
 }
-// function displayTime(time, questions) {
-//   const timerDisplay = document.getElementById('timer');
-  
-//   let duration = time.timelimit * 60;
-//   const examTimeKey = `examTime_${time.id}`; 
 
-//   if (localStorage.getItem(examTimeKey)) {
-//   duration = parseInt(localStorage.getItem(examTimeKey), 10);
-//   } else {
-  
-//   localStorage.setItem(examTimeKey, duration.toString());
-//   }
-  
-//   const countdown = setInterval(() => {
-//   const minutes = Math.floor(duration / 60);
-//   const seconds = duration % 60;
-//   timerDisplay.textContent = `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-//   duration--;
- 
-//   localStorage.setItem(examTimeKey, duration.toString());
-  
-//   if (duration < 0) {
-//     clearInterval(countdown);
-//     timerDisplay.textContent = "Hết giờ"; 
-//     alert("Hết thời gian! Bài sẽ được nộp tự động.");
-//     submitExam(questions.length);
-//   }
-// }, 1000);
-//   }
 function displayTime(time, questions) {
   const timerDisplay = document.getElementById('timer');
   const examTimeKey = `examTime_${time.id}`;
@@ -964,3 +1523,254 @@ function displayDataForAdmin(users, allClass, allExams){
   
   usersList.appendChild(table);
 }
+
+
+function displayViewPoint(attempts, id){
+    const container = document.getElementById(id);
+    if (!container) {
+        console.error(`Container with id "${id}" not found`);
+        return;
+    }
+
+    if (!Array.isArray(attempts) || attempts.length === 0) {
+        container.innerHTML = '<div class="container"><p>Không có dữ liệu bài thi nào.</p></div>';
+        return;
+    }
+
+    // Thêm CSS cho bảng
+    const style = document.createElement('style');
+    style.textContent = `
+        .view-point-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: auto;
+            font-size: 16px;
+            border: 2px solid #14888e;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .view-point-table th,
+        .view-point-table td {
+            padding: 15px;
+            text-align: center;
+            border: 1px solid #14888e;
+            vertical-align: middle;
+        }
+
+        .view-point-table th {
+            background-color: #14888e;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+        }
+
+
+
+        .view-point-table td {
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .view-point-table {
+                font-size: 14px;
+            }
+
+            .view-point-table th,
+            .view-point-table td {
+                padding: 10px;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    let html = `
+        <div class="container">
+            <table class="view-point-table">
+                <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th>Tên</th>
+                        <th>Điểm số</th>
+                        <th>Thời gian nộp bài</th>
+                    </tr>
+                </thead>
+                <tbody>
+    `;
+
+    attempts.forEach((attempt, index) => {
+        try {
+            const submitTime = attempt.submitted_at ? 
+                new Date(attempt.submitted_at).toLocaleString('vi-VN', {
+                    year: 'numeric',
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                }) : 'N/A';
+            const score = typeof attempt.score === 'number' ? attempt.score.toFixed(2) : 'N/A';
+            
+            html += `
+                <tr>
+                    <td>${index + 1}</td>
+                    <td>${attempt.fullname || 'N/A'}</td>
+                    <td>${score}</td>
+                    <td>${submitTime}</td>
+                </tr>
+            `;
+        } catch (error) {
+            console.error('Error processing attempt:', error);
+        }
+    });
+
+    html += `
+                </tbody>
+            </table>
+        </div>
+    `;
+
+    container.innerHTML = html;
+}
+
+function displayGraph(attempts, id){
+    const container = document.getElementById(id);
+    if (!container) {
+        console.error(`Container with id "${id}" not found`);
+        return;
+    }
+
+    if (!Array.isArray(attempts) || attempts.length === 0) {
+        container.innerHTML = '<div class="container"><p>Không có dữ liệu để hiển thị biểu đồ.</p></div>';
+        return;
+    }
+
+    // Thêm CSS cho biểu đồ
+    const style = document.createElement('style');
+    style.textContent = `
+        .graph-container {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 0 15px rgba(0,0,0,0.1);
+        }
+
+        #scoreDistribution {
+            width: 100% !important;
+            height: 400px !important;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Xóa canvas cũ nếu tồn tại
+    const oldCanvas = document.getElementById('scoreDistribution');
+    if (oldCanvas) {
+        oldCanvas.remove();
+    }
+
+    // Tạo container cho biểu đồ
+    const graphContainer = document.createElement('div');
+    graphContainer.className = 'graph-container';
+    container.appendChild(graphContainer);
+
+    // Tạo canvas mới cho biểu đồ
+    const canvas = document.createElement('canvas');
+    canvas.id = 'scoreDistribution';
+    graphContainer.appendChild(canvas);
+
+    // Phân loại điểm số
+    const scoreRanges = {
+        '0-2': 0,
+        '2-4': 0,
+        '4-6': 0,
+        '6-8': 0,
+        '8-10': 0
+    };
+
+    let validScores = 0;
+    attempts.forEach(attempt => {
+        const score = parseFloat(attempt.score);
+        if (!isNaN(score) && score >= 0 && score <= 10) {
+            validScores++;
+            if (score < 2) scoreRanges['0-2']++;
+            else if (score < 4) scoreRanges['2-4']++;
+            else if (score < 6) scoreRanges['4-6']++;
+            else if (score < 8) scoreRanges['6-8']++;
+            else scoreRanges['8-10']++;
+        }
+    });
+
+    if (validScores === 0) {
+        container.innerHTML = '<div class="container"><p>Không có dữ liệu điểm số hợp lệ để hiển thị biểu đồ.</p></div>';
+        return;
+    }
+
+    // Tạo biểu đồ
+    new Chart(canvas, {
+        type: 'bar',
+        data: {
+            labels: Object.keys(scoreRanges),
+            datasets: [{
+                label: 'Số lượng bài thi',
+                data: Object.values(scoreRanges),
+                backgroundColor: 'rgba(225, 102, 102, 0.7)',
+                borderColor: 'rgb(228, 149, 29)',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Phân bố điểm số',
+                    font: {
+                        size: 16,
+                        weight: 'bold'
+                    },
+                    padding: {
+                        top: 10,
+                        bottom: 20
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function(context) {
+                            const value = context.raw;
+                            const percentage = ((value / validScores) * 100).toFixed(1);
+                            return `${value} bài thi (${percentage}%)`;
+                        }
+                    }
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    title: {
+                        display: true,
+                        text: 'Số lượng bài thi',
+                        font: {
+                            weight: 'bold'
+                        }
+                    },
+                    ticks: {
+                        stepSize: 1
+                    }
+                },
+                x: {
+                    title: {
+                        display: true,
+                        text: 'Khoảng điểm',
+                        font: {
+                            weight: 'bold'
+                        }
+                    }
+                }
+            }
+        }
+    });
+}
+  

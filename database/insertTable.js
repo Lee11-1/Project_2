@@ -38,4 +38,23 @@ const insertClass = async (class_id, user_id) => {
       console.error("❌ Lỗi khi chèn users:", err);
     }
   };
-  insertAdmin("ADMIN1", "admin1", "admin1password","Admin","adminemail@.gmail.com")
+  const insertUser = async (username, email, password, name, role ) => {
+    
+    try {
+      const query = `
+        INSERT INTO users (username, email, password, name, role)
+        VALUES ($1, $2, $3, $4, $5)
+        RETURNING *;
+      `;
+  
+      
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const values = [username, email, hashedPassword, name, role];
+
+      const { rows } = await pool.query(query, values);
+      console.log("✅ users đã được thêm:", rows[0]);
+    } catch (err) {
+      console.error("❌ Lỗi khi chèn users:", err);
+    }
+  };
+  insertUser("trung123", "trung@gmail.com", "trung123", "trung", "author");

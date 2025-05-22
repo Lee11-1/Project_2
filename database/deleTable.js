@@ -11,16 +11,17 @@ console.log("✅ Đã xóa bảng 'users' thành công!");
 await pool.query("DELETE FROM users WHERE id = $1", [5]);
 console.log("✅ Đã xóa user có ID = 5");
 
-*/
-
-const deleTable = async (tableName) => {
   await pool.query(`DROP TABLE ${tableName}`);
   console.log("✅ Đã xóa bảng 'users' thành công!");
   console.log(`✅ Đã xóa toàn bộ dữ liệu trong bảng ${tableName}`);
+*/
+
+const deleTable = async () => {
+
+  await pool.query("DELETE FROM exam_attempts WHERE user_id = $1 OR user_id = $2", [3,4]);
+console.log("✅ Đã xóa");
   
   };
+  deleTable();
   
-  // Gọi hàm để xóa dữ liệu từ bảng 'users'
-  deleTable("questions_exams");
-  deleTable("questions_tests");
   
