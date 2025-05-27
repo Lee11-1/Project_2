@@ -10,7 +10,6 @@ yarn.lock
 *.sql
 *.sqlite
 *.db
-data.js
 
 # Environment variables
 .env
