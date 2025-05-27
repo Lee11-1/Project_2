@@ -58,9 +58,18 @@ async function loadClassData() {
             alert("Lỗi khi tải dữ liệu");
             return;
         }
-        displayClassInfo(data.infoClass, data.infoOwner);
+
+        displayClassInfo(data.infoClass, data.infoOwner, data.user);
+        if(data.user.id != data.infoClass.owner_id){
+            document.getElementById("addMembers").style.display = "none";
+            document.getElementById("newTest").style.display = "none";
+          //  document.getElementById("deleteClass").style.display = "none";
+        }
+      
         displayClassHome(data.re_members);
-        displayMembers(data.members,"class-members")
+        displayMembers(data.members,"class-members");
+        displayTests(data.tests, data.user, data.infoClass);
+
 
     } catch (error) {
         console.error("Lỗi:", error);
@@ -129,6 +138,27 @@ async function loadExamData() {
     } catch (error) {
         console.error("Lỗi:", error);
         alert("Không thể tải dữ liệu lớp học.");
+    }
+}
+
+async function loadTestData() {
+    try {
+        const response = await fetch(`/infoTest`);
+        const data = await response.json();
+
+        if (!response.ok) {
+            alert("Lỗi khi tải dữ liệu");
+            return;
+        }
+        displayAllQuestion(data.questions,"examQuestions");
+      
+        const btn4 = document.getElementById("viewPoint");
+        btn4.addEventListener("click", function(){
+            allAttempts(data.exam_id);
+    });
+    } catch (error) {
+        console.error("Lỗi:", error);
+      //  alert("Không thể tải dữ liệu lớp học.");
     }
 }
 

@@ -12,42 +12,6 @@
    <div id="header2" class="header" ></div>
 
    <div class="form" id="form">
-      <!-- <div id="createTest" class="Folder">
-         <div class="crT" id="crT">
-             <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
-             <h2>Create a new Test</h2>
-             <form id="crTest" class="crTest">
-                 <input type="text" placeholder="Title" name="title">
-                 <input type="text" placeholder="Time limit (Example: 30)" name="timelimit">
-                 <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
-                 <button class="create" type="button">Create</button>
-             </form>
-         </div>
-      </div>
-   
-      <div id="createExam" class="Folder">
-         <div class="crT" id="crT">
-             <button class="close-btn" onclick="hidePopup('createExam')">&#10005;</button>
-             <h2>Create a new Exam</h2>
-             <form id="crTest" class="crTest">
-                 <input type="text" placeholder="Title" name="title">
-                 <input type="text" placeholder="Time limit (Example: 30)" name="timelimit">
-                 <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
-                 <button class="create" type="button">Create</button>
-             </form>
-         </div>
-      </div>
-   
-     <div id="createFolder" class="Folder">
-         <div class="crF" id="crF">
-            <button class="close-btn" onclick="hidePopup('createFolder')">&#10005;</button>
-            <h2>Create a new Question set</h2>
-            <form id="crFolder" class="crFolder">
-               <input type="text" placeholder="Title" name="name"><br><br>
-               <button class="create" type="button">Create</button>
-            </form>
-         </div>
-      </div> -->
    </div>
  
 
@@ -83,7 +47,7 @@
             </div>
    
             <div class="button">
-               <button class="btn-right" onclick="showPopup('findMembers')">Add members</button>
+               <button class="btn-right" onclick="showPopup('findMembers')" id="addMembers">Add members</button>
             </div>
    
             <div id="findMembers" class="Folder">
@@ -111,18 +75,18 @@
             </div>
    
             <div class="button">
-               <button class="btn-right" onclick="showPopup('createTest')">New test</button>
+               <button class="btn-right" onclick="showPopup('createTest')" id="newTest">New test</button>
             </div>
    
             <div id="createTest" class="Folder">
                <div class="crT" id="crT">
                    <button class="close-btn" onclick="hidePopup('createTest')">&#10005;</button>
                    <h2>Create a new Test</h2>
-                   <form id="crTest" class="crTest">
+                   <form id="crTestInClass" class="crTest">
                        <input type="text" placeholder="Title" name="title">
                        <input type="text" placeholder="Time limit (Example: 30)" name="timelimit">
                        <input type="text" placeholder="Number of questions (Example: 20)" name="numberQuestion">
-                       <button class="create" type="button">Create</button>
+                       <button class="create" type="button" onclick="createNewTest()">Create</button>
                    </form>
                </div>
             </div>

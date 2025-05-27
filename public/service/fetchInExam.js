@@ -1,8 +1,8 @@
 
 
-async function getDataForTest() {
+async function getDataForExam() {
     try {
-        const response = await fetch("/getDataForTest");
+        const response = await fetch("/getDataForExam");
         const result = await response.json();
         if (response.ok) {
            displayQuestionForExam(result.questions, result.time);
@@ -39,7 +39,7 @@ async function submitExam(numOfQuestion){
         }
     }
     try {
-        const response = await fetch("/submitTest", {
+        const response = await fetch("/submitExam", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({answers,numOfQuestion})
@@ -47,7 +47,7 @@ async function submitExam(numOfQuestion){
 
         const result = await response.json();
         if (response.ok) {
-            window.location.href = `/class/${result.class_id}`; 
+            window.location.href = result.redirect; 
         } else {
             alert(result.message);
         }
@@ -57,4 +57,4 @@ async function submitExam(numOfQuestion){
     }
 }
 
-getDataForTest();
+getDataForExam();

@@ -1,4 +1,3 @@
-
 async function deleteClass(classId) {
     try{
         const response = await fetch("/deleteClass" ,{
@@ -10,8 +9,6 @@ async function deleteClass(classId) {
         if (response.ok) {
             let savedClasses = localStorage.getItem('classes');
             let classList = savedClasses ? JSON.parse(savedClasses) : [];
-
-            // Lọc bỏ lớp có ID trùng với classId
             classList = classList.filter(c => c.class_id !== classId);
 
             // Lưu danh sách đã cập nhật vào Local Storage
@@ -110,4 +107,28 @@ async function addMem(user_id) {
     }    
 }
 
+
+async function createNewTest() {
+    const form = document.getElementById("crTestInClass");
+    const formData = new FormData(form);
+    const data = Object.fromEntries(formData.entries());
+    console.log(data);
+    try{
+        const response = await fetch("/createNewTest", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+
+        const result = await response.json();
+        if (response.ok) {
+            loadClassData();
+        } else {
+            alert(result.message);
+        }
+    } catch (error) {
+        console.error("Lỗi:", error);
+        alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
+};
 loadClassData();

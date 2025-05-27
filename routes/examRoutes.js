@@ -16,7 +16,12 @@ router.post('/submitExam', examController.submitExam);
 router.get('/getAllAttempts/:exam_id', examController.getAllAttempts);
 router.get('/viewPoint', examController.viewPoint);
 // router.get("/getCorrectAnswer", examController.Answer);
-
+router.get('/getDataForTest', examController.getDataForTest);
+router.post('/submitTest', examController.submitTest);
+router.get('/startTest/:test_id', examController.startTest);
+router.get('/editTest/:test_id', examController.editTest);
+router.post('/addQuestionToTest', examController.addQuestionToTest);
+router.get('/infoTest', examController.getInfoTest);
 
 router.post('/createQuestionSet', examController.createQuestionSet);
 router.get('/all-questionSet', examController.getAllSet);

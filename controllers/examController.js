@@ -67,7 +67,7 @@ exports.getExamById = async (req, res) => {
 
         req.session.exam_id = exam_id;
         if (req.session.user.profession == "Admin") res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
-        else if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname,  '..', 'public', 'beforeTest.html'));
+        else if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname,  '..', 'public', 'beforeExam.html'));
         else res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
     } catch (error) {
         console.error('Lỗi:', error);
@@ -318,6 +318,39 @@ exports.addQuestionToExam = async (req, res) => {
     }
 };
 
+exports.addQuestionToTest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
+    }
+    try {
+        const { questionID } = req.body;
+        const test_id = req.session.test_id;
+
+     //   const questions = await pool.query("SELECT questions.id FROM questions JOIN questions_exams ON questions. WHERE exam_id = $1", [exam_id]);
+        for (let i = 0; i < questionID.length; i++) {
+            const result = await pool.query('SELECT * FROM questions WHERE id = $1', [questionID[i]]);
+            const thisQuestion = result.rows[0];
+
+            if (!thisQuestion) {
+                return res.status(404).json({ message: `Không tìm thấy câu hỏi với ID ${questionID[i]}` });
+            }
+
+           // if()
+            await pool.query(
+                'INSERT INTO questions_tests (test_id, question_id) VALUES ($1, $2)',
+                [
+                    test_id,
+                   questionID[i]
+                ]
+            );
+        }
+
+        res.status(200).json({ message: 'Thêm câu hỏi thành công!' });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+};
 
 exports.deleteQuestionToExam = async (req, res) => {
     if (!req.session.user) {
@@ -407,6 +440,39 @@ exports.getInfoExam = async (req, res) => {
     }
 };
 
+exports.getInfoTest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
+    }
+    try {
+        const test_id = req.session.test_id;
+
+        const examInfo = await pool.query('SELECT * FROM tests WHERE id = $1', [test_id]);
+        if (examInfo.rows.length === 0) {
+            return res.status(404).json({ message: 'Exam không tồn tại!' });
+        }
+
+        const question = await pool.query(`
+            SELECT  questions.id, questions.question_text, questions.answer_A, questions.answer_B, questions.answer_C, questions.answer_D, questions.answer_correct
+            FROM questions
+            JOIN questions_tests ON questions.id = questions_tests.question_id
+            JOIN tests ON questions_tests.test_id = tests.id
+            WHERE tests.id = $1`,
+            [test_id]
+        );
+
+
+        res.json({
+            questions: question.rows,
+            profession: req.session.user.profession,
+            test_id: test_id  
+        });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+};
+
 exports.checkStartExam = async(req, res) =>{
     if (!req.session.user) {
         return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
@@ -434,13 +500,38 @@ exports.startExam = async(req, res) =>{
         return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
     try {
+        res.sendFile(path.join(__dirname, '..', 'public', 'exam.html'));
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
+exports.startTest = async(req, res) =>{
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
+    }
+    const test_id = req.params.test_id;
+    req.session.test_id = test_id;
+    try {
         res.sendFile(path.join(__dirname, '..', 'public', 'test.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
     }
 }
-
+exports.editTest = async(req, res) =>{
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
+    }
+    const test_id = req.params.test_id;
+    req.session.test_id = test_id;
+    try {
+        res.sendFile(path.join(__dirname, '..', 'public', 'editTest.html'));
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
 
 exports.getDataForExam = async (req, res) => {
     if (!req.session.user) {
@@ -461,6 +552,39 @@ exports.getDataForExam = async (req, res) => {
         const time = await pool.query(
             ` SELECT timelimit, title, numberQuestion, id FROM exams WHERE id = $1`,
             [exam_id]
+        )
+        const now = new Date();
+        req.session.beginExam = now;
+        req.session.timelimit = time.timelimit;
+        res.json({
+            questions: question.rows,
+            time: time.rows[0]
+        });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+};
+
+exports.getDataForTest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
+    }
+    try {
+        const test_id = req.session.test_id;
+
+        const question = await pool.query(`
+            SELECT  questions.id, questions.question_text, questions.answer_A, questions.answer_B, questions.answer_C, questions.answer_D
+            FROM questions
+            JOIN questions_tests ON questions.id = questions_tests.question_id
+            JOIN tests ON questions_tests.test_id = tests.id
+            WHERE tests.id = $1`,
+            [test_id]
+        );
+
+        const time = await pool.query(
+            ` SELECT timelimit, title, numberQuestion, id FROM tests WHERE id = $1`,
+            [test_id]
         )
         const now = new Date();
         req.session.beginExam = now;
@@ -546,6 +670,64 @@ exports.submitExam = async (req, res) => {
 
         res.json({ message: "Save thanh cong!!", redirect: `/exam/${exam.rows[0].title}/${exam_id}`});
 
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
+}
+
+exports.submitTest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
+    }
+    try {
+        const now = new Date();
+        const beginTime = new Date(req.session.beginExam);
+
+        const timelimit = req.session.timelimit
+
+        const timelimitMs = timelimit * 60 * 1000;
+        const timeElapsed = now.getTime() - beginTime.getTime();
+        const timeLimitPlusOneMinute = timelimitMs + 60 * 1000;
+
+        let score1 = 0;
+        const test_id = req.session.test_id;
+        const user_id = req.session.user.id;
+        const {answers, numOfQuestion} = req.body;
+        const test = await pool.query("SELECT title, id FROM tests WHERE id = $1", [test_id]);
+
+        if (timeElapsed > timeLimitPlusOneMinute) {
+            console.log("Ban da gian lan!!!");
+          } else {
+          
+            const answer_corrects = await pool.query(`
+                SELECT questions.answer_correct
+                FROM questions
+                JOIN questions_tests ON questions.id = questions_tests.question_id
+                JOIN tests ON questions_tests.test_id = tests.id
+                WHERE tests.id = $1`,
+                [test_id]
+            );
+           
+    
+            answers.forEach((userAnswer,index) => {
+                const correct = answer_corrects.rows[index].answer_correct;
+                if (correct  === userAnswer.selected) {
+                    score1 += 1;
+                }
+            });
+          }
+
+        console.log(numOfQuestion)
+        ;
+        let score ;
+        if(numOfQuestion) score = parseFloat(score1*10)/numOfQuestion; 
+        else score = 0;
+        console.log(score, test_id);
+        await pool.query("INSERT INTO test_attempts (user_id, test_id, score)  VALUES ($1, $2, $3) ", [user_id, test_id, score]);
+
+       
+        res.json({ class_id: req.session.class_id });
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });

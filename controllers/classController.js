@@ -1,4 +1,3 @@
-
 const pool = require('../data');
 const path = require('path');
 const fs = require('fs');
@@ -180,7 +179,15 @@ exports.getInfoClass = async (req, res) => {
             WHERE classes.id = $1`,
             [class_id]
         );
-        const tests = await pool.query('SELECT * FROM tests WHERE class_id = $1', [class_id]);
+        const tests = await pool.query(`
+            SELECT t.*, 
+                   COALESCE(MAX(ta.score), NULL) as highest_score
+            FROM tests t
+            LEFT JOIN test_attempts ta ON t.id = ta.test_id AND ta.user_id = $2
+            WHERE t.class_id = $1
+            GROUP BY t.id
+            ORDER BY t.created_at DESC
+        `, [class_id, req.session.user.id]);
 
         req.session.owner = classInfo.rows[0].owner_id;
 
@@ -190,6 +197,7 @@ exports.getInfoClass = async (req, res) => {
             re_members: request.rows,
             members: member.rows,
             tests: tests.rows,
+            user: req.session.user
         });
     } catch (error) {
         console.error('Lỗi:', error);
@@ -215,6 +223,30 @@ exports.deleteMember = async (req, res) => {
     await pool.query('DELETE FROM class_members WHERE class_id = $1 AND user_id = $2', [idClass, parseInt(idUser)]);
 
     res.json({ message: 'Deleted!!!', redirect: `/class/${idClass}` });
+};
+exports.deleteTest = async (req, res) => {
+    try {
+        if (!req.session.user) {
+            return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
+        }
+        const user = req.session.user;
+        if (req.session.owner != user.id) {
+            return res.status(400).json({ message: 'Bạn không có quyền' });
+        }
+        const testId = req.params.testId;
+        const test = await pool.query('SELECT * FROM tests WHERE id = $1', [testId]);
+        if (test.rows.length === 0) {
+            return res.status(400).json({ message: 'Bài test không tồn tại!' });
+        }
+        if (!testId) {  
+            return res.status(400).json({ message: 'Thiếu id!' });  
+        }
+        await pool.query('DELETE FROM tests WHERE id = $1', [testId]);
+        res.json({ message: 'Deleted!!!', redirect: `/class/${req.session.class_id}` });
+    } catch (error) {
+        console.error('Lỗi:', error);
+        res.status(500).json({ message: 'Lỗi server!' });
+    }
 };
 
 exports.deleteRequestMember = async (req, res) => {
@@ -317,4 +349,20 @@ exports.createFolder = async (req, res) => {
     } else {
         res.status(400).json({ message: 'Thư mục đã tồn tại!' });
     }
+};
+exports.createNewTest = async (req, res) => {
+    if (!req.session.user) {
+        return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
+    }
+    const user = req.session.user;
+    if (req.session.owner != user.id) {
+        return res.status(400).json({ message: 'Bạn không có quyền' });
+    }
+    const { title, timelimit, numberQuestion } = req.body; 
+    console.log(title, timelimit, numberQuestion);
+    if (!title || !timelimit || !numberQuestion) {
+        return res.status(400).json({ message: 'Thiếu thông tin bắt buộc!' });
+    }
+    await pool.query('INSERT INTO tests (title, timelimit, numberQuestion, class_id, created_by) VALUES ($1, $2, $3, $4,$5)', [title, timelimit, numberQuestion, req.session.class_id, req.session.user.id]);
+    res.json({ message: 'Tạo bài test thành công!' });
 };

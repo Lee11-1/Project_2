@@ -109,7 +109,7 @@ function displayExam(allExams){
 
 
 
-function displayClassInfo(classInfo, infoOwner){
+function displayClassInfo(classInfo, infoOwner, user){
     const infoDiv = document.getElementById('class-name');
     if (!infoDiv) {
         console.error('Element with id "class-name" not found');
@@ -207,7 +207,9 @@ function displayClassInfo(classInfo, infoOwner){
         event.preventDefault(); 
         deleteClass(classInfo.id);
     });
-
+    if(user.id != infoOwner.id){
+        button.style.display = "none";
+    }
     infoDiv2.appendChild(button);
 }
 
@@ -1106,12 +1108,10 @@ function displayTime(time, questions) {
     const attemptList = document.getElementById(id);
     attemptList.innerHTML = ''; 
   
-    
     const table = document.createElement("table");
     table.style.width = "100%";
     table.style.borderCollapse = "collapse";
     table.style.margin = "20px 0";
-  
   
     const thead = document.createElement("thead");
     const headerRow = document.createElement("tr");
@@ -1141,33 +1141,41 @@ function displayTime(time, questions) {
     thead.appendChild(headerRow);
     table.appendChild(thead);
   
-  
     const tbody = document.createElement("tbody");
-    attempts.forEach((attempt, index) => { console.log(attempt);
-      const row = document.createElement("tr");
-      const idCell = document.createElement("td");
-      idCell.textContent = index + 1;
-      idCell.style.padding = "10px";
-      idCell.style.borderBottom = "1px solid #ddd";
+    attempts.forEach((attempt, index) => {
+        const row = document.createElement("tr");
+        const idCell = document.createElement("td");
+        idCell.textContent = index + 1;
+        idCell.style.padding = "10px";
+        idCell.style.borderBottom = "1px solid #ddd";
   
-      const scoreCell = document.createElement("td");
-      scoreCell.textContent = attempt.score;
-      scoreCell.style.padding = "10px";
-      scoreCell.style.borderBottom = "1px solid #ddd";
+        const scoreCell = document.createElement("td");
+        scoreCell.textContent = attempt.score;
+        scoreCell.style.padding = "10px";
+        scoreCell.style.borderBottom = "1px solid #ddd";
   
-      const timeCell = document.createElement("td");
-      timeCell.textContent = attempt.submitted_at;
-      timeCell.style.padding = "10px";
-      timeCell.style.borderBottom = "1px solid #ddd";
+        const timeCell = document.createElement("td");
+        // Format the date and time
+        const date = new Date(attempt.submitted_at);
+        timeCell.textContent = date.toLocaleString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false
+        });
+        timeCell.style.padding = "10px";
+        timeCell.style.borderBottom = "1px solid #ddd";
   
-      row.appendChild(idCell);
-      row.appendChild(scoreCell);
-      row.appendChild(timeCell);
-      tbody.appendChild(row);
+        row.appendChild(idCell);
+        row.appendChild(scoreCell);
+        row.appendChild(timeCell);
+        tbody.appendChild(row);
     });
     table.appendChild(tbody);
   
-   
     attemptList.appendChild(table);
   }
 
@@ -1774,3 +1782,254 @@ function displayGraph(attempts, id){
     });
 }
   
+function displayTests(exams, user, infoClass) {
+    console.log(exams);
+    const testList = document.getElementById('class-test');
+    if (!testList) return;
+
+    testList.innerHTML = '';
+    
+    if (!exams || exams.length === 0) {
+        testList.innerHTML = '<li class="no-tests">No tests available</li>';
+        return;
+    }
+
+    // Add CSS styles for the test display
+    const style = document.createElement('style');
+    style.textContent = `
+        .test-item {
+            background: white;
+            border-radius: 8px;
+            padding: 15px 20px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            transition: transform 0.2s;
+        }
+
+        .test-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+
+        .test-info {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            flex: 1;
+        }
+
+        .test-info h4 {
+            margin: 0;
+            color: #333;
+            font-size: 1.1em;
+            min-width: 200px;
+        }
+
+        .test-details {
+            display: flex;
+            align-items: center;
+            gap: 30px;
+            color: #666;
+            font-size: 1em;
+        }
+
+        .test-details span {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            white-space: nowrap;
+        }
+
+        .test-score {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            color: #14888e;
+            font-weight: bold;
+            min-width: 100px;
+        }
+
+        .test-score i {
+            color: #14888e;
+        }
+
+        .test-actions {
+            display: flex;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .test-actions button {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+            white-space: nowrap;
+        }
+
+        .start-test-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .start-test-btn:hover {
+            background-color: #45a049;
+        }
+
+        .edit-test-btn {
+            background-color: #2196F3;
+            color: white;
+        }
+
+        .edit-test-btn:hover {
+            background-color: #1976D2;
+        }
+
+        .delete-test-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .delete-test-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .no-tests {
+            text-align: center;
+            color: #666;
+            padding: 20px;
+            font-style: italic;
+        }
+
+        @media (max-width: 768px) {
+            .test-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .test-info {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .test-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 5px;
+            }
+
+            .test-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+        }
+    `;
+    document.head.appendChild(style);
+
+    exams.forEach(exam => {
+        console.log(exam);
+        const testItem = document.createElement('li');
+        testItem.className = 'test-item';
+        
+        const testInfo = document.createElement('div');
+        testInfo.className = 'test-info';
+        
+        const title = document.createElement('h4');
+        title.textContent = exam.title;
+        
+        const details = document.createElement('div');
+        details.className = 'test-details';
+        
+        const timeLimit = document.createElement('span');
+        timeLimit.innerHTML = `<i class="fas fa-clock"></i> ${exam.timelimit} minutes`;
+        
+        const questions = document.createElement('span');
+        questions.innerHTML = `<i class="fas fa-list-ol"></i> ${exam.numberquestion} questions`;
+
+        // Get highest score for this test
+     
+
+        const scoreSpan = document.createElement('span');
+        scoreSpan.className = 'test-score';
+        scoreSpan.innerHTML = `<i class="fas fa-trophy"></i> Score:${exam.highest_score}`;
+       
+        
+        details.appendChild(timeLimit);
+        details.appendChild(questions);
+        details.appendChild(scoreSpan);
+        
+        testInfo.appendChild(title);
+        testInfo.appendChild(details);
+        
+        const actions = document.createElement('div');
+        actions.className = 'test-actions';
+        
+        const startButton = document.createElement('button');
+        startButton.className = 'start-test-btn';
+        startButton.textContent = 'Start Test';
+        startButton.onclick = () => startTest(exam.id);
+        
+        if(user.id == infoClass.owner_id){
+            const editButton = document.createElement('button');
+            editButton.className = 'edit-test-btn';
+            editButton.textContent = 'Edit';
+            editButton.onclick = () => editTest(exam.id);
+            
+            const deleteButton = document.createElement('button');
+            deleteButton.className = 'delete-test-btn';
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => deleteTest(exam.id);
+            
+            actions.appendChild(editButton);
+            actions.appendChild(deleteButton);
+        }
+        
+        actions.appendChild(startButton);
+        
+        testItem.appendChild(testInfo);
+        testItem.appendChild(actions);
+        
+        testList.appendChild(testItem);
+    });
+}
+
+// Helper functions for test actions
+function startTest(testId) {
+    // Save test_id to cookie
+    // Redirect to start test page
+    window.location.href = `/startTest/${testId}`;
+}
+
+function editTest(testId) {
+    // Save test_id to cookie
+    // Redirect to edit test page
+    window.location.href = `/editTest/${testId}`;
+}
+
+async function deleteTest(testId) {
+    if (confirm('Are you sure you want to delete this test?')) {
+        try {
+            const response = await fetch(`/deleteTest/${testId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+            const result = await response.json();
+            if (response.ok) {
+                loadClassData();
+            } else {
+                alert(result.message);
+            }
+        } catch (error) {
+            console.error('Error deleting test:', error);
+        }
+    }
+}

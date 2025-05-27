@@ -38,6 +38,7 @@ const insertClass = async (class_id, user_id) => {
       console.error("❌ Lỗi khi chèn users:", err);
     }
   };
+  insertAdmin("admin", "admin", "admin", "Admin", "admin@gmail.com");
   const insertUser = async (username, email, password, name, role ) => {
     
     try {
@@ -57,4 +58,3 @@ const insertClass = async (class_id, user_id) => {
       console.error("❌ Lỗi khi chèn users:", err);
     }
   };
-  insertUser("trung123", "trung@gmail.com", "trung123", "trung", "author");

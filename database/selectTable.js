@@ -29,5 +29,6 @@ const selectTable = async (tableName) => {
 //   selectTable("questions");
 //   selectTable("quiz_attempts");
   selectTable("re_member");
+  selectTable("test_attempts");
 
 
