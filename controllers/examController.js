@@ -1,4 +1,4 @@
-const { sql, config } = require('../data');
+const pool = require('../data');
 const path = require('path');
 
 exports.createExam = async (req, res) => {
@@ -20,53 +20,34 @@ exports.createExam = async (req, res) => {
             return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
         }
 
-        await sql.connect(config);
-        const request = new sql.Request();
-
-        const checkExam = await request.query(
-            'SELECT * FROM exams WHERE title = @title AND user_id = @userId',
-            {
-                title: title,
-                userId: userId
-            }
+        const checkExam = await pool.query(
+            'SELECT * FROM exams WHERE title = $1 AND user_id = $2',
+            [title, userId]
         );
 
-        if (checkExam.recordset.length > 0) {
+        if (checkExam.rows.length > 0) {
             return res.status(400).json({ message: 'Lớp đã tồn tại!' });
         }
-
-        await request.query(
-            'INSERT INTO exams (title, timelimit, numberQuestion, user_id, Ended) VALUES (@title, @timelimit, @numberQuestion, @userId, @Ended)',
-            {
-                title: title,
-                timelimit: timelimit,
-                numberQuestion: numberQuestion,
-                userId: userId,
-                Ended: Ended
-            }
+        await pool.query(
+            'INSERT INTO exams (title, timelimit, numberQuestion, user_id, Ended) VALUES ($1, $2, $3, $4, $5)',
+            [title, timelimit, numberQuestion, userId, Ended]
         );
 
-        const newEx = await request.query( 
+        const newEx = await pool.query( 
             `SELECT exams.id, exams.user_id, exams.timelimit, exams.numberQuestion, exams.title, exams.created_at, exams.user_id, exams.Ended
              FROM exams
-             WHERE title = @title AND user_id = @userId`,
-             {
-                 title: title,
-                 userId: userId
-             }
-        );
-
+             WHERE title = $1 AND user_id = $2`,
+             [title, userId]);
         const user = req.session.user;
         const redirectUrl = `/home/${user.username}`;
 
-        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl, newExam: newEx.recordset[0] });
+        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl, newExam: newEx.rows[0] });
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: '❌ Có lỗi xảy ra, vui lòng thử lại sau.' });
-    } finally {
-        sql.close();
     }
 };
+
 
 exports.getExamById = async (req, res) => {
     if (!req.session.user) {
@@ -78,26 +59,22 @@ exports.getExamById = async (req, res) => {
             return res.status(400).send('class_id phải là số hợp lệ!');
         }
 
-        await sql.connect(config);
-        const request = new sql.Request();
+        const examQuery = await pool.query('SELECT * FROM exams WHERE id = $1', [parseInt(exam_id)]);
 
-        const examQuery = await request.query('SELECT * FROM exams WHERE id = @exam_id', { exam_id: parseInt(exam_id) });
-
-        if (examQuery.recordset.length === 0) {
+        if (examQuery.rows.length === 0) {
             return res.status(404).send('Lớp học không tồn tại!');
         }
 
         req.session.exam_id = exam_id;
         if (req.session.user.profession == "Admin") res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
-        else if (examQuery.recordset[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname,  '..', 'public', 'beforeExam.html'));
+        else if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname,  '..', 'public', 'beforeExam.html'));
         else res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');
-    } finally {
-        sql.close();
     }
 };
+
 
 exports.createQuestionSet = async (req, res) => {
     try {
@@ -113,78 +90,58 @@ exports.createQuestionSet = async (req, res) => {
             return res.sendFile(path.join(__dirname, '..', 'public', 'home.html'));
         }
 
-        await sql.connect(config);
-        const request = new sql.Request();
-
-        const checkSet = await request.query(
-            'SELECT * FROM questionSets WHERE name = @name AND owner_id = @userId',
-            {
-                name: title,
-                userId: userId
-            }
+        const checkSet = await pool.query(
+            'SELECT * FROM questionSets WHERE name = $1 AND owner_id = $2',
+            [title, userId]
         );
 
-        if (checkSet.recordset.length > 0) {
+        if (checkSet.rows.length > 0) {
             return res.status(400).json({ message: 'Set đã tồn tại!' });
         }
-        await request.query(
-            'INSERT INTO questionSets (name, owner_id) VALUES (@name, @userId)',
-            {
-                name: title,
-                userId: userId
-            }
+        await pool.query(
+            'INSERT INTO questionSets (name, owner_id) VALUES ($1, $2)',
+            [title,  userId]
         );
-        const set = await request.query(`
+        const set = await pool.query(`
             SELECT name, created_at, id
             FROM questionSets 
-            WHERE name = @name AND owner_id = @userId`,
-            {
-                name: title,
-                userId: userId
-            }
-        );
+            WHERE name = $1 AND owner_id = $2`,
+            [title, userId]);
 
         const user = req.session.user;
         const redirectUrl = `/${user.username}/questionSet`;
 
-        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl, newSet: set.recordset[0] });
+        res.json({ message: 'Tạo Exam thành công!', redirect: redirectUrl, newSet: set.rows[0] });
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: '❌ Có lỗi xảy ra, vui lòng thử lại sau.' });
-    } finally {
-        sql.close();
     }
 };
 
-exports.getAllSet = async (req, res) => {
+
+exports.getAllSet= async (req, res) => {
     if (!req.session.user) {
         return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
     }
 
     try {
-        await sql.connect(config);
-        const request = new sql.Request();
         const user = req.session.user;
-
-        const set = await request.query(`
+        const set = await pool.query(`
             SELECT questionSets.name, questionSets.created_at, questionSets.id
             FROM questionSets 
             JOIN users ON questionSets.owner_id = users.id
-            WHERE users.id = @userId 
-            ORDER BY questionSets.created_at DESC;`,
-            { userId: user.id }
-        );
+            WHERE users.id = $1 
+            ORDER BY questionSets.created_at DESC;`, [user.id]);
 
         res.json({
-            allSet: set.recordset
+            allSet: set.rows
         });
     } catch (err) {
         console.error('Lỗi truy vấn:', err.stack);
         res.status(500).json({ error: 'Lỗi server' });
-    } finally {
-        sql.close();
     }
 };
+
 
 exports.getQuestionSetById = async (req, res) => {
     if (!req.session.user) {
@@ -196,12 +153,9 @@ exports.getQuestionSetById = async (req, res) => {
             return res.status(400).send('set_id phải là số hợp lệ!');
         }
 
-        await sql.connect(config);
-        const request = new sql.Request();
+        const setQuery = await pool.query('SELECT * FROM questionSets WHERE id = $1', [parseInt(set_id)]);
 
-        const setQuery = await request.query('SELECT * FROM questionSets WHERE id = @set_id', { set_id: parseInt(set_id) });
-
-        if (setQuery.recordset.length === 0) {
+        if (setQuery.rows.length === 0) {
             return res.status(404).send('Lớp học không tồn tại!');
         }
 
@@ -210,8 +164,6 @@ exports.getQuestionSetById = async (req, res) => {
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');
-    } finally {
-        sql.close();
     }
 };
 
@@ -222,33 +174,30 @@ exports.getInfoQuestionSet = async (req, res) => {
         }
         const set_id = req.session.set_id;
 
-        await sql.connect(config);
-        const request = new sql.Request();
-        const setInfo = await request.query('SELECT * FROM questionSets WHERE id = @set_id', { set_id: set_id });
-        if (setInfo.recordset.length === 0) {
+        const setInfo = await pool.query('SELECT * FROM questionSets WHERE id = $1', [set_id]);
+        if (setInfo.rows.length === 0) {
             return res.status(404).json({ message: 'Set không tồn tại!' });
         }
 
-        const questions = await request.query(
+        const questions = await pool.query(
             `SELECT *
             FROM questions
-            WHERE id_set= @set_id`,
-            { set_id: set_id }
+            WHERE id_set= $1`,
+            [set_id]
         );
 
         res.json({
-            questions: questions.recordset,
+            questions: questions.rows,
         });
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
-    } finally {
-        sql.close();
     }
 };
 
 exports.addQuestionToSet = async (req, res) =>{
     try {
+
         if (!req.session.user) {
             return res.sendFile(path.join(__dirname,  '..', 'public', 'home.html'));
         }
@@ -260,21 +209,9 @@ exports.addQuestionToSet = async (req, res) =>{
 
         const set_id = req.session.set_id;
 
-        await sql.connect(config);
-        const request = new sql.Request();
-
-        await request.query(
-            'INSERT INTO questions (task, question_text, answer_A, answer_B, answer_C, answer_D, answer_correct, id_Set) VALUES (@task, @title, @answer_A, @answer_B, @answer_C, @answer_D, @answer_correct, @set_id)',
-            {
-                task: task,
-                title: title,
-                answer_A: answer_A,
-                answer_B: answer_B,
-                answer_C: answer_C,
-                answer_D: answer_D,
-                answer_correct: answer_correct,
-                set_id: set_id
-            }
+        await pool.query(
+            'INSERT INTO questions (task, question_text, answer_A, answer_B, answer_C, answer_D, answer_correct, id_Set) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)',
+            [task, title, answer_A, answer_B, answer_C, answer_D, answer_correct, set_id ]
         );
 
         const redirectUrl = `/questionSet/${set_id}`;
@@ -283,10 +220,9 @@ exports.addQuestionToSet = async (req, res) =>{
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
-    } finally {
-        sql.close();
     }
 }
+
 
 exports.deleteSet = async (req, res) => {
     if (!req.session.user) {
@@ -298,13 +234,11 @@ exports.deleteSet = async (req, res) => {
         return res.status(400).json({ message: 'Thiếu id!' });
     }
 
-    await sql.connect(config);
-    const request = new sql.Request();
-
-    await request.query('DELETE FROM questionSets WHERE id = @set_id', { set_id: set_id });
+    await pool.query('DELETE FROM questionSets WHERE id = $1', [set_id]);
 
     res.json({ message: 'Deleted!!!', redirect: `/${user.username}/questionSet` });
 };
+
 
 exports.findMember = async (req, res) => {
     if (!req.session.user) {
@@ -319,47 +253,36 @@ exports.findMember = async (req, res) => {
     }
     let checkUser;
     if (email && username) {
-        checkUser = await sql.connect(config);
-        const request = new sql.Request();
-        checkUser = await request.query('SELECT * FROM users WHERE email = @email AND username = @username', { email: email, username: username });
+        checkUser = await pool.query('SELECT * FROM users WHERE email = $1 AND username = $2', [email, username]);
     } else if (email) {
-        checkUser = await sql.connect(config);
-        const request = new sql.Request();
-        checkUser = await request.query('SELECT * FROM users WHERE email = @email', { email: email });
+        checkUser = await pool.query('SELECT * FROM users WHERE email = $1', [email]);
     } else {
-        checkUser = await sql.connect(config);
-        const request = new sql.Request();
-        checkUser = await request.query('SELECT * FROM users WHERE username = @username', { username: username });
+        checkUser = await pool.query('SELECT * FROM users WHERE username = $1', [username]);
     }
 
-    if (checkUser.recordset.length === 0) {
+    if (checkUser.rows.length === 0) {
         return res.status(400).json({ message: 'Không tìm thấy người dùng!' });
     }
 
-    await sql.connect(config);
-    const request = new sql.Request();
-
-    const checkInClass = await request.query(
-        'SELECT * FROM exams_mem WHERE user_id = @userId AND exam_id = @exam_id',
-        {
-            userId: checkUser.recordset[0].id,
-            exam_id: exam_id
-        }
+    const checkInClass = await pool.query(
+        'SELECT * FROM exams_mem WHERE user_id = $1 AND exam_id = $2',
+        [checkUser.rows[0].id, exam_id]
     );
-    if (checkInClass.recordset.length > 0) {
+    if (checkInClass.rows.length > 0) {
         return res.status(400).json({ message: 'Người dùng đã ở trong lớp!' });
     }
-     if (checkUser.recordset[0].id == user.id){
+     if (checkUser.rows[0].id == user.id){
          return res.status(400).json({ message: 'You are owner!' });
      }
 
-    await request.query('INSERT INTO exams_mem (exam_id, user_id ) VALUES (@exam_id, @userId)', { exam_id: exam_id, userId: checkUser.recordset[0].id });
+    await pool.query('INSERT INTO exams_mem (exam_id, user_id ) VALUES ($1, $2)', [exam_id, checkUser.rows[0].id]);
 
-    const exam = await request.query ('SELECT * FROM exams WHERE id = @exam_id', { exam_id: exam_id });
-    const redirectUrl = `/exam/${exam.recordset[0].title}/${exam_id}`;
+    const exam = await pool.query ('SELECT * FROM exams WHERE id = $1', [exam_id]);
+    const redirectUrl = `/exam/${exam.rows[0].title}/${exam_id}`;
 
     res.json({ message: 'Thêm thành viên thành công!', redirect: redirectUrl });
 };
+
 
 exports.addQuestionToExam = async (req, res) => {
     if (!req.session.user) {
@@ -370,23 +293,21 @@ exports.addQuestionToExam = async (req, res) => {
         const exam_id = req.session.exam_id;
 
      //   const questions = await pool.query("SELECT questions.id FROM questions JOIN questions_exams ON questions. WHERE exam_id = $1", [exam_id]);
-        await sql.connect(config);
-        const request = new sql.Request();
         for (let i = 0; i < questionID.length; i++) {
-            const result = await request.query('SELECT * FROM questions WHERE id = @questionID', { questionID: questionID[i] });
-            const thisQuestion = result.recordset[0];
+            const result = await pool.query('SELECT * FROM questions WHERE id = $1', [questionID[i]]);
+            const thisQuestion = result.rows[0];
 
             if (!thisQuestion) {
                 return res.status(404).json({ message: `Không tìm thấy câu hỏi với ID ${questionID[i]}` });
             }
 
            // if()
-            await request.query(
-                'INSERT INTO questions_exams (exam_id, question_id) VALUES (@exam_id, @question_id)',
-                {
-                    exam_id: exam_id,
-                    question_id: questionID[i]
-                }
+            await pool.query(
+                'INSERT INTO questions_exams (exam_id, question_id) VALUES ($1, $2)',
+                [
+                    exam_id,
+                   questionID[i]
+                ]
             );
         }
 
@@ -394,8 +315,6 @@ exports.addQuestionToExam = async (req, res) => {
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
-    } finally {
-        sql.close();
     }
 };
 
@@ -408,23 +327,21 @@ exports.addQuestionToTest = async (req, res) => {
         const test_id = req.session.test_id;
 
      //   const questions = await pool.query("SELECT questions.id FROM questions JOIN questions_exams ON questions. WHERE exam_id = $1", [exam_id]);
-        await sql.connect(config);
-        const request = new sql.Request();
         for (let i = 0; i < questionID.length; i++) {
-            const result = await request.query('SELECT * FROM questions WHERE id = @questionID', { questionID: questionID[i] });
-            const thisQuestion = result.recordset[0];
+            const result = await pool.query('SELECT * FROM questions WHERE id = $1', [questionID[i]]);
+            const thisQuestion = result.rows[0];
 
             if (!thisQuestion) {
                 return res.status(404).json({ message: `Không tìm thấy câu hỏi với ID ${questionID[i]}` });
             }
 
            // if()
-            await request.query(
-                'INSERT INTO questions_tests (test_id, question_id) VALUES (@test_id, @question_id)',
-                {
-                    test_id: test_id,
-                    question_id: questionID[i]
-                }
+            await pool.query(
+                'INSERT INTO questions_tests (test_id, question_id) VALUES ($1, $2)',
+                [
+                    test_id,
+                   questionID[i]
+                ]
             );
         }
 
