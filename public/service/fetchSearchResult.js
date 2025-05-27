@@ -42,7 +42,7 @@ async function requestToClass(idClass) {
 
 async function unRequest(idClass) {
     try {
-        const response = await fetch("/Request", {
+        const response = await fetch("/unRequest", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({idClass})
