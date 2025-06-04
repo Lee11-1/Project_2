@@ -38,19 +38,24 @@ const insertClass = async (class_id, user_id) => {
       console.error("❌ Lỗi khi chèn users:", err);
     }
   };
-  insertAdmin("admin", "admin", "admin", "Admin", "admin@gmail.com");
   const insertUser = async (username, email, password, name, role ) => {
-    
+    const Gender = {
+      MALE: "Nam",
+      FEMALE: "female",
+      OTHER: "other",
+    };
+    const date_of_birth = new Date('1980-01-15T00:00:00.000Z'); // ISO string cho ngày
+   const  gender= Gender.MALE; // Sử dụng enum Gender
     try {
       const query = `
-        INSERT INTO users (username, email, password, name, role)
-        VALUES ($1, $2, $3, $4, $5)
+        INSERT INTO users (username, email, password, name, role, date_of_birth, gender)
+        VALUES ($1, $2, $3, $4, $5, $6, $7)
         RETURNING *;
       `;
-  
+   
       
       const hashedPassword = await bcrypt.hash(password, 10);
-      const values = [username, email, hashedPassword, name, role];
+      const values = [username, email, hashedPassword, name, role, date_of_birth, gender];
 
       const { rows } = await pool.query(query, values);
       console.log("✅ users đã được thêm:", rows[0]);
@@ -58,3 +63,5 @@ const insertClass = async (class_id, user_id) => {
       console.error("❌ Lỗi khi chèn users:", err);
     }
   };
+
+  insertUser("ad", "ad@gmail.com", "ad", "trung", "admin")

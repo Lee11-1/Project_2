@@ -13,3 +13,12 @@ const pool = new Pool({
 });
 
 module.exports = pool;
+// const { Pool } = require('pg');
+
+// const pool = new Pool({
+//   connectionString:   "postgresql://mydata_8aka_user:gvRspR9a4IbGjovKeJS9fAlCLzc5SMnm@dpg-d0vt8o2li9vc73d81qpg-a.singapore-postgres.render.com/mydata_8aka",
+//   ssl: {
+//     rejectUnauthorized: false,
+//   }
+// });
+// module.exports = pool;

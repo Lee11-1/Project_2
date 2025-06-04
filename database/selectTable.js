@@ -21,14 +21,15 @@ const selectTable = async (tableName) => {
   
   
   selectTable("users");
-  selectTable("classes");
-  selectTable("class_members");
+  selectTable("books");
+  // selectTable("classes");
+  // selectTable("class_members");
 //  selectTable("folders");
 //  selectTable("files");
 //   selectTable("tests");
 //   selectTable("questions");
 //   selectTable("quiz_attempts");
-  selectTable("re_member");
-  selectTable("test_attempts");
+  // selectTable("re_member");
+  // selectTable("test_attempts");
 
 
