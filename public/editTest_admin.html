@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Test</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+    <div id="header2" class="header"></div>
+   
+ 
+    <div id="form"></div>
+
+    <div class="btnControll" id="btnControll">
+        <button type="button" class="viewPoint" id="viewPoint"> All Atempts</button>
+    </div>
+   
+
+        
+    <div id="viewMemAndQues">  
+        <div class="viewMemAndQues">
+            <h2 class="headerQuesExam">Question</h2>
+    
+            <div class="rightControllExam" id="examQuestions"></div>
+        </div>
+    </div>
+   
+   
+
+    <div id="footer"></div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <script src="/js/display.js"></script>
+    <script src="/js/script.js"></script>
+    <script src="/js/script_controllExam.js"></script>
+    <script src="/service/fetch.js"></script>
+    <script src="/service/fetchTest.js"></script>
+    <script>
+        $('#header2').load('/admin.html #header');
+        $('#footer').load('/home.html #footer');
+        $('#form').load('/student.html #form', function(){
+           addClass();
+           createExam();
+           createQuestionSet();
+        });
+        
+
+     
+        getListQuestionSet();
+        loadTestData();
+     </script>
+
+
+</body>
+</html>

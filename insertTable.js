@@ -48,20 +48,20 @@ const insertClass = async (class_id, user_id) => {
    const  gender= Gender.MALE; // Sử dụng enum Gender
     try {
       const query = `
-        INSERT INTO users (username, email, password, name, role, date_of_birth, gender)
-        VALUES ($1, $2, $3, $4, $5, $6, $7)
-        RETURNING *;
+      UPDATE users
+SET role = 'author'
+WHERE user_id = 5;
       `;
    
       
       const hashedPassword = await bcrypt.hash(password, 10);
       const values = [username, email, hashedPassword, name, role, date_of_birth, gender];
 
-      const { rows } = await pool.query(query, values);
+      const { rows } = await pool.query(query);
       console.log("✅ users đã được thêm:", rows[0]);
     } catch (err) {
       console.error("❌ Lỗi khi chèn users:", err);
     }
   };
 
-  insertUser("ad", "ad@gmail.com", "ad", "trung", "admin")
+  insertUser("author", "author@gmail.com", "author", "trung", "author")

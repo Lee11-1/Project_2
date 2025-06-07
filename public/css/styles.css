@@ -1410,7 +1410,6 @@ button{
 }
 .deleteExam{
     background-color: #e92323;
-    display: none;
     width: 180px;
     height: 50px;
     margin-left: 13%;
@@ -1675,9 +1674,7 @@ button{
     border: 2px solid black;
 }
 
-#header3{
-    display: none;
-}
+
 
 #bodyViewPoint{
     width: 100%;

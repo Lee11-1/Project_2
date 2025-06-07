@@ -146,9 +146,15 @@ exports.getClassById = async (req, res) => {
         if (classQuery.rows.length === 0) {
             return res.status(404).send('Lớp học không tồn tại!');
         }
-
+        
         req.session.class_id = class_id;
-        res.sendFile(path.join(__dirname, '..', 'public', 'class.html'));
+        if( req.session.user.profession == 'Admin'){
+            res.sendFile(path.join(__dirname, '..', 'public', 'class_admin.html'));
+        }
+        else{
+            res.sendFile(path.join(__dirname, '..', 'public', 'class.html'));
+        }
+       
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).send('Lỗi server!');

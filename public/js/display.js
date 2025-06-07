@@ -1976,7 +1976,7 @@ function displayTests(exams, user, infoClass) {
         startButton.textContent = 'Start Test';
         startButton.onclick = () => startTest(exam.id);
         
-        if(user.id == infoClass.owner_id){
+        if(user.id == infoClass.owner_id || user.profession =="Admin" ){
             const editButton = document.createElement('button');
             editButton.className = 'edit-test-btn';
             editButton.textContent = 'Edit';

@@ -21,7 +21,9 @@ const selectTable = async (tableName) => {
   
   
   selectTable("users");
-  selectTable("books");
+  // selectTable("books");
+  // selectTable("book_requests");
+  // selectTable("user_books")
   // selectTable("classes");
   // selectTable("class_members");
 //  selectTable("folders");

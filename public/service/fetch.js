@@ -58,13 +58,15 @@ async function loadClassData() {
             alert("Lỗi khi tải dữ liệu");
             return;
         }
-
+        
+        
         displayClassInfo(data.infoClass, data.infoOwner, data.user);
         if(data.user.id != data.infoClass.owner_id){
             document.getElementById("addMembers").style.display = "none";
             document.getElementById("newTest").style.display = "none";
           //  document.getElementById("deleteClass").style.display = "none";
         }
+       
       
         displayClassHome(data.re_members);
         displayMembers(data.members,"class-members");
@@ -119,18 +121,6 @@ async function loadExamData() {
 
         displayMembers(data.members,"examMems");
         displayAllQuestion(data.questions,"examQuestions");
-        if(data.profession == "Admin"){
-            const btn1 = document.getElementById("openAddQuestionToExam");
-            const btn2 = document.getElementById("openAddMemberToExam");
-            const btn3 = document.getElementById("deleteExam");
-            btn1.style.display = "none";
-            btn2.style.display = "none";
-            btn3.style.display = "block";
-            const h1 = document.getElementById("header2");
-            h1.style.display = "none";
-            const h2 = document.getElementById("header3");
-            h2.style.display = "block";
-        }
         const btn4 = document.getElementById("viewPoint");
         btn4.addEventListener("click", function(){
             allAttempts(data.exam_id);

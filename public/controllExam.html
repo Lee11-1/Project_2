@@ -9,7 +9,6 @@
 <body>
 
     <div id="header2" class="header"></div>
-    <div id="header3" class="header"> </div>
    
  
     <div id="form"></div>
@@ -17,8 +16,7 @@
     <div class="btnControll" id="btnControll">
         <button type="button" class="addQuestionToExam" id = "openAddQuestionToExam" onclick="seeControllTask('addQuestionToExam')">Select questions</button>
         <button type="button" class="addMemberToExam" id = "openAddMemberToExam" onclick="showPopup('findMembers')">Add Members</button>
-        <button type="button" class="deleteExam" id = "deleteExam" onclick="deleteExam()">Delete Exam</button>
-        <button type="button" class="viewPoint" id="viewPoint""> All Atempts</button>
+        <button type="button" class="viewPoint" id="viewPoint"> All Atempts</button>
     </div>
    
     <div id="findMembers" class="Folder">
@@ -84,7 +82,6 @@
     <script src="/service/fetchExam.js"></script>
     <script>
         $('#header2').load('/student.html #header');
-        $('#header3').load('/admin.html #header');
         $('#footer').load('/home.html #footer');
         $('#form').load('/student.html #form', function(){
            addClass();

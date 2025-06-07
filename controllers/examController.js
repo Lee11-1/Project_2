@@ -66,7 +66,7 @@ exports.getExamById = async (req, res) => {
         }
 
         req.session.exam_id = exam_id;
-        if (req.session.user.profession == "Admin") res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
+        if (req.session.user.profession == "Admin") res.sendFile(path.join(__dirname,  '..', 'public', 'exam_admin.html'));
         else if (examQuery.rows[0].user_id != req.session.user.id) res.sendFile(path.join(__dirname,  '..', 'public', 'beforeExam.html'));
         else res.sendFile(path.join(__dirname,  '..', 'public', 'controllExam.html'));
     } catch (error) {
@@ -526,7 +526,13 @@ exports.editTest = async(req, res) =>{
     const test_id = req.params.test_id;
     req.session.test_id = test_id;
     try {
-        res.sendFile(path.join(__dirname, '..', 'public', 'editTest.html'));
+        if(req.session.user.profession == "Admin") {
+            res.sendFile(path.join(__dirname, '..', 'public', 'editTest_admin.html'));
+        }
+        else{
+            res.sendFile(path.join(__dirname, '..', 'public', 'editTest.html'));
+        }
+  
     } catch (error) {
         console.error('Lỗi:', error);
         res.status(500).json({ message: 'Lỗi server!' });
@@ -754,7 +760,12 @@ exports.getAllAttempts = async (req, res) => {
 }   
 
 exports.viewPoint = async (req, res) => {
-    res.sendFile(path.join(__dirname, '..', 'public', 'viewPoint.html'));
+    if(req.session.user.profession == "Admin"){
+        res.sendFile(path.join(__dirname, '..', 'public', 'viewPoint_admin.html'));
+    }
+    else{
+        res.sendFile(path.join(__dirname, '..', 'public', 'viewPoint.html'));
+    }
 }
 
 
